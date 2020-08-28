@@ -1,5 +1,5 @@
-# t01 - Placeholder Team Name
-![Placeholder Team Image](/team/images/example.png)
+# t01 - Feather Friends
+![5 Birds](/team/images/Birds.png)
 
 Last Name | First Name | CSU Ename | Github Username | CSU Email Address
 ----------|------------|-----------|-----------------|------------------
