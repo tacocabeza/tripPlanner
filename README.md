@@ -1,5 +1,6 @@
 # t01 - Feather Friends
 ![5 Birds](/team/images/Birds.png)
+*5 birds*
 
 Last Name | First Name | CSU Ename | Github Username | CSU Email Address
 ----------|------------|-----------|-----------------|------------------
