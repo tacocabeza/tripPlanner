@@ -24,3 +24,11 @@ In the interest of creating an inviting and collaborative work environment, our 
 when someone needs it. Rather than a member being too afraid to ask for help and sit on the task until the last moment.
 We agreed on using slack to send over snippets of code for review and or help. We also decided if we don't agree on
 a design choice/code we will talk through it and get to a resolution we can agree on.
+
+#### Grades / Responsibility
+Our team discussed that while letter grades are important, all we should require of each other is that we try our best. 
+The main goal we have is to learn new skills / technologies in this class.  If code is submitted that is of questionable quality,
+we should discuss it in the standup.  We've decided that for the sake of future development, team members can be asked to go revise
+code and improve the quality.  If team members feel that somebody isn't pulling their weight, our plan is to first discuss it openly
+with each other, then approach TA's, then Professor Matthews upon each offence.  Differing opinions will be decided by a vote, but
+if somebody has a different opinion, maybe it's worth consulting with other teams or staff.
