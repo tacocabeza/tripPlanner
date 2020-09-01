@@ -19,3 +19,8 @@ we will use Microsoft Teams video calls. These should take place on most lecture
 As a team, our goal for this semester is to learn how to communicate effectively and work well together. We may have
 conflicts in approach, communication, and the lack of in person contact, but we will try to overcome those challenges.
 
+#### Teamwork
+In the interest of creating an inviting and collaborative work environment, our team members will offer help to one another
+when someone needs it. Rather than a member being too afraid to ask for help and sit on the task until the last moment.
+We agreed on using slack to send over snippets of code for review and or help. We also decided if we don't agree on
+a design choice/code we will talk through it and get to a resolution we can agree on.
