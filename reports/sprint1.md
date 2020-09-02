@@ -25,11 +25,15 @@
 ## Planned Epics
 
 * v1 protocol
+	Provides information about server capabilities to the user. This includes icons that show current connection status and if more information is available.
 * Team Identification
+	Displays our team name on both the client and the server so it appears in the header, footer, and browser tab.
 * About
+	Provides the user with information about the team and people on the team. This includes a mission statement as well as a bio and image for each member.
 * Where am I?
+	Displays the current location of the user on startup. Will also allow user to return to current location after changing the map view.
 * Where is?
-
+	Allows the user to find any location on the map using longitude and latitude coordinates.
 
 ## Metrics
 
