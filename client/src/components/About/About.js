@@ -11,7 +11,7 @@ export default class About extends Component {
         <Container id="about">
           <Row>
             <Col>
-              <h2>{"T01 Feather Friends"}</h2>
+              <h2>{CLIENT_TEAM_NAME}</h2>
             </Col>
             <Col id="closeAbout" xs='auto' >
               <Button color="primary" onClick={this.props.closePage} xs={1}>
