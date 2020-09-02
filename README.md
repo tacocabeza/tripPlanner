@@ -1,5 +1,6 @@
 # t01 - Feather Friends
-![5 Birds](/team/images/Birds.png)
+<img src="/team/images/Birds.png" width="40%" height="40%" alt="5 Birds"/>
+
 *5 birds*
 
 Last Name | First Name | CSU Ename | Github Username | CSU Email Address
