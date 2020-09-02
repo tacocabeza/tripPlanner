@@ -20,22 +20,22 @@ export default class About extends Component {
                 <img src=""></img>
                 <p>Member 1 Bio</p>
               </div>
-              <div className="member">
+              <div class="member">
                 <h4>Member 2</h4>
                 <img src=""></img>
                 <p>Member 2 Bio</p>
               </div>
-              <div className="member">
+              <div class="member">
                 <h4>Member 3</h4>
                 <img src=""></img>
                 <p>Member 3 Bio</p>
               </div>
-              <div className="member">
+              <div class="member">
                 <h4>Member 4</h4>
                 <img src=""></img>
                 <p>Member 4 Bio</p>
               </div>
-              <div className="member">
+              <div class="member">
                 <h4>Member 5</h4>
                 <img src=""></img>
                 <p>Member 5 Bio</p>
