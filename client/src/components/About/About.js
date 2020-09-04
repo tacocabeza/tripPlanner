@@ -5,6 +5,7 @@ import {Container, Row, Col, Button, Card, CardImg, CardBody, CardTitle, CardTex
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
 import alexpic from '../../static/images/alex_portrait.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2.jpg';
+import nickPic from '../../static/images/NickPicture.jpg';
 export default class About extends Component {
 
   render() {
@@ -30,11 +31,14 @@ export default class About extends Component {
               </Col>
               <Col sm={12} md={6} lg={4}>
                 <Card>
-                  <CardImg top width="100%" src="" alt="Portrait of Member 2"/>
+                  <CardImg top width="100%" src={nickPic} alt="Portrait of Nicholas Davidson"/>
                   <CardBody>
-                    <CardTitle><h5>Member 2</h5></CardTitle>
+                    <CardTitle><h5>Nicholas Davidson</h5></CardTitle>
                     <CardText>
-                      Member 2 Bio
+                      Nicholas Davidson is a junior computer science student at Colorado State University. For the past two summers
+                      Nick worked for a small cyber security reseller and manged service provider. Nick is currently
+                      focusing on school to improve his knowledge of computer systems and security. A cool fact about him
+                      is that he is taller than the average american male according to most articles.
                     </CardText>
                   </CardBody>
                 </Card>
