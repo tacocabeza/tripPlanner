@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Container, Row, Col, Button} from 'reactstrap';
 
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
-
+import jesuspic from '../../static/images/-jzgcsw_2.jpg';
 export default class About extends Component {
 
     render() {
@@ -36,9 +36,11 @@ export default class About extends Component {
                 <p>Member 4 Bio</p>
               </div>
               <div class="member">
-                <h4>Member 5</h4>
-                <img src=""></img>
-                <p>Member 5 Bio</p>
+                <h4>Jesus Garcia</h4>
+                <img src={jesuspic}></img>
+                <p>Jesus Garcia is a senior computer science student at Colorado State University. This summer
+                   Jesus worked on a cyber security project under the guidance of professor Yashwant K. Malaiya. Jesus is currently
+                   working on writing a report on his findings. A cool fact about him is that his right hand can't touch his right elbow.</p>
               </div>
             </Col>
             <Col id="closeAbout" xs='auto' >
