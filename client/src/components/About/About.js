@@ -5,6 +5,7 @@ import {Container, Row, Col, Button} from 'reactstrap';
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
 import alexpic from '../../static/images/alex_portrait.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2.jpg';
+import nickPic from '../../static/images/NickPicture.jpg';
 export default class About extends Component {
 
     render() {
@@ -22,9 +23,12 @@ export default class About extends Component {
                 <p>Member 1 Bio</p>
               </div>
               <div class="member">
-                <h4>Member 2</h4>
-                <img src=""></img>
-                <p>Member 2 Bio</p>
+                <h4>Nicholas Davidson</h4>
+                <img src={nickPic}></img>
+                <p>Nicholas Davidson is a junior computer science student at Colorado State University. For the past two summers
+                  Nick worked for a small cyber security reseller and manged service provider. Nick is currently
+                  focusing on school to improve his knowledge of computer systems and security. A cool fact about him
+                  is that he is taller than the average american male according to most articles.</p>
               </div>
               <div class="member">
                 <h4>Alex Hooten</h4>
