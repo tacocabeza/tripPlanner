@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Container, Row, Col, Button} from 'reactstrap';
 
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
+import alexpic from '../../static/images/alex_portrait.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2.jpg';
 export default class About extends Component {
 
@@ -26,9 +27,13 @@ export default class About extends Component {
                 <p>Member 2 Bio</p>
               </div>
               <div class="member">
-                <h4>Member 3</h4>
-                <img src=""></img>
-                <p>Member 3 Bio</p>
+                <h4>Alex Hooten</h4>
+                <img src={alexpic}></img>
+                <p>
+                  Alex Hooten is currently a junior in computer science at Colorado State University. He has worked as
+                  a web developer with Voltage Advertising and Funeral Innovations, using HTML, CSS, PHP, and Javascript
+                  extensively. In his free time he likes to watch auto racing, play video games, and drive his 1995 Miata.
+                </p>
               </div>
               <div class="member">
                 <h4>Member 4</h4>
