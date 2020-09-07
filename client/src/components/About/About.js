@@ -16,7 +16,8 @@ export default class About extends Component {
           <Col>
             <h2>{CLIENT_TEAM_NAME}</h2>
             <h3>Our Mission</h3>
-            <p>Mission statement</p>
+            <p>To create a cohesive product using Agile software engineering principles. Collaboration and promoting an inclusive environment where
+             ideas may freely flow are our means of success.</p>
             <h3>Our Team</h3>
             <Row>
               <Col sm={12} md={6} lg={4}>
