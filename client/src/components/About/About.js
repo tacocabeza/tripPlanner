@@ -6,6 +6,7 @@ import {CLIENT_TEAM_NAME} from "../../utils/constants";
 import alexpic from '../../static/images/alex_portrait.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2.jpg';
 import nickPic from '../../static/images/NickPicture.jpg';
+import prestonPic from '../../static/images/PrestonPicture.jpg'
 export default class About extends Component {
 
   render() {
@@ -58,11 +59,15 @@ export default class About extends Component {
               </Col>
               <Col sm={12} md={6} lg={4}>
                 <Card>
-                  <CardImg top width="100%" src="" alt="Portrait of Member 4"/>
+                  <CardImg top width="100%" src={prestonPic} alt="Portrait of Preston Dunton"/>
                   <CardBody>
-                    <CardTitle><h5>Member 4</h5></CardTitle>
+                    <CardTitle><h5>Preston Dunton</h5></CardTitle>
                     <CardText>
-                      Member 4 Bio
+                      Preston is currently a junior at Colorado State University studying computer science with minors in
+                      math and statistics.  Preston worked last summer as a Data Engineering Intern with the SketchUp team
+                      at Trimble Inc.  His goal in school right now is to continue to develop a tool kit to work with and display
+                      data.  One cool fact about him is that he loves music and is one of the drum majors for the 2020 CSU marching
+                      band!
                     </CardText>
                   </CardBody>
                 </Card>
