@@ -6,7 +6,9 @@ import {CLIENT_TEAM_NAME} from "../../utils/constants";
 import alexpic from '../../static/images/alex_portrait.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2.jpg';
 import nickPic from '../../static/images/NickPicture.jpg';
-import prestonPic from '../../static/images/PrestonPicture.jpg'
+import prestonPic from '../../static/images/PrestonPicture.jpg';
+import suyashpic from '../../static/images/suyash.jpg';
+
 export default class About extends Component {
 
   render() {
@@ -16,16 +18,19 @@ export default class About extends Component {
           <Col>
             <h2>{CLIENT_TEAM_NAME}</h2>
             <h3>Our Mission</h3>
-            <p>Mission statement</p>
+            <p>To create a cohesive product using Agile software engineering principles. Collaboration and promoting an inclusive environment where
+             ideas may freely flow are our means of success.</p>
             <h3>Our Team</h3>
             <Row>
               <Col sm={12} md={6} lg={4}>
                 <Card>
-                  <CardImg top width="100%" src="" alt="Portrait of Member 1"/>
+                  <CardImg top width="100%" src={suyashpic} alt="Portrait of Suyash Hiray"/>
                   <CardBody>
-                    <CardTitle><h5>Member 1</h5></CardTitle>
+                    <CardTitle><h5>Suyash Hiray</h5></CardTitle>
                     <CardText>
-                      Member 1 Bio
+                      Suyash Hiray is a senior computer science student at Colorado State University. He has previous
+                      experience with a degree in Physics and work in a NASA funded research lab on cubesats and rockets.
+                      Outside of coursework he likes to spend his free time at the gym, playing video games, or watching movies.
                     </CardText>
                   </CardBody>
                 </Card>
