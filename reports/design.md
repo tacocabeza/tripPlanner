@@ -112,11 +112,12 @@ Much of the UI elements in the main page has stayed the same, we have just added
 In the header/footer we have added our team name (T01 Feather Friends). In the footer we have
 also added a clickable icon that pulls up server information in a pop up. Much like described above,
 the user can click on the team name and that will then show our about page.
-
+![base](images/cs314aboutdesign.png)
 In our about page our team name(T01 Feather Friends) will be visble in the header/footer and in a heading.
 Below that will be our Mission Statement. Below our mission statement there will be 5 cards containing a
 picture and a short bio for each team mate. Our pictures will be the same size so they will all line up
-neatly. 
+neatly. In the top right of the page there will be a close button that will collapse the page back into 
+the initial page that show the map
 # Sprint 2
 # Sprint 3
 # Sprint 4 
