@@ -106,6 +106,17 @@ Often there are several related classes but we've listed only one to simplify th
 
 
 # Sprint 1
+#### User Interface 
+![base](images/homescreen.png)
+Much of the UI elements in the main page has stayed the same, we have just added minor tweaks.
+In the header/footer we have added our team name (T01 Feather Friends). In the footer we have
+also added a clickable icon that pulls up server information in a pop up. Much like described above,
+the user can click on the team name and that will then show our about page.
+
+In our about page our team name(T01 Feather Friends) will be visble in the header/footer and in a heading.
+Below that will be our Mission Statement. Below our mission statement there will be 5 cards containing a
+picture and a short bio for each team mate. Our pictures will be the same size so they will all line up
+neatly. 
 # Sprint 2
 # Sprint 3
 # Sprint 4 
