@@ -3,6 +3,9 @@ import { Container } from "reactstrap";
 
 import ServerSettings from "./ServerSettings";
 
+import {IconButton} from "@material-ui/core";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+
 const UNICODE_LINK_SYMBOL = "\uD83D\uDD17";
 const UNICODE_WARNING_SIGN = "\u26A0";
 const UNKNOWN_SERVER_NAME = "Unknown";
@@ -30,9 +33,9 @@ export default class Footer extends Component {
                 <Container>
                     <div className="centered">
                         {linkStatusSymbol} Connected to {serverName} &nbsp;
-                        <a className="tco-text" onClick={() => this.setState({serverSettingsOpen: true})}>
-                            ({this.props.serverSettings.serverPort}).
-                        </a>
+                        <IconButton  onClick={() => this.setState({serverSettingsOpen: true})}>
+                            <InfoOutlinedIcon className="tco-text"/>
+                        </IconButton>
                     {this.renderServerSettings()}
                     </div>
                 </Container>
