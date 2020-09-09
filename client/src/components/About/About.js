@@ -16,7 +16,11 @@ export default class About extends Component {
       <Container id="about">
         <Row>
           <Col>
-            <h2>{CLIENT_TEAM_NAME}</h2>
+            <h2>{CLIENT_TEAM_NAME}
+              <Button color="primary" onClick={this.props.closePage} xs={1} className="float-right" >
+                Close
+              </Button>
+            </h2>
             <h3>Our Mission</h3>
             <p>To create a cohesive product using Agile software engineering principles. Collaboration and promoting an inclusive environment where
              ideas may freely flow are our means of success.</p>
@@ -91,11 +95,6 @@ export default class About extends Component {
                 </Card>
               </Col>
             </Row>
-          </Col>
-          <Col id="closeAbout" xs='auto' >
-            <Button color="primary" onClick={this.props.closePage} xs={1}>
-              Close
-            </Button>
           </Col>
         </Row>
       </Container>
