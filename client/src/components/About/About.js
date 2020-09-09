@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 import {Container, Row, Col, Button, Card, CardImg, CardBody, CardTitle, CardText} from 'reactstrap';
 
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
-import alexpic from '../../static/images/alex_portrait.jpg';
-import jesuspic from '../../static/images/-jzgcsw_2.jpg';
-import nickPic from '../../static/images/NickPicture.jpg';
-import prestonPic from '../../static/images/PrestonPicture.jpg';
-import suyashpic from '../../static/images/suyash.jpg';
+import alexpic from '../../static/images/alex_portrait_square.jpg';
+import jesuspic from '../../static/images/-jzgcsw_2_square.jpg';
+import nickPic from '../../static/images/NickPicture_square.jpg';
+import prestonPic from '../../static/images/PrestonPicture_square.jpg';
+import suyashpic from '../../static/images/suyash_square.jpg';
 
 export default class About extends Component {
 
