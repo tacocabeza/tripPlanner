@@ -117,7 +117,7 @@ In our about page our team name(T01 Feather Friends) will be visble in the heade
 Below that will be our Mission Statement. Below our mission statement there will be 5 cards containing a
 picture and a short bio for each team mate. Our pictures will be the same size so they will all line up
 neatly. In the top right of the page there will be a close button that will collapse the page back into 
-the initial page that show the map
+the initial page that show the map.
 # Sprint 2
 # Sprint 3
 # Sprint 4 
