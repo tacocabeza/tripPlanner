@@ -39,9 +39,9 @@
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *5* | *count* |
-| Tasks |  *17*   | *count* | 
-| Story Points |  *32*  | *count* | 
+| Epics | *5* | *3* |
+| Tasks |  *17*   | *16* | 
+| Story Points |  *34*  | *31* | 
 
 
 ## Scrums
@@ -50,15 +50,24 @@
 | :--- | :--- | :--- | :--- |
 | *9/4/2020* | *6* | *4* | *none* | 
 | *9/7/2020* | *3* | *2* | *none* | 
+| *9/9/2020* | *3* | *0* | *none* | 
 
 
 ## Review
 
 #### Epics done  
 
+* v1 protocol
+* About
+* Team Identification
+
 #### Epics not done 
 
+* Where am I?
+* Where is?
+
 #### What went well
+
 
 #### Problems encountered and resolutions
 
