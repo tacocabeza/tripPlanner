@@ -67,6 +67,8 @@
 * Where is?
 
 #### What went well
+	
+	The team was able to succesfully schedule a regular meeting time and determine best practices for the sprint. Task were assigned and completed on schedule by all team members. New tasks were created as needed and organized on ZenHub. 3 of the Epics were completed, while the remaining 2 were placed in the Icebox for next sprint.
 
 
 #### Problems encountered and resolutions
