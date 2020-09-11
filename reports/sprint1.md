@@ -68,10 +68,12 @@
 
 #### What went well
 	
-	The team was able to succesfully schedule a regular meeting time and determine best practices for the sprint. Task were assigned and completed on schedule by all team members. New tasks were created as needed and organized on ZenHub. 3 of the Epics were completed, while the remaining 2 were placed in the Icebox for next sprint.
+The team was able to succesfully schedule a regular meeting time and determine best practices for the sprint. Task were assigned and completed on schedule by all team members. New tasks were created as needed and organized on ZenHub. 3 of the Epics were completed, while the remaining 2 were placed in the Icebox for next sprint.
 
 
 #### Problems encountered and resolutions
+
+On one occasion a version of the server was merged / deployed that rolled back some features that we put out.  To fix this, we just merged a different local master back into the remote master to reimplement the features.  This can be avoided in the future due to more thourough code review in pull requests.  Another problem that occured is making sure everybody in the team installed a new node package.  We talked it out over a call to make sure everybody could build with the new `package.json`.  Everybody should know how to manage node packages now, or how to ask for help.
 
 
 ## Retrospective
