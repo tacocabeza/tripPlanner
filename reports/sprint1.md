@@ -77,7 +77,19 @@
 ## Retrospective
 
 #### What went well
+Our team did very well in maintaining lines of communication between each other.
+All team members did their best to be active on the slack channel. Additionally, 
+we were very quick to merge pull requests and so we had no merge conflicts. Also, all 
+team members were able to make it to scrum meetings. The work was divided up between all of us rather evenly. Also, 
+our team was their to answer/help on technical problems through the slack channel. Overall, things went rather smoothly.
 
 #### Potential improvements
+As noted above we did not have any merge conflicts but, we should really be examining
+the code changed in pull requests. For example, not including a file when it is clearly referenced 
+in the code in turn causing compilation issues in master. We should be looking for these kinds of bugs
+when reviewing pull requests.
 
 #### What we will change next time
+Perhaps, we will do a better job of linking new issues to labels and epics on Zenhub.
+Our time also discussed breaking down tasks further and providing better documentation in
+our Github commits and pull requests. 
