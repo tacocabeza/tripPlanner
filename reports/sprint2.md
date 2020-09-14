@@ -37,15 +37,25 @@
 
 ## Planned Epics
 
+* v2 protocol
+	Update and improve the protocol to allow different request types and support more functions.
+* Find Distance
+	Add the ability to measure distance between two different locations on the map.
+* Find Places
+	Add the ability to search for a location and get a list of responses that are similar to the search.
+* Where am I?
+	Displays the current location of the user on startup. Will also allow user to return to current location after changing the map view.
+* Where is?
+	Allows the user to find any location on the map using longitude and latitude coordinates.
+
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | 5 | *count* |
-| Tasks |  14   | *count* | 
-| Story Points |  28  | *sum* | 
-
+| Tasks |  15   | *count* | 
+| Story Points |  29  | *sum* | 
 
 ## Scrums
 
