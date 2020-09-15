@@ -119,6 +119,49 @@ picture and a short bio for each team mate. Our pictures will be the same size s
 neatly. In the top right of the page there will be a close button that will collapse the page back into 
 the initial page that show the map.
 # Sprint 2
+#### User Interface
+![base](images/sprint2ui.png)
+Starting point/Destination Boxes: The user can input their
+own coordinates or they can first click on the box and then click on somewhere 
+on the map, this will put the coordinates into the box for them.
+
+GO Button - This will initiate the findDistance routine. The map will then draw a line from
+starting point to destination.
+
+Distance Ouput box - This will show the assocaited distance between starting point and 
+destination. 
+
+Take me home (center) button - If the user strays away from their initial 
+position to this button will take them back.
+
+#### User Interface - Search Tab
+![base](images/searchTab.png)
+Clicking on the search tab will bring the user to the
+search page. The user may enter a location they are looking
+for into the search box. Relevant locations will appear below the search box. 
+The user may pick one to search for. 
+
+#### Class Diagram
+![base](images/sprint2ClassDiagram.png)
+The classes in purple represent the classes specific to this application.  
+* WebApplication processes command line parameters and creates MicroServer.
+* MicroServer start a web server on the given port, configures the server for security, static files, and APIs for different types of requests, and processes the requests as they arrive.
+* JSONValidator verifies a request is properly formatted before attempting to process it using JSON Schemas.
+* RequestConfig is a specific request that allows the server to respond with its configuration to allow interoperability between clients and servers. 
+* RequestHeader defines the basic components of all requests.
+* RequestDistance responds to the clients request with a calculated distance
+* RequestFind handles find requests
+
+The classes in green represent the external libraries used by the application.
+Often there are several related classes but we've listed only one to simplify the diagram.
+* GSON converts a JSON string into a Java object instance.
+* Spark provides the necessary web support for our MicroServer.
+* JSON provides libraries to manipulate JSON objects using the JSON Schema libraries.
+* Logger provides a centralized logging facility used in all of the application classes.
+
+
+
+####
 # Sprint 3
 # Sprint 4 
 # Sprint 5
