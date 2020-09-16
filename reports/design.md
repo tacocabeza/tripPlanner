@@ -159,6 +159,21 @@ Often there are several related classes but we've listed only one to simplify th
 * JSON provides libraries to manipulate JSON objects using the JSON Schema libraries.
 * Logger provides a centralized logging facility used in all of the application classes.
 
+#### Component Diagram
+![base](images/componentHierarchyV2.png)
+The component hierarchy for the base application depicted below shows the our top level App component with four children components.
+* App renders the major components on the screen.
+* Header renders an icon and a team name in the top banner.
+* Footer renders the current server connection in the bottom footer.
+* Atlas renders a map.
+* About renders information about the team.
+Atlas Children
+* Search is a different tab of the atlas tab where the user can search for locations.
+* Search uses state, it saves the user input, into search location.
+* Take me home recenters the user to initial position
+* Go initiates the line to to draw from point a to point b
+* Starting point and destination hold state, it saves the user input
+* distance is lifted when the search is complete and moved up to atlas
 
 
 ####
