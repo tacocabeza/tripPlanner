@@ -19,12 +19,16 @@ public class RequestConfig extends RequestHeader {
   public void buildResponse() {
     this.serverName = "t01 Feather Friends";
     this.supportedRequests[0] = "config";
-    this.supportedRequests[0] = "distance";
-    this.supportedRequests[0] = "find";
+    this.supportedRequests[1] = "distance";
+    this.supportedRequests[2] = "find";
     log.trace("buildResponse -> {}", this);
   }
 
   public String getServerName() {
     return serverName;
+  }
+
+  public String[] getSupportedRequests() {
+    return supportedRequests;
   }
 }
