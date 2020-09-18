@@ -27,10 +27,10 @@ public class TestRequestConfig {
   }
 
   @Test
-  @DisplayName("Version number is equal to 1")
+  @DisplayName("Version number is equal to 2")
   public void testVersion() {
     int version = conf.getRequestVersion();
-    assertEquals(1, version);
+    assertEquals(2, version);
   }
 
   @Test
@@ -43,7 +43,7 @@ public class TestRequestConfig {
   @Test
   @DisplayName("Supported Requests")
   public void testSupportedRequests() {
-    ArrayList<String> supportedRequests = conf.getSupportedRequests();
+    List<String> supportedRequests = conf.getSupportedRequests();
     assertEquals(3, supportedRequests.size());
   }
 }

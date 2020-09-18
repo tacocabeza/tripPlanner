@@ -8,7 +8,7 @@ import java.util.*;
 public class RequestConfig extends RequestHeader {
 
   private String serverName;
-  private ArrayList<String> supportedRequests;
+  private List<String> supportedRequests;
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
   public RequestConfig() {
@@ -30,7 +30,7 @@ public class RequestConfig extends RequestHeader {
     return serverName;
   }
 
-  public ArrayList<String> getSupportedRequests() {
+  public List<String> getSupportedRequests() {
     return supportedRequests;
   }
 }
