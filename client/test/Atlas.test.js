@@ -9,12 +9,14 @@ const startProperties = {
   createSnackBar: jest.fn()
 };
 
+global.navigator.geolocation = mockGeolocation;
+
 function testInitialAtlasState() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
 
   let actualMarkerPosition = atlas.state().markerPosition;
-  let expectedMarkerPosition = null;
+  let expectedMarkerPosition = [0, 0];
 
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
 }
