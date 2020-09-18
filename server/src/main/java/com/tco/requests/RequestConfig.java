@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 public class RequestConfig extends RequestHeader {
 
   private String serverName;
-  private String[] supportedRequests = new String[3];
+  private List<String> supportedRequests;
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
   public RequestConfig() {
@@ -18,9 +18,10 @@ public class RequestConfig extends RequestHeader {
   @Override
   public void buildResponse() {
     this.serverName = "t01 Feather Friends";
-    this.supportedRequests[0] = "config";
-    this.supportedRequests[1] = "distance";
-    this.supportedRequests[2] = "find";
+    this.supportedRequests = new ArrayList();
+    this.supportedRequests.add("config");
+    this.supportedRequests.add("distance");
+    this.supportedRequests.add("find");
     log.trace("buildResponse -> {}", this);
   }
 

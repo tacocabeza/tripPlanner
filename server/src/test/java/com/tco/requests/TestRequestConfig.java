@@ -38,4 +38,11 @@ public class TestRequestConfig {
     String name = conf.getServerName();
     assertEquals("t01 Feather Friends", name);
   }
+
+  @Test
+  @DisplayName("Supported Requests")
+  public void testSupportedRequests() {
+    List<String> supportedRequests = conf.getSupportedRequests();
+    assertEquals(3, supportedRequests.size());
+  }
 }
