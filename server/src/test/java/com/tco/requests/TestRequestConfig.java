@@ -5,6 +5,7 @@ import com.tco.requests.RequestConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,10 +27,10 @@ public class TestRequestConfig {
   }
 
   @Test
-  @DisplayName("Version number is equal to 1")
+  @DisplayName("Version number is equal to 2")
   public void testVersion() {
     int version = conf.getRequestVersion();
-    assertEquals(1, version);
+    assertEquals(2, version);
   }
 
   @Test
@@ -37,5 +38,12 @@ public class TestRequestConfig {
   public void testServerName() {
     String name = conf.getServerName();
     assertEquals("t01 Feather Friends", name);
+  }
+
+  @Test
+  @DisplayName("Supported Requests")
+  public void testSupportedRequests() {
+    List<String> supportedRequests = conf.getSupportedRequests();
+    assertEquals(3, supportedRequests.size());
   }
 }
