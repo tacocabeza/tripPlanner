@@ -3,11 +3,12 @@ package com.tco.requests;
 import com.tco.misc.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.*;
 
 public class RequestConfig extends RequestHeader {
 
   private String serverName;
-  private List<String> supportedRequests;
+  private ArrayList<String> supportedRequests;
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
   public RequestConfig() {
@@ -29,7 +30,7 @@ public class RequestConfig extends RequestHeader {
     return serverName;
   }
 
-  public String[] getSupportedRequests() {
+  public ArrayList<String> getSupportedRequests() {
     return supportedRequests;
   }
 }

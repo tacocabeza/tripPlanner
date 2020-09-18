@@ -5,6 +5,7 @@ import com.tco.requests.RequestConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,7 +43,7 @@ public class TestRequestConfig {
   @Test
   @DisplayName("Supported Requests")
   public void testSupportedRequests() {
-    List<String> supportedRequests = conf.getSupportedRequests();
+    ArrayList<String> supportedRequests = conf.getSupportedRequests();
     assertEquals(3, supportedRequests.size());
   }
 }
