@@ -3,8 +3,8 @@ package com.tco.server;
 import com.tco.misc.BadRequestException;
 import com.tco.misc.JSONValidator;
 import com.tco.requests.RequestConfig;
-import com.tco.request.RequestDistance;
 import com.tco.requests.RequestHeader;
+import com.tco.requests.RequestDistance;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
