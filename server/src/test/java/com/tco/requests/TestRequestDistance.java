@@ -1,6 +1,7 @@
 package com.tco.requests;
 
 import com.tco.requests.RequestConfig;
+import com.tco.requests.RequestDistance;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
