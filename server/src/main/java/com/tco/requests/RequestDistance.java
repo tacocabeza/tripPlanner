@@ -11,7 +11,7 @@ public class RequestDistance extends RequestHeader{
     private Map<String,String> place1, place2;
 
 
-    private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
+    private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
 
     public RequestDistance(){
@@ -23,7 +23,7 @@ public class RequestDistance extends RequestHeader{
         this();
         this.distance = null;
         this.earthRadius = radius;
-        this.place1 = new HashMap();
+        this.place1 = new HashMap<>();
         this.place1.put("latitude", lat1);
         this.place1.put("longitude", lon1);
         this.place2.put("latitude", lat2);
