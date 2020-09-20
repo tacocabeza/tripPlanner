@@ -13,10 +13,6 @@ public class TestPlace {
     @BeforeEach
     public void createPlaceForTestCases() {
         place = new Place(39.2203,-105.9927,10160);
-        place.setId("0CO1");
-        place.setMunicipality("Leadville");
-        place.setName("Periodic Brewing");
-        place.setType("brewery");
     }
 
     @Test
@@ -54,11 +50,11 @@ public class TestPlace {
     @Test
     @DisplayName("Set Latitude Valid")
     public void testSetLatitudeValid(){
-        place.setLatitude(90);
+        place.setLatitude(90.0);
         assertEquals(90,place.getLatitude());
-        place.setLatitude(0);
+        place.setLatitude(0.0);
         assertEquals(0,place.getLatitude());
-        place.setLatitude(-90);
+        place.setLatitude(-90.0);
         assertEquals(-90,place.getLatitude());
     }
 
@@ -88,11 +84,11 @@ public class TestPlace {
     @Test
     @DisplayName("Set Longitude Valid")
     public void testSetLongitudeValid(){
-        place.setLongitude(180);
+        place.setLongitude(180.0);
         assertEquals(180,place.getLongitude());
-        place.setLongitude(0);
+        place.setLongitude(0.0);
         assertEquals(0,place.getLongitude());
-        place.setLongitude(-180);
+        place.setLongitude(-180.0);
         assertEquals(-180,place.getLongitude());
     }
 
