@@ -55,4 +55,16 @@ public class Place {
         this.longitude = longitude;
     }
 
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id='" + id + '\'' +
+                ", municipality='" + municipality + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", altitude=" + altitude +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
