@@ -46,19 +46,6 @@ public class TestPlace {
     }
 
     @Test
-    @DisplayName("Get Id")
-    public void testGetId(){
-        assertEquals("0CO1",place.getId());
-    }
-
-    @Test
-    @DisplayName("Set Id")
-    public void testSetId(){
-        place.setId("FFFF");
-        assertEquals("FFFF",place.getId());
-    }
-
-    @Test
     @DisplayName("Get Latitude")
     public void testGetLatitude(){
         assertEquals(39.2203,place.getLatitude());
@@ -124,44 +111,5 @@ public class TestPlace {
         } catch(IllegalArgumentException e){
             assertEquals(-105.9927, place.getLongitude());
         }
-    }
-
-    @Test
-    @DisplayName("Get Municipality")
-    public void testGetMunicipality(){
-        assertEquals("Leadville",place.getMunicipality());
-    }
-
-    @Test
-    @DisplayName("Set Municipality")
-    public void testSetMunicipality(){
-        place.setMunicipality("Fort Collins");
-        assertEquals("Fort Collins",place.getMunicipality());
-    }
-
-    @Test
-    @DisplayName("Get Name")
-    public void testGetName(){
-        assertEquals("Periodic Brewing",place.getName());
-    }
-
-    @Test
-    @DisplayName("Set Name")
-    public void testSetName(){
-        place.setName("Big Chungus Wing Shack");
-        assertEquals("Big Chungus Wing Shack",place.getName());
-    }
-
-    @Test
-    @DisplayName("Get Type")
-    public void testGetType(){
-        assertEquals("brewery",place.getType());
-    }
-
-    @Test
-    @DisplayName("Set Type")
-    public void testSetType(){
-        place.setType("wing shack");
-        assertEquals("wing shack",place.getType());
     }
 }
