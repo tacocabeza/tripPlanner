@@ -1,13 +1,15 @@
 package com.tco.functionality;
 
 public class Place {
+
+    public String id;
+    public String municipality;
+    public String name;
+    public String type;
+
     private Integer altitude;
-    private String id;
     private Double latitude;
     private Double longitude;
-    private String municipality;
-    private String name;
-    private String type;
 
     public Place(Double latitude, Double longitude){
         this.setLatitude(latitude);
@@ -29,14 +31,6 @@ public class Place {
             throw new IllegalArgumentException("Altitude " + altitude + " is not positive.");
         }
         this.altitude = altitude;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Double getLatitude() {
@@ -61,27 +55,4 @@ public class Place {
         this.longitude = longitude;
     }
 
-    public String getMunicipality() {
-        return municipality;
-    }
-
-    public void setMunicipality(String municipality) {
-        this.municipality = municipality;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }
