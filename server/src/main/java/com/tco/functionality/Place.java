@@ -10,14 +10,14 @@ public class Place {
     private String type;
 
     public Place(Double latitude, Double longitude){
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.setLatitude(latitude);
+        this.setLongitude(longitude);
     }
 
     public Place(Double latitude, Double longitude, Integer altitude){
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
+        this.setLatitude(latitude);
+        this.setLongitude(longitude);
+        this.setAltitude(altitude);
     }
 
     public Integer getAltitude() {
@@ -25,6 +25,9 @@ public class Place {
     }
 
     public void setAltitude(Integer altitude) {
+        if(altitude < 0){
+            throw new IllegalArgumentException("Altitude " + altitude + " is not positive.");
+        }
         this.altitude = altitude;
     }
 
@@ -41,6 +44,9 @@ public class Place {
     }
 
     public void setLatitude(Double latitude) {
+        if(latitude < -90 || latitude > 90){
+            throw new IllegalArgumentException("Latitude " + latitude + " is not in range [-90.0,90.0]");
+        }
         this.latitude = latitude;
     }
 
@@ -49,6 +55,9 @@ public class Place {
     }
 
     public void setLongitude(Double longitude) {
+        if(longitude < -180 || longitude > 180){
+            throw new IllegalArgumentException("Longitude " + longitude + " is not in range [-180.0,180.0]");
+        }
         this.longitude = longitude;
     }
 
