@@ -25,6 +25,7 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
+      mapCenter: {MAP_CENTER_DEFAULT},
     };
   }
 
@@ -52,13 +53,32 @@ export default class Atlas extends Component {
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
-            center={MAP_CENTER_DEFAULT}
+            center={this.state.mapCenter}
             onClick={this.setMarker}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+          <Marker position={MAP_CENTER_DEFAULT} icon={MARKER_ICON}></Marker>
           {this.getMarker()}
         </Map>
     );
+  }
+
+  setGeolocation() {
+    this.setState({mapCenter: {ORIGINAL_POSITION}});
+  }
+
+  getGeolocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const ORIGINAL_COORDS = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const ORIGINAL_POSITION = [{ORIGINAL_COORDS}.lat, {ORIGINAL_COORDS}.lng];
+        }
+      );
+    }
   }
 
   setMarker(mapClickInfo) {

@@ -9,8 +9,6 @@ const startProperties = {
   createSnackBar: jest.fn()
 };
 
-global.navigator.geolocation = mockGeolocation;
-
 function testInitialAtlasState() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
