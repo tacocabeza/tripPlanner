@@ -4,6 +4,7 @@ import com.tco.misc.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tco.functionality.Place;
+import com.tco.functionality.Find;
 import java.util.*;
 
 public class RequestFind extends RequestHeader{
@@ -21,8 +22,14 @@ public class RequestFind extends RequestHeader{
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
-    public RequestFind(){
+    public RequestFind(String match){
         this();
+        this.limit = 100;
+        this.match = match;
+        Find f = new Find(match, limit);
+        this.found = f.getFound();
+        this.places = f.getPlaces();
+
     }
 
     @Override
@@ -30,7 +37,12 @@ public class RequestFind extends RequestHeader{
         log.trace("buildResponse -> {}", this);
     }
 
-    public Integer getDistance() {
-        return distance;
+    public Integer getLimit() {
+        return limit;
     }
+
+    public String getMatch() { return match; }
+
+    public Integer getFound() { return found; }
+
 }
