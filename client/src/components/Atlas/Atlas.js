@@ -28,6 +28,7 @@ export default class Atlas extends Component {
     this.state = {
       markerPosition: null,
       mapCenter: MAP_CENTER_DEFAULT,
+      mapZoom: 15,
     };
   }
 
@@ -54,7 +55,7 @@ export default class Atlas extends Component {
             className={'mapStyle'}
             boxZoom={false}
             useFlyTo={true}
-            zoom={15}
+            zoom={this.state.mapZoom}
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
@@ -69,11 +70,11 @@ export default class Atlas extends Component {
   }
 
   mapMovement(mapMovementInfo){
-    this.setState({mapCenter: mapMovementInfo.target.getCenter()})
+    this.setState({mapCenter: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
   }
 
   recenterMap(){
-    this.setState({mapCenter: MAP_CENTER_DEFAULT})
+    this.setState({mapCenter: MAP_CENTER_DEFAULT, mapZoom: 15})
   }
 
   setMarker(mapClickInfo) {

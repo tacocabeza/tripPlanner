@@ -48,7 +48,7 @@ test("Testing Atlas's Initial State", testMarkerIsRenderedOnClick);
 function testRecenterButtonClicked() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  
+
   let expectedCenterOfMap = atlas.state().mapCenter;
 
   atlas.state().mapCenter = {lat: 0, lng: 0};
