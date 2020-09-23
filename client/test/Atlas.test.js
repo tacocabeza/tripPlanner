@@ -1,6 +1,7 @@
 import './jestConfig/enzyme.config.js';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
@@ -20,7 +21,6 @@ function testInitialAtlasState() {
 }
 
 test("Testing Atlas's Initial State", testInitialAtlasState);
-
 
 function testMarkerIsRenderedOnClick() {
 

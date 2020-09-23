@@ -26,13 +26,14 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
-      mapCenter: {MAP_CENTER_DEFAULT},
+      mapCenter: MAP_CENTER_DEFAULT,
     };
   }
 
   componentDidMount() {
     {this.getGeolocation()}
   }
+
 
   render() {
     return (
@@ -62,22 +63,19 @@ export default class Atlas extends Component {
             onClick={this.setMarker}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          <Marker position={MAP_CENTER_DEFAULT} icon={MARKER_ICON}></Marker>
+          <Marker position={this.state.mapCenter} icon={MARKER_ICON}></Marker>
           {this.getMarker()}
         </Map>
     );
   }
 
-  getGeolocation() {
+  getGeolocation(callback) {
+    let self = this;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function(position) {
-          const ORIGINAL_COORDS = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          const ORIGINAL_POSITION = [ORIGINAL_COORDS.lat, ORIGINAL_COORDS.lng];
-          this.setState({mapCenter: {ORIGINAL_POSITION}});
+          const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
+          self.setState({mapCenter: ORIGINAL_COORDS});
         }
       );
     }
