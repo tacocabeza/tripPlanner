@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row} from 'reactstrap';
+import {Button, Col, Container, Row} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 
@@ -22,9 +22,13 @@ export default class Atlas extends Component {
     super(props);
 
     this.setMarker = this.setMarker.bind(this);
+    this.recenterMap = this.recenterMap.bind(this);
+    this.mapMovement = this.mapMovement.bind(this);
 
     this.state = {
       markerPosition: null,
+      mapCenter: MAP_CENTER_DEFAULT,
+      mapZoom: 15,
     };
   }
 
@@ -35,6 +39,9 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 10, offset: 1}}>
                 {this.renderLeafletMap()}
+                <Button color="primary" onClick={this.recenterMap}>
+                  Recenter
+                </Button>
               </Col>
             </Row>
           </Container>
@@ -48,17 +55,26 @@ export default class Atlas extends Component {
             className={'mapStyle'}
             boxZoom={false}
             useFlyTo={true}
-            zoom={15}
+            zoom={this.state.mapZoom}
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
-            center={MAP_CENTER_DEFAULT}
+            center={this.state.mapCenter}
             onClick={this.setMarker}
+            onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker()}
         </Map>
     );
+  }
+
+  mapMovement(mapMovementInfo){
+    this.setState({mapCenter: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
+  }
+
+  recenterMap(){
+    this.setState({mapCenter: MAP_CENTER_DEFAULT, mapZoom: 15})
   }
 
   setMarker(mapClickInfo) {
@@ -75,7 +91,7 @@ export default class Atlas extends Component {
     if (this.state.markerPosition) {
       return (
           <Marker ref={initMarker} position={this.state.markerPosition} icon={MARKER_ICON}>
-            <Popup offset={[0, -18]} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
+            <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
           </Marker>
       );
     }
