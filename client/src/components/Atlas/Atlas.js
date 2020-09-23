@@ -26,7 +26,7 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
-      mapCenter: null,
+      mapCenter: {MAP_CENTER_DEFAULT},
     };
   }
 
@@ -76,11 +76,10 @@ export default class Atlas extends Component {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          this.setState({mapCenter: [ORIGINAL_COORDS.lat, ORIGINAL_COORDS.lng]});
+          const ORIGINAL_POSITION = [ORIGINAL_COORDS.lat, ORIGINAL_COORDS.lng];
+          this.setState({mapCenter: {ORIGINAL_POSITION}});
         }
       );
-    } else {
-      this.setState({mapCenter: {MAP_CENTER_DEFAULT}});
     }
   }
 
