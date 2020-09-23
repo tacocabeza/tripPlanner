@@ -91,7 +91,7 @@ export default class Atlas extends Component {
     if (this.state.markerPosition) {
       return (
           <Marker ref={initMarker} position={this.state.markerPosition} icon={MARKER_ICON}>
-            <Popup offset={[0, -18]} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
+            <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
           </Marker>
       );
     }
