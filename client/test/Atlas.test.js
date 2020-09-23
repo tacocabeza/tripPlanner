@@ -14,7 +14,7 @@ function testInitialAtlasState() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
 
   let actualMarkerPosition = atlas.state().markerPosition;
-  let expectedMarkerPosition = [0, 0];
+  let expectedMarkerPosition = null;
 
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
 }

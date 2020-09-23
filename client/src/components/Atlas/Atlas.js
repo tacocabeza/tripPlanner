@@ -22,11 +22,16 @@ export default class Atlas extends Component {
     super(props);
 
     this.setMarker = this.setMarker.bind(this);
+    this.getGeolocation = this.getGeolocation.bind(this);
 
     this.state = {
       markerPosition: null,
-      mapCenter: {MAP_CENTER_DEFAULT},
+      mapCenter: null,
     };
+  }
+
+  componentDidMount() {
+    {this.getGeolocation()}
   }
 
   render() {
@@ -63,10 +68,6 @@ export default class Atlas extends Component {
     );
   }
 
-  setGeolocation() {
-    this.setState({mapCenter: {ORIGINAL_POSITION}});
-  }
-
   getGeolocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -75,9 +76,11 @@ export default class Atlas extends Component {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          const ORIGINAL_POSITION = [{ORIGINAL_COORDS}.lat, {ORIGINAL_COORDS}.lng];
+          this.setState({mapCenter: [ORIGINAL_COORDS.lat, ORIGINAL_COORDS.lng]});
         }
       );
+    } else {
+      this.setState({mapCenter: {MAP_CENTER_DEFAULT}});
     }
   }
 
