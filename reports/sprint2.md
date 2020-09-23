@@ -61,7 +61,9 @@
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *09/16/20* | *0* | *5* | *None* | 
+| *09/18/20* | *3* | *5* | *None* |
+| *09/21/20* | *4* | *5* | *Code Climate is not working* |
 
 
 ## Review
