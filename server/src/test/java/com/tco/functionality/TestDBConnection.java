@@ -18,8 +18,8 @@ public class TestDBConnection {
     @Test
     @DisplayName("Query SQL")
     public void testQuerySQL(){
-//        ResultSet results = dbc.querySQL("select * from colorado where municipality = 'Denver';");
-//        assert(results != null);
+        ResultSet results = dbc.querySQL("select * from colorado where municipality = 'Denver';");
+        assert(results != null);
     }
 
 }
