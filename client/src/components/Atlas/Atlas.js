@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row} from 'reactstrap';
+import {Button, Col, Container, Row} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 
@@ -23,10 +23,14 @@ export default class Atlas extends Component {
 
     this.setMarker = this.setMarker.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
+    this.recenterMap = this.recenterMap.bind(this);
+    this.mapMovement = this.mapMovement.bind(this);
 
     this.state = {
       markerPosition: null,
       mapCenter: MAP_CENTER_DEFAULT,
+      mapLocation: MAP_CENTER_DEFAULT,
+      mapZoom: 15,
     };
   }
 
@@ -42,6 +46,9 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 10, offset: 1}}>
                 {this.renderLeafletMap()}
+                <Button color="primary" onClick={this.recenterMap}>
+                  Recenter
+                </Button>
               </Col>
             </Row>
           </Container>
@@ -55,12 +62,13 @@ export default class Atlas extends Component {
             className={'mapStyle'}
             boxZoom={false}
             useFlyTo={true}
-            zoom={15}
+            zoom={this.state.mapZoom}
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
-            center={this.state.mapCenter}
+            center={this.state.mapLocation}
             onClick={this.setMarker}
+            onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           <Marker position={this.state.mapCenter} icon={MARKER_ICON}></Marker>
@@ -73,12 +81,21 @@ export default class Atlas extends Component {
     let self = this;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function(position) {
+        function (position) {
           const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
           self.setState({mapCenter: ORIGINAL_COORDS});
+          self.setState({mapLocation: ORIGINAL_COORDS});
         }
       );
     }
+  }
+
+  mapMovement(mapMovementInfo){
+    this.setState({mapLocation: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
+  }
+
+  recenterMap(){
+    this.setState({mapLocation: this.state.mapCenter, mapZoom: 15})
   }
 
   setMarker(mapClickInfo) {
@@ -95,7 +112,7 @@ export default class Atlas extends Component {
     if (this.state.markerPosition) {
       return (
           <Marker ref={initMarker} position={this.state.markerPosition} icon={MARKER_ICON}>
-            <Popup offset={[0, -18]} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
+            <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
           </Marker>
       );
     }

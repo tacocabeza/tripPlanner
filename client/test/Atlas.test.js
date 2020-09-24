@@ -44,3 +44,25 @@ function simulateOnClickEvent(reactWrapper, event) {
 }
 
 test("Testing Atlas's Initial State", testMarkerIsRenderedOnClick);
+
+function testRecenterButtonClicked() {
+
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+
+  let expectedCenterOfMap = atlas.state().mapCenter;
+
+  atlas.state().mapCenter = {lat: 0, lng: 0};
+
+  expect(atlas.state().mapCenter).toEqual({lat: 0, lng: 0});
+
+  simulateOnClickEventButton(atlas);
+
+  expect(atlas.state().mapCenter).toEqual(expectedCenterOfMap);
+}
+
+function simulateOnClickEventButton(reactWrapper) {
+  reactWrapper.find('Button').at(0).simulate('click');
+  reactWrapper.update();
+}
+
+test("Testing Atlas's Resetting Center", testRecenterButtonClicked);
