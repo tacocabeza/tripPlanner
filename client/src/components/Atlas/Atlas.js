@@ -22,15 +22,22 @@ export default class Atlas extends Component {
     super(props);
 
     this.setMarker = this.setMarker.bind(this);
+    this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
 
     this.state = {
       markerPosition: null,
       mapCenter: MAP_CENTER_DEFAULT,
+      mapLocation: MAP_CENTER_DEFAULT,
       mapZoom: 15,
     };
   }
+
+  componentDidMount() {
+    {this.getGeolocation()}
+  }
+
 
   render() {
     return (
@@ -59,22 +66,36 @@ export default class Atlas extends Component {
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
-            center={this.state.mapCenter}
+            center={this.state.mapLocation}
             onClick={this.setMarker}
             onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+          <Marker position={this.state.mapCenter} icon={MARKER_ICON}></Marker>
           {this.getMarker()}
         </Map>
     );
   }
 
+  getGeolocation(callback) {
+    let self = this;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
+          self.setState({mapCenter: ORIGINAL_COORDS});
+          self.setState({mapLocation: ORIGINAL_COORDS});
+        }
+      );
+    }
+  }
+
   mapMovement(mapMovementInfo){
-    this.setState({mapCenter: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
+    this.setState({mapLocation: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
   }
 
   recenterMap(){
-    this.setState({mapCenter: MAP_CENTER_DEFAULT, mapZoom: 15})
+    this.setState({mapLocation: this.state.mapCenter, mapZoom: 15})
   }
 
   setMarker(mapClickInfo) {
