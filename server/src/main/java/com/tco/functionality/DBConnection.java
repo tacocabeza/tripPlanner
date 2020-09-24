@@ -20,7 +20,7 @@ public class DBConnection {
 
         String isTravis = System.getenv("TRAVIS");
         String useTunnel = System.getenv("CS314_USE_DATABASE_TUNNEL");
-        log.info(useTunnel);
+
         if (isTravis != null && isTravis.equals("true")) {
             initForTravis();
         } else if (useTunnel != null && useTunnel.equals("true")) {
