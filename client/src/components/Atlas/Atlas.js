@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {Button, Col, Container, Row} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
@@ -17,10 +17,12 @@ const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 
 export default class Atlas extends Component {
+  activeTab;
 
   constructor(props) {
     super(props);
 
+    this.activeTab = '1';
     this.setMarker = this.setMarker.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
@@ -40,6 +42,8 @@ export default class Atlas extends Component {
 
 
   render() {
+
+
     return (
         <div>
           <Container>

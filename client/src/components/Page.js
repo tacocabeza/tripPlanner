@@ -10,6 +10,7 @@ import Atlas from "./Atlas/Atlas";
 import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../utils/restfulAPI";
+import {Tabs, Tab} from "react-bootstrap";
 
 export default class Page extends Component {
 
@@ -18,7 +19,7 @@ export default class Page extends Component {
 
 		this.state = {
 			showAbout: false,
-			serverSettings: {serverPort: getOriginalServerPort(), serverConfig: null},
+			serverSettings: {serverPort: getOriginalServerPort(), serverConfig: null}
 		};
 
 		this.toggleAbout = this.toggleAbout.bind(this);
@@ -36,7 +37,14 @@ export default class Page extends Component {
 			<>
 				<Header toggleAbout={this.toggleAbout}/>
 				{this.renderAbout()}
-				{this.renderAtlas()}
+				<Tabs defaultActiveKey="map" id="tripCo-map">
+					<Tab eventKey="map" title="Map">
+						{this.renderAtlas()}
+					</Tab>
+					<Tab eventKey="search" title="Search">
+						Searches will go here eventually
+					</Tab>
+				</Tabs>
 				<Footer
 					serverSettings={this.state.serverSettings}
 					processServerConfigSuccess={this.processServerConfigSuccess}
