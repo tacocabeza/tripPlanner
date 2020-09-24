@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Button, Col, Container, Row} from 'reactstrap';
+import React, {Component, useState} from 'react';
+import {Button, Col, Container, Nav, NavItem, NavLink, Row, TabContent, TabPane} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 
@@ -17,10 +17,12 @@ const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 
 export default class Atlas extends Component {
+  activeTab;
 
   constructor(props) {
     super(props);
 
+    this.activeTab = '1';
     this.setMarker = this.setMarker.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
@@ -32,19 +34,41 @@ export default class Atlas extends Component {
     };
   }
 
+  setActiveTab(s) {
+    this.activeTab = 's';
+  }
   render() {
+
+
     return (
         <div>
-          <Container>
-            <Row>
-              <Col sm={12} md={{size: 10, offset: 1}}>
-                {this.renderLeafletMap()}
-                <Button color="primary" onClick={this.recenterMap}>
-                  Recenter
-                </Button>
-              </Col>
-            </Row>
-          </Container>
+          <Nav tabs>
+            <NavItem>
+              <NavLink className={this.activeTab === '1' ? 'active' : ''} onClick={() => this.setActiveTab('1')}>
+                Map
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className={this.activeTab === '2' ? 'active' : ''} onClick={() => this.setActiveTab('2')}>
+                Search
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.activeTab}>
+            <TabPane tabId="1">
+              <Container>
+                <Row>
+                  <Col sm={12} md={{size: 10, offset: 1}}>
+                    {this.renderLeafletMap()}
+                    <Button color="primary" onClick={this.recenterMap}>
+                      Recenter
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
+            </TabPane>
+            <TabPane tabId="2">Tab2</TabPane>
+          </TabContent>
         </div>
     );
   }
