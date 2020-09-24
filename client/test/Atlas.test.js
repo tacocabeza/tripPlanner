@@ -51,13 +51,13 @@ function testRecenterButtonClicked() {
 
   let expectedCenterOfMap = atlas.state().mapCenter;
 
-  atlas.state().mapCenter = {lat: 0, lng: 0};
+  atlas.state().mapLocation = {lat: 0, lng: 0};
 
-  expect(atlas.state().mapCenter).toEqual({lat: 0, lng: 0});
+  expect(atlas.state().mapLocation).toEqual({lat: 0, lng: 0});
 
   simulateOnClickEventButton(atlas);
 
-  expect(atlas.state().mapCenter).toEqual(expectedCenterOfMap);
+  expect(atlas.state().mapLocation).toEqual(expectedCenterOfMap);
 }
 
 function simulateOnClickEventButton(reactWrapper) {
