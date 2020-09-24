@@ -55,11 +55,7 @@ public class DBConnection {
         try {
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             Statement query = conn.createStatement();
-            ResultSet results = query.executeQuery(sql);
-
-            log.info("Done executing query");
-
-            return results;
+            return query.executeQuery(sql);
         } catch (Exception e){
             log.error("Exception caught when querying sql: \"" + sql + "\":" + e);
             return null;
