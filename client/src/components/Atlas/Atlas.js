@@ -4,6 +4,10 @@ import {Button, Col, Container, Row} from 'reactstrap';
 import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
+import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
+import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
+import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
+import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
@@ -12,7 +16,10 @@ import Search from '../Search/Search.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
-const MARKER_ICON = L.icon({ iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
@@ -84,7 +91,7 @@ export default class Atlas extends Component {
             onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          <Marker position={this.state.mapCenter} icon={MARKER_ICON}></Marker>
+          <Marker position={this.state.mapCenter} icon={GREEN_MARKER_ICON}></Marker>
           {this.getMarker()}
           {this.getLine()}
         </Map>
@@ -139,7 +146,7 @@ export default class Atlas extends Component {
 
     if (this.state.markerPosition) {
       return (
-          <Marker ref={initMarker} position={this.state.markerPosition} icon={MARKER_ICON}>
+          <Marker ref={initMarker} position={this.state.markerPosition} icon={GOLD_MARKER_ICON}>
             <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
           </Marker>
       );
