@@ -50,7 +50,7 @@ CREATE TABLE `colorado` (
 --
 -- Dumping data for table `colorado`
 --
--- WHERE:  municipality='Denver'
+-- WHERE:  municipality like 'Denver'
 
 LOCK TABLES `colorado` WRITE;
 /*!40000 ALTER TABLE `colorado` DISABLE KEYS */;
@@ -67,4 +67,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-23 10:18:10
+-- Dump completed on 2020-09-24 22:43:14
