@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Col, Container, Row} from 'reactstrap';
 
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -77,6 +77,7 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           <Marker position={this.state.mapCenter} icon={MARKER_ICON}></Marker>
           {this.getMarker()}
+          {this.getLine()}
         </Map>
     );
   }
@@ -100,6 +101,14 @@ export default class Atlas extends Component {
 
   recenterMap(){
     this.setState({mapLocation: this.state.mapCenter, mapZoom: 15})
+  }
+
+  getLine(){
+    if(this.state.markerPosition && this.state.mapCenter){
+      return(
+        <Polyline color="Red" positions={[this.state.markerPosition, this.state.mapCenter]} />
+      );
+    }
   }
 
   setMarker(mapClickInfo) {
