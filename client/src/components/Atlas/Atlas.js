@@ -8,6 +8,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
 import {Tab, Tabs} from "react-bootstrap";
+import Search from '../Search/Search.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -53,15 +54,14 @@ export default class Atlas extends Component {
                 <Tabs defaultActiveKey="map" id="tripCo-map">
                   <Tab eventKey="map" title="Map">
                     {this.renderLeafletMap()}
+                    <Button color="primary" onClick={this.recenterMap}>
+                      Recenter
+                    </Button>
                   </Tab>
                   <Tab eventKey="search" title="Search">
-                    Searches will go here eventually
+                    {this.renderSearch()}
                   </Tab>
                 </Tabs>
-
-                <Button color="primary" onClick={this.recenterMap}>
-                  Recenter
-                </Button>
               </Col>
             </Row>
           </Container>
@@ -90,7 +90,13 @@ export default class Atlas extends Component {
     );
   }
 
-  getGeolocation(callback) {
+  renderSearch() {
+    return (
+      <Search/>
+    )
+  }
+
+  getGeolocation() {
     let self = this;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
