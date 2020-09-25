@@ -16,15 +16,15 @@ public class TestFind {
 
     @BeforeEach
     public void initFinds(){
-        findMatchLimit = new Find("A.*%_$[]()!@#;",3);
-        findMatchNoLimit = new Find("A.*%_$[]()!@#;",0);
+        findMatchLimit = new Find("!@#$ Airport",3);
+        findMatchNoLimit = new Find("!@#$ Airport",0);
         findNoMatch = new Find("",4);
     }
 
     @Test
     @DisplayName("Test Match")
     public void testMatch(){
-        assert(findMatchLimit.getMatch().equals("A_____________"));
+        assert(findMatchLimit.getMatch().equals("_____Airport"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class TestFind {
     @DisplayName("Test Found")
     public void testFound(){
         findMatchLimit.getPlaces();
-        assertEquals(319, findMatchLimit.getFound());
+        assertEquals(728, findMatchLimit.getFound());
     }
 
     @Test
