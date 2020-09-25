@@ -37,14 +37,7 @@ export default class Page extends Component {
 			<>
 				<Header toggleAbout={this.toggleAbout}/>
 				{this.renderAbout()}
-				<Tabs defaultActiveKey="map" id="tripCo-map">
-					<Tab eventKey="map" title="Map">
-						{this.renderAtlas()}
-					</Tab>
-					<Tab eventKey="search" title="Search">
-						Searches will go here eventually
-					</Tab>
-				</Tabs>
+				{this.renderAtlas()}
 				<Footer
 					serverSettings={this.state.serverSettings}
 					processServerConfigSuccess={this.processServerConfigSuccess}
