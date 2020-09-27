@@ -12,7 +12,6 @@ public class RequestDistance extends RequestHeader{
     Map<String,String> place1;
     Map<String,String> place2;
 
-    DistanceCalculator distanceCalculator;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
@@ -27,6 +26,7 @@ public class RequestDistance extends RequestHeader{
 
     @Override
     public void buildResponse(){
+        DistanceCalculator distanceCalculator = new DistanceCalculator();
         this.distance = distanceCalculator.calculateGreatCircleDistance(place1,place2,earthRadius);
         log.trace("buildResponse -> {}", this);
     }
