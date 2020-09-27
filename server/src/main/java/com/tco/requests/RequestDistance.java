@@ -18,7 +18,6 @@ public class RequestDistance extends RequestHeader{
 
     public RequestDistance(){
         this.requestType = "distance";
-        this.distanceCalculator = new DistanceCalculator();
         this.place1 = new HashMap<String,String>();
         this.place2 = new HashMap<String,String>();
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
