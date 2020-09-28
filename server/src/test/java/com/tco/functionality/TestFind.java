@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static com.tco.requests.RequestFind.MAX_LIMIT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFind {
@@ -45,7 +46,7 @@ public class TestFind {
     @DisplayName("Test No Limit")
     public void testNoLimit(){
         ArrayList<Place> places = findMatchNoLimit.getPlaces();
-        assertEquals(Find.MAX_LIMIT, places.size());
+        assertEquals(MAX_LIMIT, places.size());
     }
 
     @Test

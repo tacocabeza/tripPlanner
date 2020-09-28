@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class Find {
+import static com.tco.requests.RequestFind.MAX_LIMIT;
 
-    public static final int MAX_LIMIT = 150;
+public class Find {
 
     private final Logger log = LoggerFactory.getLogger(DBConnection.class);
 

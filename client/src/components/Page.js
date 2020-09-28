@@ -6,12 +6,10 @@ import Header from "./Margins/Header";
 import Footer from "./Margins/Footer";
 import About from "./About/About";
 import Atlas from "./Atlas/Atlas";
-import Search from "./Atlas/Search"
 
 import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../utils/restfulAPI";
-import {Tabs, Tab} from "react-bootstrap";
 
 export default class Page extends Component {
 
@@ -38,14 +36,7 @@ export default class Page extends Component {
 			<>
 				<Header toggleAbout={this.toggleAbout}/>
 				{this.renderAbout()}
-				<Tabs defaultActiveKey="map" id="tripCo-map">
-					<Tab eventKey="map" title="Map">
-						{this.renderAtlas()}
-					</Tab>
-					<Tab eventKey="search" title="Search">
-						{this.renderSearch()}
-					</Tab>
-				</Tabs>
+				{this.renderAtlas()}
 				<Footer
 					serverSettings={this.state.serverSettings}
 					processServerConfigSuccess={this.processServerConfigSuccess}
@@ -65,16 +56,10 @@ export default class Page extends Component {
 	renderAtlas() {
 		return (
 			<Collapse isOpen={!this.state.showAbout}>
-				<Atlas createSnackBar={this.props.createSnackBar}/>
+				<Atlas createSnackBar={this.props.createSnackBar}
+					   serverSettings={this.state.serverSettings}/>
 			</Collapse>
 		);
-	}
-
-	renderSearch() {
-		return (
-			<Search serverSettings={this.state.serverSettings}
-					createSnackBar={this.props.createSnackBar}/>
-		)
 	}
 
 	toggleAbout() {
