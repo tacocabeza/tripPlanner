@@ -36,12 +36,15 @@ export default class Atlas extends Component {
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
+    this.submitCoords = this.submitCoords.bind(this);
 
     this.state = {
       markerPosition: null,
       mapCenter: MAP_CENTER_DEFAULT,
       mapLocation: MAP_CENTER_DEFAULT,
       mapZoom: 15,
+      location1: '',
+      location2: '',
     };
   }
 
@@ -49,10 +52,7 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-
   render() {
-
-
     return (
         <div>
           <Container>
@@ -101,7 +101,7 @@ export default class Atlas extends Component {
 
   renderFindDistance() {
     return (
-      <Form onSubmit={this.submitCoords()}>
+      <Form onSubmit={this.submitCoords}>
         <Row form>
           <p>
             Enter one set of coordinates in the Location 1 box to go to that location on the map,
@@ -113,6 +113,7 @@ export default class Atlas extends Component {
                 type="text"
                 name="location1"
                 id="location1"
+                required={true}
                 placeholder="Location 1"
                 value={this.state.location1}
                 onChange={e => this.setState({location1: e.target.value})}
@@ -132,7 +133,7 @@ export default class Atlas extends Component {
             </FormGroup>
           </Col>
           <Col md={2}>
-            <Button onClick={this.submitCoords()}>Go!</Button>
+            <Button>Go!</Button>
           </Col>
         </Row>
       </Form>
@@ -158,8 +159,26 @@ export default class Atlas extends Component {
     }
   }
 
-  submitCoords() {
-    this.setState({mapLocation: });
+  submitCoords(e) {
+    e.preventDefault();
+    if (this.validate(this.state.location1) && this.validate(this.state.location2)) {
+      //distance
+    } else if (this.validate(this.state.location1)) {
+      this.setState({mapLocation: [0, 0]});
+    }
+  }
+
+  placeSearchMarker() {
+    return (
+      <Marker position={this.state.mapLocation} icon={AGGIE_MARKER_ICON}></Marker>
+    )
+  }
+
+  //input = latitude and longitude separated by comma, decimal format
+  validate(input) {
+    const reg = RegExp("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$");
+    let result = reg.test(input);
+    return result;
   }
 
   mapMovement(mapMovementInfo){
