@@ -16,32 +16,6 @@ public class TestPlace {
     }
 
     @Test
-    @DisplayName("Get Altitude")
-    public void testGetAltitude(){
-        assertEquals(10160,place.getAltitude());
-    }
-
-    @Test
-    @DisplayName("Set Altitude Valid")
-    public void testSetAltitudeValid(){
-        place.setAltitude(345);
-        assertEquals(345,place.getAltitude());
-        place.setAltitude(0);
-        assertEquals(0,place.getAltitude());
-    }
-
-    @Test
-    @DisplayName("Set Altitude Invalid")
-    public void testSetAltitudeInvalid(){
-        try{
-            place.setAltitude(-314);
-            fail("Should have thrown an exception");
-        } catch(IllegalArgumentException e){
-            assertEquals(10160, place.getAltitude());
-        }
-    }
-
-    @Test
     @DisplayName("Get Latitude")
     public void testGetLatitude(){
         assertEquals(39.2203,place.getLatitude());

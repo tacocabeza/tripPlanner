@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 
 import {Container, Row, Col, Button, Card, CardImg, CardBody, CardTitle, CardText} from 'reactstrap';
 
+import {ALEX_BIO} from "../../utils/constants";
+import {SUYASH_BIO} from "../../utils/constants";
+import {NICK_BIO} from "../../utils/constants";
+import {PRESTON_BIO} from "../../utils/constants";
+import {JESUS_BIO} from "../../utils/constants";
+
+
 import {CLIENT_TEAM_NAME} from "../../utils/constants";
 import alexpic from '../../static/images/alex_portrait_square.jpg';
 import jesuspic from '../../static/images/-jzgcsw_2_square.jpg';
@@ -26,78 +33,32 @@ export default class About extends Component {
              ideas may freely flow are our means of success.</p>
             <h3>Our Team</h3>
             <Row>
-              <Col sm={12} md={6} lg={4}>
-                <Card>
-                  <CardImg top width="100%" src={suyashpic} alt="Portrait of Suyash Hiray"/>
-                  <CardBody>
-                    <CardTitle><h5>Suyash Hiray</h5></CardTitle>
-                    <CardText>
-                      Suyash Hiray is a senior computer science student at Colorado State University. He has previous
-                      experience with a degree in Physics and work in a NASA funded research lab on cubesats and rockets.
-                      Outside of coursework he likes to spend his free time at the gym, playing video games, or watching movies.
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col sm={12} md={6} lg={4}>
-                <Card>
-                  <CardImg top width="100%" src={nickPic} alt="Portrait of Nicholas Davidson"/>
-                  <CardBody>
-                    <CardTitle><h5>Nicholas Davidson</h5></CardTitle>
-                    <CardText>
-                      Nicholas Davidson is a junior computer science student at Colorado State University. For the past two summers
-                      Nick worked for a small cyber security reseller and manged service provider. Nick is currently
-                      focusing on school to improve his knowledge of computer systems and security. A cool fact about him
-                      is that he is taller than the average american male according to most articles.
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col sm={12} md={6} lg={4}>
-                <Card>
-                  <CardImg top width="100%" src={alexpic} alt="Portrait of Alex Hooten"/>
-                  <CardBody>
-                    <CardTitle><h5>Alex Hooten</h5></CardTitle>
-                    <CardText>
-                      Alex Hooten is currently a junior in computer science at Colorado State University. He has worked as
-                      a web developer with Voltage Advertising and Funeral Innovations, using HTML, CSS, PHP, and Javascript
-                      extensively. In his free time he likes to watch auto racing, play video games, and drive his 1995 Miata.
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col sm={12} md={6} lg={4}>
-                <Card>
-                  <CardImg top width="100%" src={prestonPic} alt="Portrait of Preston Dunton"/>
-                  <CardBody>
-                    <CardTitle><h5>Preston Dunton</h5></CardTitle>
-                    <CardText>
-                      Preston Dunton is currently a junior at Colorado State University studying computer science with minors in
-                      math and statistics.  Preston worked last summer as a Data Engineering Intern with the SketchUp team
-                      at Trimble Inc.  His goal in school right now is to continue to develop a tool kit to work with and display
-                      data.  One cool fact about him is that he loves music and is one of the drum majors for the 2020 CSU marching
-                      band!
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col sm={12} md={6} lg={4}>
-                <Card>
-                  <CardImg top width="100%" src={jesuspic} alt="Portrait of Jesus Garcia"/>
-                  <CardBody>
-                    <CardTitle><h5>Jesus Garcia</h5></CardTitle>
-                    <CardText>
-                      Jesus Garcia is a senior computer science student at Colorado State University. This summer
-                      Jesus worked on a cyber security project under the guidance of professor Yashwant K. Malaiya. Jesus is currently
-                      working on writing a report on his findings. A cool fact about him is that his right hand can't touch his right elbow.
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
+                {this.createBio("Suyash Hiray", SUYASH_BIO, suyashpic)}
+                {this.createBio("Nicholas Davidson", NICK_BIO, nickPic)}
+                {this.createBio("Alex Hooten", ALEX_BIO, alexpic)}
+                {this.createBio("Preston Dunton", PRESTON_BIO, prestonPic)}
+                {this.createBio("Jesus Garcia", JESUS_BIO, jesuspic)}
+
             </Row>
           </Col>
         </Row>
       </Container>
     )
   }
+
+  createBio(teamMemberName, teamMemberBio, teamMemberImage){
+      return(
+          <Col sm={12} md={6} lg={4}>
+          <Card>
+              <CardImg top width="100%" src={teamMemberImage} alt="team member picture"/>
+              <CardBody>
+                  <CardTitle><h5>{teamMemberName}</h5></CardTitle>
+                  <CardText>
+                      {teamMemberBio}
+                  </CardText>
+              </CardBody>
+          </Card>
+          </Col>
+      )
+    }
 }

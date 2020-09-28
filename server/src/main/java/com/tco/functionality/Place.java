@@ -2,12 +2,12 @@ package com.tco.functionality;
 
 public class Place {
 
+    public Integer altitude;
     public String id;
     public String municipality;
     public String name;
     public String type;
 
-    private Integer altitude;
     private Double latitude;
     private Double longitude;
 
@@ -19,17 +19,6 @@ public class Place {
     public Place(Double latitude, Double longitude, Integer altitude){
         this.setLatitude(latitude);
         this.setLongitude(longitude);
-        this.setAltitude(altitude);
-    }
-
-    public Integer getAltitude() {
-        return altitude;
-    }
-
-    public void setAltitude(Integer altitude) {
-        if(altitude < 0){
-            throw new IllegalArgumentException("Altitude " + altitude + " is not positive.");
-        }
         this.altitude = altitude;
     }
 

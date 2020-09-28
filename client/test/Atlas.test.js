@@ -1,6 +1,7 @@
 import './jestConfig/enzyme.config.js';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
@@ -20,7 +21,6 @@ function testInitialAtlasState() {
 }
 
 test("Testing Atlas's Initial State", testInitialAtlasState);
-
 
 function testMarkerIsRenderedOnClick() {
 
@@ -44,3 +44,26 @@ function simulateOnClickEvent(reactWrapper, event) {
 }
 
 test("Testing Atlas's Initial State", testMarkerIsRenderedOnClick);
+
+function testRecenterButtonClicked() {
+
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+
+  let expectedCenterOfMap = atlas.state().mapCenter;
+  let actualCenterOfMap = atlas.state().mapLocation;
+
+  expect(atlas.state().mapCenter).toEqual(actualCenterOfMap);
+
+  atlas.state().mapLocation = [0,0]
+
+  simulateOnClickEventButton(atlas);
+
+  expect(atlas.state().mapLocation).toEqual(expectedCenterOfMap);
+}
+
+function simulateOnClickEventButton(reactWrapper) {
+  reactWrapper.find('Button').at(0).simulate('click');
+  reactWrapper.update();
+}
+
+test("Testing Atlas's Resetting Center", testRecenterButtonClicked);
