@@ -17,8 +17,9 @@ public class TestRequestFind {
 
     @BeforeEach
     public void createConfigurationForTestCases(){
-        distanceRequest = new RequestFind();
-        distanceRequest.buildResponse();
+        findRequest = new RequestFind();
+        findRequest.match = "Denver";
+        findRequest.buildResponse();
     }
 
     @Test
@@ -38,11 +39,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Current match is empty")
+    @DisplayName("Current match is 'Denver'")
     public void testMatch()
     {
         String match = findRequest.getMatch();
-        assertEquals("", match);
+        assertEquals("Denver", match);
     }
 
     @Test
@@ -54,11 +55,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Found is equal to 0")
+    @DisplayName("Found is equal to 26")
     public void testFound()
     {
         Integer found = findRequest.getFound();
-        assertEquals(0, found);
+        assertEquals(26, found);
     }
 
 }

@@ -9,31 +9,25 @@ import java.util.*;
 
 public class RequestFind extends RequestHeader{
     private Integer found;
-    private String match;
+    String match;
     private Integer limit;
-    private Array<Place> places;
+    private ArrayList<Place> places;
 
 
-    private final transient Logger log = LoggerFactory.getLogger(FindDistance.class);
+    private final transient Logger log = LoggerFactory.getLogger(RequestFind.class);
 
 
     public RequestFind(){
         this.requestType = "find";
-        this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
-    }
-
-    public RequestFind(String match){
-        this();
         this.limit = 100;
-        this.match = match;
-        Find f = new Find(match, limit);
-        this.found = f.getFound();
-        this.places = f.getPlaces();
-
+        this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
     @Override
     public void buildResponse() {
+        Find f = new Find(match, limit);
+        this.found = f.getFound();
+        this.places = f.getPlaces();
         log.trace("buildResponse -> {}", this);
     }
 
