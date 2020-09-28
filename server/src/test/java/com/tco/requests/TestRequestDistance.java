@@ -42,7 +42,7 @@ public class TestRequestDistance {
     public void testDistance()
     {
 
-        distanceRequest.earthRadius = 3959f;
+        distanceRequest.earthRadius = 3959d;
         System.out.println(distanceRequest.earthRadius);
 
         distanceRequest.place1.put("latitude", "40.3772");

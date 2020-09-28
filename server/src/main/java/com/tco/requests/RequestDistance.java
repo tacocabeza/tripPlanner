@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class RequestDistance extends RequestHeader{
     private Long distance;
-    Float earthRadius;
+    Double earthRadius;
     Map<String,String> place1;
     Map<String,String> place2;
 
@@ -34,7 +34,7 @@ public class RequestDistance extends RequestHeader{
         return distance;
     }
 
-    public Float getEarthRadius()
+    public Double getEarthRadius()
     {
         return earthRadius;
     }

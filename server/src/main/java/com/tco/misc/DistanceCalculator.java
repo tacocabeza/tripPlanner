@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class DistanceCalculator {
 
-    public Long calculateGreatCircleDistance(Map<String,String> place1, Map<String,String> place2, Float radius)
+    public Long calculateGreatCircleDistance(Map<String,String> place1, Map<String,String> place2, Double radius)
     {
         Double long1 = Math.toRadians(Double.parseDouble(place1.get("longitude")));
         Double lat1 = Math.toRadians(Double.parseDouble(place1.get("latitude")));

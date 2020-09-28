@@ -25,7 +25,7 @@ public class TestDistanceCalculator {
     @DisplayName("Distance from Denver to Albuquerque should be 334")
     public void testDistanceCalculator()
     {
-        Long distance = distanceCalculator.calculateGreatCircleDistance(place1,place2,3959f);
+        Long distance = distanceCalculator.calculateGreatCircleDistance(place1,place2,3959d);
         assertEquals(334, distance);
     }
 
