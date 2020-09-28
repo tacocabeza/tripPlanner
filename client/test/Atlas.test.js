@@ -2,7 +2,7 @@ import './jestConfig/enzyme.config.js';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
 
@@ -67,3 +67,24 @@ function simulateOnClickEventButton(reactWrapper) {
 }
 
 test("Testing Atlas's Resetting Center", testRecenterButtonClicked);
+
+function testGoToCoords() {
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  let expectedCoords = [0,0];
+
+  simulateFormSubmit();
+
+  let actualCoords = atlas.state().mapLocation;
+
+  expect(actualCoords).toEqual(expectedCoords);
+}
+
+function simulateFormSubmit() {
+  const component = mount(<Form/>);
+  const input = component.find('Input').at(0);
+  input.instance().value = '0, 0';
+  component.find('Button').at(0).simulate('click');
+  component.update();
+}
+
+test("Testing go to desired coordinates", testGoToCoords);
