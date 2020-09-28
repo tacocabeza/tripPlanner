@@ -101,7 +101,7 @@ export default class Atlas extends Component {
 
   renderFindDistance() {
     return (
-      <Form>
+      <Form onSubmit={this.submitCoords()}>
         <Row form>
           <p>
             Enter one set of coordinates in the Location 1 box to go to that location on the map,
@@ -109,16 +109,30 @@ export default class Atlas extends Component {
           </p>
           <Col md={5}>
             <FormGroup>
-              <Input type="text" name="location1" id="location1" placeholder="Location 1"></Input>
+              <Input
+                type="text"
+                name="location1"
+                id="location1"
+                placeholder="Location 1"
+                value={this.state.location1}
+                onChange={e => this.setState({location1: e.target.value})}
+              />
             </FormGroup>
           </Col>
           <Col md={5}>
             <FormGroup>
-              <Input type="text" name="location2" id="location2" placeholder="Location 2"></Input>
+              <Input
+                type="text"
+                name="location2"
+                id="location2"
+                placeholder="Location 2"
+                value={this.state.location2}
+                onChange={e => this.setState({location2: e.target.value})}
+              />
             </FormGroup>
           </Col>
           <Col md={2}>
-            <Button>Go!</Button>
+            <Button onClick={this.submitCoords()}>Go!</Button>
           </Col>
         </Row>
       </Form>
@@ -142,6 +156,10 @@ export default class Atlas extends Component {
         }
       );
     }
+  }
+
+  submitCoords() {
+    this.setState({mapLocation: });
   }
 
   mapMovement(mapMovementInfo){
