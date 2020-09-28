@@ -72,8 +72,8 @@ export default class Page extends Component {
 
 	renderSearch() {
 		return (
-			<Search>
-			</Search>
+			<Search serverSettings={this.state.serverSettings}
+					createSnackBar={this.props.createSnackBar}/>
 		)
 	}
 
