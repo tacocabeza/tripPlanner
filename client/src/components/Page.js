@@ -6,6 +6,7 @@ import Header from "./Margins/Header";
 import Footer from "./Margins/Footer";
 import About from "./About/About";
 import Atlas from "./Atlas/Atlas";
+import Search from "./Atlas/Search"
 
 import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
@@ -42,7 +43,7 @@ export default class Page extends Component {
 						{this.renderAtlas()}
 					</Tab>
 					<Tab eventKey="search" title="Search">
-						Searches will go here eventually
+						{this.renderSearch()}
 					</Tab>
 				</Tabs>
 				<Footer
@@ -67,6 +68,13 @@ export default class Page extends Component {
 				<Atlas createSnackBar={this.props.createSnackBar}/>
 			</Collapse>
 		);
+	}
+
+	renderSearch() {
+		return (
+			<Search>
+			</Search>
+		)
 	}
 
 	toggleAbout() {
