@@ -30,4 +30,11 @@ export default class Search extends Component {
       </Form>
     );
   }
+
+  //input = latitude and longitude separated by comma, decimal format
+  validate(input) {
+    const reg = RegExp("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$");
+    result = reg.test(input);
+    return result;
+  }
 }
