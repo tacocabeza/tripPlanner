@@ -39,4 +39,6 @@ public class RequestFind extends RequestHeader{
 
     public Integer getFound() { return found; }
 
+    public Integer getPlaces() { return places.size(); }
+
 }
