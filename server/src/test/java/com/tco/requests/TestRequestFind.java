@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import java.util.*;
 
+import static com.tco.requests.RequestFind.MAX_LIMIT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestRequestFind {
@@ -47,11 +48,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Limit is equal to 100")
+    @DisplayName("Limit is equal to MAX_LIMIT")
     public void testLimit()
     {
         Integer limit = findRequest.getLimit();
-        assertEquals(100, limit);
+        assertEquals(MAX_LIMIT, limit);
     }
 
     @Test
@@ -63,11 +64,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Found is equal to 100")
+    @DisplayName("Test Places")
     public void testPlaces()
     {
         Integer places = findRequest.getPlaces();
-        assertEquals(100, places);
+        assertEquals(MAX_LIMIT, places);
     }
 
 }

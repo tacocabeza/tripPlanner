@@ -8,6 +8,9 @@ import com.tco.functionality.Find;
 import java.util.*;
 
 public class RequestFind extends RequestHeader{
+
+    public static final int MAX_LIMIT = 100;
+
     private Integer found;
     String match;
     private Integer limit;
@@ -19,7 +22,7 @@ public class RequestFind extends RequestHeader{
 
     public RequestFind(){
         this.requestType = "find";
-        this.limit = 100;
+        this.limit = this.MAX_LIMIT;
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
