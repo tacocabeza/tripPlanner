@@ -53,7 +53,7 @@ public class TestRequestDistance {
 
         distanceRequest.buildResponse();
 
-        Integer distance = distanceRequest.getDistance();
+        Long distance = distanceRequest.getDistance();
 
 
         assertEquals(199, distance);
