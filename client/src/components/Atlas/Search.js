@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {InputGroupAddon, Input} from "reactstrap";
-import {Button, InputGroup} from "react-bootstrap";
+import {Button, InputGroup, ListGroup} from "react-bootstrap";
 import {sendServerRequest} from "../../utils/restfulAPI";
 
 export default class Search extends Component {
@@ -20,7 +20,13 @@ export default class Search extends Component {
 
         this.state={
             inputText: null,
-            results: {},
+            results: {
+                "found": 0,
+                "match": "",
+                "places": [],
+                "requestType": "find",
+                "requestVersion": 2
+            },
             serverSettings: this.props.serverSettings
         }
     }
@@ -66,7 +72,15 @@ export default class Search extends Component {
     }
 
     renderResults() {
-        return <p>results</p>;
+        return (
+            <ListGroup variant="flush">
+                  {this.state.results.places.map(result => (
+                    <ListGroup.Item action onClick={() => {console.log(result.id)}}>
+                        {result.name}
+                    </ListGroup.Item>
+                  ))}
+            </ListGroup>
+        );
     }
 
     sendFindRequest() {
@@ -84,6 +98,6 @@ export default class Search extends Component {
     }
 
     processFindResponse(response) {
-        console.log(response);
+        this.setState({results: response});
     }
 }
