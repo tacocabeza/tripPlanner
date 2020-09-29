@@ -55,7 +55,7 @@
 | --- | ---: | ---: |
 | Epics | 5 | *count* |
 | Tasks |  24   | *count* | 
-| Story Points |  41  | *sum* | 
+| Story Points |  43  | *sum* | 
 
 ## Scrums
 
@@ -66,6 +66,7 @@
 | *09/21/20* | *4* | *5* | *Code Climate is not working* |
 | *09/23/20* | *5* | *3* | *None* |
 | *09/25/20* | *6* | *4* | *None* |
+| *09/28/20* | *5* | *3* | *None* |
 
 
 ## Review
