@@ -53,7 +53,7 @@ public class TestFind {
     @DisplayName("Test Found")
     public void testFound(){
         findMatchLimit.getPlaces();
-        assertEquals(728, findMatchLimit.getFound());
+        assertEquals(30846, findMatchLimit.getFound());
     }
 
     @Test

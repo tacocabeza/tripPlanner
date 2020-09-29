@@ -56,11 +56,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Found is equal to 728")
+    @DisplayName("Found is equal to 30846")
     public void testFound()
     {
         Integer found = findRequest.getFound();
-        assertEquals(728, found);
+        assertEquals(30846, found);
     }
 
     @Test
