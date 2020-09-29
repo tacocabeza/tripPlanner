@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, Form, FormGroup, Input, Row} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Form, FormGroup, Input, Row} from 'reactstrap';
+
+import * as distanceSchema from "../../../schemas/ResponseDistance";
+import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
+import { LOG } from "../../utils/constants";
 
 import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 
@@ -12,7 +16,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
 import {Tab, Tabs} from "react-bootstrap";
-import Search from '../Search/Search.js';
+import Search from './Search.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -37,14 +41,18 @@ export default class Atlas extends Component {
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
     this.submitCoords = this.submitCoords.bind(this);
+    this.requestDistance = this.requestDistance.bind(this);
+    this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
 
     this.state = {
+      distance: 0,
       markerPosition: null,
       mapCenter: MAP_CENTER_DEFAULT,
       mapLocation: MAP_CENTER_DEFAULT,
       mapZoom: 15,
       location1: '',
       location2: '',
+      serverSettings: this.props.serverSettings,
     };
   }
 
@@ -59,17 +67,20 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 10, offset: 1}}>
                 <Tabs defaultActiveKey="map" id="tripCo-map">
+
                   <Tab eventKey="map" title="Map">
                     {this.renderLeafletMap()}
                     <Button color="primary" onClick={this.recenterMap}>
                       Recenter
                     </Button>
                     {this.renderFindDistance()}
+                    <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Tab>
                   <Tab eventKey="search" title="Search">
                     {this.renderSearch()}
                   </Tab>
                 </Tabs>
+
               </Col>
             </Row>
           </Container>
@@ -142,7 +153,8 @@ export default class Atlas extends Component {
 
   renderSearch() {
     return (
-      <Search/>
+      <Search createSnackBar={this.props.createSnackBar}
+              serverSettings={this.state.serverSettings}/>
     )
   }
 
@@ -200,6 +212,7 @@ export default class Atlas extends Component {
 
   setMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
+    this.requestDistance();
   }
 
   getMarker() {
@@ -221,4 +234,51 @@ export default class Atlas extends Component {
   getStringMarkerPosition() {
     return this.state.markerPosition.lat.toFixed(2) + ', ' + this.state.markerPosition.lng.toFixed(2);
   }
+  requestDistance()
+  {
+        if(this.state.markerPosition){
+        sendServerRequest({
+                            "requestType"    : "distance",
+                            "requestVersion" : 2,
+                            "place1"         : {"latitude":  this.state.mapCenter[0].toString(),
+                                                "longitude": this.state.mapCenter[1].toString()},
+                            "place2"         : {"latitude":  this.state.markerPosition.lat.toString(),
+                                                "longitude": this.state.markerPosition.lng.toString()},
+                            "earthRadius"    : 3959.0
+                          }, this.props.serverPort)
+        			.then(dist => {
+        				if (dist) { this.processDistanceResponse(dist.data); }
+        				else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
+        			});
+
+        }
+  }
+
+      processDistanceResponse(distResponse) {
+
+      		if(!isJsonResponseValid(distResponse, distanceSchema)) {
+      			this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
+
+      		} else {
+      			this.processServerDistanceSuccess(distResponse);
+      		}
+      	}
+
+      processServerDistanceSuccess(dist)
+      {
+        this.setState({distance: dist.distance});
+      }
+
+      processServerDistanceError(message) {
+      		LOG.error(message);
+      }
+
+      renderDistance()
+      {
+        return(
+            <InputGroup>
+                 <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
+            </InputGroup>
+            )
+      }
 }
