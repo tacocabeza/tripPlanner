@@ -10,9 +10,13 @@ export default class Search extends Component {
 
         this.renderBar = this.renderBar.bind(this);
         this.renderResults = this.renderResults.bind(this);
+
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.updateInputText = this.updateInputText.bind(this);
+        this.formatInputText = this.formatInputText.bind(this);
+
         this.sendFindRequest = this.sendFindRequest.bind(this);
         this.processFindResponse = this.processFindResponse.bind(this);
-        this.createSnackbar = this.props.createSnackBar.bind(this);
 
         this.state={
             inputText: null,
@@ -33,9 +37,10 @@ export default class Search extends Component {
     renderBar() {
         return <div>
             <InputGroup>
-                <Input placeholder="Search TripCo" />
+                <Input placeholder="Search TripCo" onChange={this.updateInputText}
+                       onKeyPress={this.handleKeyPress}/>
                 <InputGroupAddon addonType="append">
-                    <Button placeholder={"SEARCH"} onClick={this.sendFindRequest()}>
+                    <Button placeholder={"SEARCH"} onClick={this.sendFindRequest}>
                         <SearchIcon fontSize={"small"} className={"tco-text"}/>
                     </Button>
                 </InputGroupAddon>
@@ -43,19 +48,42 @@ export default class Search extends Component {
         </div>;
     }
 
+    handleKeyPress(target) {
+        if(target.charCode==13){
+            this.sendFindRequest();
+        }
+    }
+
+    updateInputText(event) {
+        let formattedString = this.formatInputText(event.target.value);
+        this.setState({inputText: formattedString});
+    }
+
+    formatInputText(s) {
+        // replace all non-alphanumeric characters with _
+        let regex = new RegExp("[^a-zA-Z\\d]", "g");
+        return s.replaceAll(regex,"_");
+    }
+
     renderResults() {
         return <p>results</p>;
     }
 
     sendFindRequest() {
-        sendServerRequest({requestType: "find", requestVersion: 2, match: this.state.inputText}, this.state.serverSettings.serverPort)
-            .then(find => {
-                if (find) { this.processFindResponse(find.data); }
-                else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
-            });
+        if(this.state.inputText != null && this.state.inputText != "") {
+            sendServerRequest({requestType: "find", requestVersion: 2, match: this.state.inputText},
+                this.state.serverSettings.serverPort)
+                .then(find => {
+                    if (find) {
+                        this.processFindResponse(find.data);
+                    } else {
+                        this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+                    }
+                });
+        }
     }
 
-    processFindResponse() {
-
+    processFindResponse(response) {
+        console.log(response);
     }
 }

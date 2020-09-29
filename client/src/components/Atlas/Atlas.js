@@ -12,7 +12,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
 import {Tab, Tabs} from "react-bootstrap";
-import Search from '../Search/Search.js';
+import Search from './Search.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
