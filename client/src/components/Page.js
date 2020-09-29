@@ -10,7 +10,6 @@ import Atlas from "./Atlas/Atlas";
 import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../utils/restfulAPI";
-import {Tabs, Tab} from "react-bootstrap";
 
 export default class Page extends Component {
 
@@ -57,7 +56,8 @@ export default class Page extends Component {
 	renderAtlas() {
 		return (
 			<Collapse isOpen={!this.state.showAbout}>
-				<Atlas createSnackBar={this.props.createSnackBar}/>
+				<Atlas createSnackBar={this.props.createSnackBar}
+					   serverSettings={this.state.serverSettings}/>
 			</Collapse>
 		);
 	}
