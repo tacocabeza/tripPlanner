@@ -19,7 +19,7 @@ public class TestRequestFind {
     @BeforeEach
     public void createConfigurationForTestCases(){
         findRequest = new RequestFind();
-        findRequest.match = "_____Airport";
+        findRequest.match = "Heli@#";
         findRequest.buildResponse();
     }
 
@@ -40,11 +40,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Current match is '_____Airport'")
+    @DisplayName("Current match is 'Heli@#'")
     public void testMatch()
     {
         String match = findRequest.getMatch();
-        assertEquals("_____Airport", match);
+        assertEquals("Heli@#", match);
     }
 
     @Test
@@ -56,11 +56,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Found is equal to 30846")
+    @DisplayName("Found is equal to 9403")
     public void testFound()
     {
         Integer found = findRequest.getFound();
-        assertEquals(30846, found);
+        assertEquals(9403, found);
     }
 
     @Test
