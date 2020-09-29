@@ -74,15 +74,16 @@ function testGoToCoords() {
 
   simulateFormSubmit(atlas);
 
-  let actualCoords = atlas.state().mapLocation;
+  let actualCoords = atlas.state().location1;
 
   expect(actualCoords).toEqual(expectedCoords);
 }
 
 function simulateFormSubmit(reactWrapper) {
-  const input = reactWrapper.find('Input').at(0);
-  input.instance().value = '0, 0';
-  reactWrapper.find('Button').at(1).simulate('click');
+  const component = reactWrapper.find('Form').at(0);
+  const input = component.find('Input').at(0);
+  input.simulate('change', {target: {value: '0, 0'}});
+  component.find('Button').at(0).simulate('click');
   reactWrapper.update();
 }
 

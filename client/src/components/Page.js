@@ -10,7 +10,6 @@ import Atlas from "./Atlas/Atlas";
 import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../utils/restfulAPI";
-import {Tabs, Tab} from "react-bootstrap";
 
 export default class Page extends Component {
 

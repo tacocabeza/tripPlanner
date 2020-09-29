@@ -161,6 +161,7 @@ export default class Atlas extends Component {
 
   submitCoords(e) {
     e.preventDefault();
+    console.log(this.validate(this.state.location1));
     if (this.validate(this.state.location1) && this.validate(this.state.location2)) {
       //distance
     } else if (this.validate(this.state.location1)) {
