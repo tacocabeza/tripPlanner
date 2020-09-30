@@ -16,6 +16,8 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
+import Navigation from './Navigation.js';
+import DistanceForm from './DistanceForm.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -34,10 +36,10 @@ export default class Atlas extends Component {
     super(props);
 
     this.setMarker = this.setMarker.bind(this);
+    this.setLocation = this.setLocation.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
-    this.submitCoords = this.submitCoords.bind(this);
     this.requestDistance = this.requestDistance.bind(this);
     this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
     this.onClickListItem = this.onClickListItem.bind(this);
@@ -49,8 +51,6 @@ export default class Atlas extends Component {
       mapCenter: MAP_CENTER_DEFAULT,
       mapLocation: MAP_CENTER_DEFAULT,
       mapZoom: 15,
-      locationstring1: '',
-      locationstring2: '',
       location1: null,
       location2: null,
       serverSettings: this.props.serverSettings,
@@ -69,35 +69,25 @@ export default class Atlas extends Component {
   }
 
   render() {
-
     return (
       <div>
         <Container>
           <Row>
             <Col sm={12} md={{size: 10, offset: 1}}>
-              <Nav tabs>
-                <NavItem>
-                  <NavLink onClick={() => { this.toggle('1'); }}>
-                    Map
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={() => { this.toggle('2'); }}>
-                    Search
-                  </NavLink>
-                </NavItem>
-              </Nav>
+              <Navigation toggle={this.toggle}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
                   {this.renderLeafletMap()}
                   <Button color="primary" onClick={this.recenterMap}>
                     Recenter
                   </Button>
-                  {this.renderFindDistance()}
+                  <DistanceForm setLocation={this.setLocation}/>
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </TabPane>
                 <TabPane tabId="2">
-                  {this.renderSearch()}
+                  <Search createSnackBar={this.props.createSnackBar}
+                          serverSettings={this.state.serverSettings}
+                          onClickListItem={this.onClickListItem}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -124,56 +114,14 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           <Marker position={this.state.mapCenter} icon={GREEN_MARKER_ICON}></Marker>
           {this.getMarker()}
-          {this.placeSearchMarker()}
-          {this.placeDistanceMarker2()}
+          {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
+          {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
           {this.getLine()}
         </Map>
     );
   }
 
-  renderFindDistance() {
-    return (
-      <Form onSubmit={this.submitCoords}>
-        <Row form>
-          <p>
-            Enter one set of coordinates in the Location 1 box to go to that location on the map,
-            or two sets to find the distance between the two points
-          </p>
-          <Col md={5}>
-            <FormGroup>
-              <Input
-                type="text"
-                name="location1"
-                id="location1"
-                required={true}
-                placeholder="Location 1"
-                value={this.state.locationstring1}
-                onChange={e => this.setState({locationstring1: e.target.value})}
-              />
-            </FormGroup>
-          </Col>
-          <Col md={5}>
-            <FormGroup>
-              <Input
-                type="text"
-                name="location2"
-                id="location2"
-                placeholder="Location 2"
-                value={this.state.locationstring2}
-                onChange={e => this.setState({locationstring2: e.target.value})}
-              />
-            </FormGroup>
-          </Col>
-          <Col md={2}>
-            <Button id="distance-submit">Go!</Button>
-          </Col>
-        </Row>
-      </Form>
-    )
-  }
-
-  renderDistance()
-  {
+  renderDistance() {
     return(
       <InputGroup>
         <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
@@ -181,12 +129,14 @@ export default class Atlas extends Component {
     )
   }
 
-  renderSearch() {
-    return (
-      <Search createSnackBar={this.props.createSnackBar}
-              serverSettings={this.state.serverSettings}
-              onClickListItem={this.onClickListItem}/>
-    )
+  setLocation(location, state) {
+    if (location == 1) {
+      this.setState({location1: state});
+    } else if (location == 2) {
+      this.setState({location2: state});
+    } else if (location == 3) {
+      this.setState({mapLocation: state});
+    }
   }
 
   onClickListItem(lat, lng) {
@@ -208,49 +158,12 @@ export default class Atlas extends Component {
     }
   }
 
-  submitCoords(e) {
-    e.preventDefault();
-    if (this.validate(this.state.locationstring1)) {
-      let strarray1 = this.state.locationstring1.split(',');
-      let coordarray1 = [];
-      for (let i = 0; i < strarray1.length; i++) {
-        coordarray1[i] = parseFloat(strarray1[i]);
-      }
-      this.setState({location1: coordarray1});
-      if (this.validate(this.state.locationstring2)) {
-        let strarray2 = this.state.locationstring2.split(',');
-        let coordarray2 = [];
-        for (let j = 0; j < strarray2.length; j++) {
-          coordarray2[j] = parseFloat(strarray2[j]);
-        }
-        this.setState({location2: coordarray2});
-      } else {
-        this.setState({mapLocation: coordarray1});
-      }
-    }
-  }
-
-  placeSearchMarker() {
-    if (this.state.location1) {
+  placeMarker(location, icon) {
+    if (location) {
       return (
-        <Marker position={this.state.location1} icon={AGGIE_MARKER_ICON}></Marker>
+        <Marker position={location} icon={icon}></Marker>
       )
     }
-  }
-
-  placeDistanceMarker2() {
-    if (this.state.location2) {
-      return (
-        <Marker position={this.state.location2} icon={RESERVOIR_MARKER_ICON}></Marker>
-      )
-    }
-  }
-
-  //input = latitude and longitude separated by comma, decimal format
-  validate(input) {
-    const reg = RegExp("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$");
-    let result = reg.test(input);
-    return result;
   }
 
   mapMovement(mapMovementInfo){
