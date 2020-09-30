@@ -44,7 +44,6 @@ export default class Atlas extends Component {
     this.requestDistance = this.requestDistance.bind(this);
     this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
     this.onClickListItem = this.onClickListItem.bind(this);
-    this.toggle = this.toggle.bind(this);
 
     this.state = {
       distance: 0,
@@ -57,7 +56,7 @@ export default class Atlas extends Component {
       location1: null,
       location2: null,
       serverSettings: this.props.serverSettings,
-      tab: 'map',
+      tab: "map",
     };
   }
 
@@ -65,41 +64,35 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggle(tab) {
-    if (this.state.tab !== tab) {
-      this.setState({ tab: tab });
-    }
-  }
-
   render() {
 
     return (
-        <div>
-          <Container>
-            <Row>
-              <Col sm={12} md={{size: 10, offset: 1}}>
-                <Tabs
-                  defaultActiveKey="map"
-                  id="tripCo-map"
-                  activetab={this.state.tab}
-                >
-                  <Tab eventKey="map" title="Map">
-                    {this.renderLeafletMap()}
-                    <Button color="primary" onClick={this.recenterMap}>
-                      Recenter
-                    </Button>
-                    {this.renderFindDistance()}
-                    <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
-                  </Tab>
-                  <Tab eventKey="search" title="Search">
-                    {this.renderSearch()}
-                  </Tab>
-                </Tabs>
+      <div>
+        <Container>
+          <Row>
+            <Col sm={12} md={{size: 10, offset: 1}}>
+              <Tabs
+                defaultActiveKey="map"
+                id="tripCo-map"
+                activetab={this.state.tab}
+              >
+                <Tab eventKey="map" title="Map">
+                  {this.renderLeafletMap()}
+                  <Button color="primary" onClick={this.recenterMap}>
+                    Recenter
+                  </Button>
+                  {this.renderFindDistance()}
+                  <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
+                </Tab>
+                <Tab eventKey="search" title="Search">
+                  {this.renderSearch()}
+                </Tab>
+              </Tabs>
 
-              </Col>
-            </Row>
-          </Container>
-        </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -170,11 +163,11 @@ export default class Atlas extends Component {
 
   renderDistance()
   {
-    // return(
-    //     // <InputGroup>
-    //     //      <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
-    //     // </InputGroup>
-    //     )
+    return(
+      <InputGroup>
+        <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
+      </InputGroup>
+    )
   }
 
   renderSearch() {
@@ -186,7 +179,7 @@ export default class Atlas extends Component {
   }
 
   onClickListItem(lat, lng) {
-    this.toggle('map');
+    this.setState({tab: "map"});
     console.log(this.state.tab);
     this.setState({location1: [lat, lng]});
     this.setState({mapLocation: [lat, lng]});
@@ -280,9 +273,9 @@ export default class Atlas extends Component {
 
     if (this.state.markerPosition) {
       return (
-          <Marker ref={initMarker} position={this.state.markerPosition} icon={GOLD_MARKER_ICON}>
-            <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
-          </Marker>
+        <Marker ref={initMarker} position={this.state.markerPosition} icon={GOLD_MARKER_ICON}>
+          <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
+        </Marker>
       );
     }
   }
@@ -290,42 +283,39 @@ export default class Atlas extends Component {
   getStringMarkerPosition() {
     return this.state.markerPosition.lat.toFixed(2) + ', ' + this.state.markerPosition.lng.toFixed(2);
   }
-  requestDistance()
-  {
-        if(this.state.markerPosition){
-        sendServerRequest({
-                            "requestType"    : "distance",
-                            "requestVersion" : 2,
-                            "place1"         : {"latitude":  this.state.mapCenter[0].toString(),
-                                                "longitude": this.state.mapCenter[1].toString()},
-                            "place2"         : {"latitude":  this.state.markerPosition.lat.toString(),
-                                                "longitude": this.state.markerPosition.lng.toString()},
-                            "earthRadius"    : 3959.0
-                          }, this.props.serverPort)
-        			.then(dist => {
-        				if (dist) { this.processDistanceResponse(dist.data); }
-        				else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
-        			});
-
-        }
+  requestDistance() {
+    if(this.state.markerPosition){
+      sendServerRequest({
+                        "requestType"    : "distance",
+                        "requestVersion" : 2,
+                        "place1"         : {"latitude":  this.state.mapCenter[0].toString(),
+                                            "longitude": this.state.mapCenter[1].toString()},
+                        "place2"         : {"latitude":  this.state.markerPosition.lat.toString(),
+                                            "longitude": this.state.markerPosition.lng.toString()},
+                        "earthRadius"    : 3959.0
+                      }, this.props.serverPort)
+      .then(dist => {
+        if (dist) { this.processDistanceResponse(dist.data); }
+        else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
+      });
+    }
   }
 
   processDistanceResponse(distResponse) {
 
-      if(!isJsonResponseValid(distResponse, distanceSchema)) {
-        this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
+    if(!isJsonResponseValid(distResponse, distanceSchema)) {
+      this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
 
-      } else {
-        this.processServerDistanceSuccess(distResponse);
-      }
+    } else {
+      this.processServerDistanceSuccess(distResponse);
     }
+  }
 
-  processServerDistanceSuccess(dist)
-  {
+  processServerDistanceSuccess(dist) {
     this.setState({distance: dist.distance});
   }
 
   processServerDistanceError(message) {
-      LOG.error(message);
+    LOG.error(message);
   }
 }
