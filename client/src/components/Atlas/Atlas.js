@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Form, FormGroup, Input, Row} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Form, FormGroup, Input, Row, TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
@@ -15,7 +15,6 @@ import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.p
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
-import {Tab, Tabs} from "react-bootstrap";
 import Search from './Search.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
@@ -30,12 +29,10 @@ const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 
 export default class Atlas extends Component {
-  activeTab;
 
   constructor(props) {
     super(props);
 
-    this.activeTab = '1';
     this.setMarker = this.setMarker.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
@@ -44,6 +41,7 @@ export default class Atlas extends Component {
     this.requestDistance = this.requestDistance.bind(this);
     this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
     this.onClickListItem = this.onClickListItem.bind(this);
+    this.toggle = this.toggle.bind(this);
 
     this.state = {
       distance: 0,
@@ -56,12 +54,18 @@ export default class Atlas extends Component {
       location1: null,
       location2: null,
       serverSettings: this.props.serverSettings,
-      tab: "map",
+      currentTab: '1',
     };
   }
 
   componentDidMount() {
     {this.getGeolocation()}
+  }
+
+  toggle(tab) {
+    if (this.state.currentTab != tab) {
+      this.setState({currentTab: tab})
+    }
   }
 
   render() {
@@ -71,24 +75,31 @@ export default class Atlas extends Component {
         <Container>
           <Row>
             <Col sm={12} md={{size: 10, offset: 1}}>
-              <Tabs
-                defaultActiveKey="map"
-                id="tripCo-map"
-                activetab={this.state.tab}
-              >
-                <Tab eventKey="map" title="Map">
+              <Nav tabs>
+                <NavItem>
+                  <NavLink onClick={() => { this.toggle('1'); }}>
+                    Map
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink onClick={() => { this.toggle('2'); }}>
+                    Search
+                  </NavLink>
+                </NavItem>
+              </Nav>
+              <TabContent activeTab={this.state.currentTab}>
+                <TabPane tabId="1">
                   {this.renderLeafletMap()}
                   <Button color="primary" onClick={this.recenterMap}>
                     Recenter
                   </Button>
                   {this.renderFindDistance()}
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
-                </Tab>
-                <Tab eventKey="search" title="Search">
+                </TabPane>
+                <TabPane tabId="2">
                   {this.renderSearch()}
-                </Tab>
-              </Tabs>
-
+                </TabPane>
+              </TabContent>
             </Col>
           </Row>
         </Container>
@@ -179,8 +190,7 @@ export default class Atlas extends Component {
   }
 
   onClickListItem(lat, lng) {
-    this.setState({tab: "map"});
-    console.log(this.state.tab);
+    this.toggle("1");
     this.setState({location1: [lat, lng]});
     this.setState({mapLocation: [lat, lng]});
   }
