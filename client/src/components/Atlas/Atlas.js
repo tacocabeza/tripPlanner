@@ -57,7 +57,7 @@ export default class Atlas extends Component {
       location1: null,
       location2: null,
       serverSettings: this.props.serverSettings,
-      activeTab: 'map',
+      tab: 'map',
     };
   }
 
@@ -66,8 +66,8 @@ export default class Atlas extends Component {
   }
 
   toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab });
+    if (this.state.tab !== tab) {
+      this.setState({ tab: tab });
     }
   }
 
@@ -81,9 +81,9 @@ export default class Atlas extends Component {
                 <Tabs
                   defaultActiveKey="map"
                   id="tripCo-map"
-                  activetab={this.state.activeTab}
+                  activetab={this.state.tab}
                 >
-                  <Tab eventKey="map" title="Map" onClick={() => { this.toggle('map'); }}>
+                  <Tab eventKey="map" title="Map">
                     {this.renderLeafletMap()}
                     <Button color="primary" onClick={this.recenterMap}>
                       Recenter
@@ -91,7 +91,7 @@ export default class Atlas extends Component {
                     {this.renderFindDistance()}
                     <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Tab>
-                  <Tab eventKey="search" title="Search" onClick={() => { this.toggle('search'); }}>
+                  <Tab eventKey="search" title="Search">
                     {this.renderSearch()}
                   </Tab>
                 </Tabs>
@@ -187,7 +187,7 @@ export default class Atlas extends Component {
 
   onClickListItem(lat, lng) {
     this.toggle('map');
-    console.log(this.state.activeTab);
+    console.log(this.state.tab);
     this.setState({location1: [lat, lng]});
     this.setState({mapLocation: [lat, lng]});
   }

@@ -74,7 +74,7 @@ function testGoToCoords() {
 
   simulateFormSubmit(atlas);
 
-  let actualCoords = atlas.state().location1;
+  let actualCoords = atlas.state().locationstring1;
 
   expect(actualCoords).toEqual(expectedCoords);
 }
