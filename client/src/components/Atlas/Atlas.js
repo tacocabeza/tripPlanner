@@ -16,6 +16,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
+import Navigation from './Navigation.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -75,18 +76,7 @@ export default class Atlas extends Component {
         <Container>
           <Row>
             <Col sm={12} md={{size: 10, offset: 1}}>
-              <Nav tabs>
-                <NavItem>
-                  <NavLink onClick={() => { this.toggle('1'); }}>
-                    Map
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={() => { this.toggle('2'); }}>
-                    Search
-                  </NavLink>
-                </NavItem>
-              </Nav>
+              <Navigation toggle={this.toggle}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
                   {this.renderLeafletMap()}
@@ -97,7 +87,9 @@ export default class Atlas extends Component {
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </TabPane>
                 <TabPane tabId="2">
-                  {this.renderSearch()}
+                  <Search createSnackBar={this.props.createSnackBar}
+                          serverSettings={this.state.serverSettings}
+                          onClickListItem={this.onClickListItem}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -178,14 +170,6 @@ export default class Atlas extends Component {
       <InputGroup>
         <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
       </InputGroup>
-    )
-  }
-
-  renderSearch() {
-    return (
-      <Search createSnackBar={this.props.createSnackBar}
-              serverSettings={this.state.serverSettings}
-              onClickListItem={this.onClickListItem}/>
     )
   }
 
