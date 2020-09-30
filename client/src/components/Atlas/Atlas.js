@@ -264,7 +264,7 @@ export default class Atlas extends Component {
   getLine(){
     if(this.state.markerPosition && this.state.mapCenter){
       return(
-        <Polyline color="Red" positions={[this.state.markerPosition, this.state.mapCenter]} />
+        <Polyline color="#CC5430" positions={[this.state.markerPosition, this.state.mapCenter]} />
       );
     }
   }
