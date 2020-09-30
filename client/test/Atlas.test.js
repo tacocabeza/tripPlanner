@@ -70,7 +70,7 @@ test("Testing Atlas's Resetting Center", testRecenterButtonClicked);
 
 function testGoToCoords() {
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  let expectedCoords = [0,0];
+  let expectedCoords = '0, 0';
 
   simulateFormSubmit(atlas);
 
@@ -83,7 +83,7 @@ function simulateFormSubmit(reactWrapper) {
   const component = reactWrapper.find('Form').at(0);
   const input = component.find('Input').at(0);
   input.simulate('change', {target: {value: '0, 0'}});
-  component.find('Button').at(0).simulate('click');
+  component.find('#distance-submit').at(0).simulate('click');
   reactWrapper.update();
 }
 

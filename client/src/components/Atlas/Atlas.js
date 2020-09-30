@@ -43,6 +43,8 @@ export default class Atlas extends Component {
     this.submitCoords = this.submitCoords.bind(this);
     this.requestDistance = this.requestDistance.bind(this);
     this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
+    this.onClickListItem = this.onClickListItem.bind(this);
+    this.toggle = this.toggle.bind(this);
 
     this.state = {
       distance: 0,
@@ -50,9 +52,12 @@ export default class Atlas extends Component {
       mapCenter: MAP_CENTER_DEFAULT,
       mapLocation: MAP_CENTER_DEFAULT,
       mapZoom: 15,
-      location1: '',
-      location2: '',
+      locationstring1: '',
+      locationstring2: '',
+      location1: null,
+      location2: null,
       serverSettings: this.props.serverSettings,
+      activeTab: 'map',
     };
   }
 
@@ -60,15 +65,25 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab });
+    }
+  }
+
   render() {
+
     return (
         <div>
           <Container>
             <Row>
               <Col sm={12} md={{size: 10, offset: 1}}>
-                <Tabs defaultActiveKey="map" id="tripCo-map">
-
-                  <Tab eventKey="map" title="Map">
+                <Tabs
+                  defaultActiveKey="map"
+                  id="tripCo-map"
+                  activetab={this.state.activeTab}
+                >
+                  <Tab eventKey="map" title="Map" onClick={() => { this.toggle('map'); }}>
                     {this.renderLeafletMap()}
                     <Button color="primary" onClick={this.recenterMap}>
                       Recenter
@@ -76,7 +91,7 @@ export default class Atlas extends Component {
                     {this.renderFindDistance()}
                     <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Tab>
-                  <Tab eventKey="search" title="Search">
+                  <Tab eventKey="search" title="Search" onClick={() => { this.toggle('search'); }}>
                     {this.renderSearch()}
                   </Tab>
                 </Tabs>
@@ -105,6 +120,8 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           <Marker position={this.state.mapCenter} icon={GREEN_MARKER_ICON}></Marker>
           {this.getMarker()}
+          {this.placeSearchMarker()}
+          {this.placeDistanceMarker2()}
           {this.getLine()}
         </Map>
     );
@@ -126,8 +143,8 @@ export default class Atlas extends Component {
                 id="location1"
                 required={true}
                 placeholder="Location 1"
-                value={this.state.location1}
-                onChange={e => this.setState({location1: e.target.value})}
+                value={this.state.locationstring1}
+                onChange={e => this.setState({locationstring1: e.target.value})}
               />
             </FormGroup>
           </Col>
@@ -138,24 +155,41 @@ export default class Atlas extends Component {
                 name="location2"
                 id="location2"
                 placeholder="Location 2"
-                value={this.state.location2}
-                onChange={e => this.setState({location2: e.target.value})}
+                value={this.state.locationstring2}
+                onChange={e => this.setState({locationstring2: e.target.value})}
               />
             </FormGroup>
           </Col>
           <Col md={2}>
-            <Button>Go!</Button>
+            <Button id="distance-submit">Go!</Button>
           </Col>
         </Row>
       </Form>
     )
   }
 
+  renderDistance()
+  {
+    // return(
+    //     // <InputGroup>
+    //     //      <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
+    //     // </InputGroup>
+    //     )
+  }
+
   renderSearch() {
     return (
       <Search createSnackBar={this.props.createSnackBar}
-              serverSettings={this.state.serverSettings}/>
+              serverSettings={this.state.serverSettings}
+              onClickListItem={this.onClickListItem}/>
     )
+  }
+
+  onClickListItem(lat, lng) {
+    this.toggle('map');
+    console.log(this.state.activeTab);
+    this.setState({location1: [lat, lng]});
+    this.setState({mapLocation: [lat, lng]});
   }
 
   getGeolocation() {
@@ -173,18 +207,40 @@ export default class Atlas extends Component {
 
   submitCoords(e) {
     e.preventDefault();
-    console.log(this.validate(this.state.location1));
-    if (this.validate(this.state.location1) && this.validate(this.state.location2)) {
-      //distance
-    } else if (this.validate(this.state.location1)) {
-      this.setState({mapLocation: [0, 0]});
+    if (this.validate(this.state.locationstring1)) {
+      let strarray1 = this.state.locationstring1.split(',');
+      let coordarray1 = [];
+      for (let i = 0; i < strarray1.length; i++) {
+        coordarray1[i] = parseFloat(strarray1[i]);
+      }
+      this.setState({location1: coordarray1});
+      if (this.validate(this.state.locationstring2)) {
+        let strarray2 = this.state.locationstring2.split(',');
+        let coordarray2 = [];
+        for (let j = 0; j < strarray2.length; j++) {
+          coordarray2[j] = parseFloat(strarray2[j]);
+        }
+        this.setState({location2: coordarray2});
+      } else {
+        this.setState({mapLocation: coordarray1});
+      }
     }
   }
 
   placeSearchMarker() {
-    return (
-      <Marker position={this.state.mapLocation} icon={AGGIE_MARKER_ICON}></Marker>
-    )
+    if (this.state.location1) {
+      return (
+        <Marker position={this.state.location1} icon={AGGIE_MARKER_ICON}></Marker>
+      )
+    }
+  }
+
+  placeDistanceMarker2() {
+    if (this.state.location2) {
+      return (
+        <Marker position={this.state.location2} icon={RESERVOIR_MARKER_ICON}></Marker>
+      )
+    }
   }
 
   //input = latitude and longitude separated by comma, decimal format
@@ -254,31 +310,22 @@ export default class Atlas extends Component {
         }
   }
 
-      processDistanceResponse(distResponse) {
+  processDistanceResponse(distResponse) {
 
-      		if(!isJsonResponseValid(distResponse, distanceSchema)) {
-      			this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
+      if(!isJsonResponseValid(distResponse, distanceSchema)) {
+        this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
 
-      		} else {
-      			this.processServerDistanceSuccess(distResponse);
-      		}
-      	}
-
-      processServerDistanceSuccess(dist)
-      {
-        this.setState({distance: dist.distance});
+      } else {
+        this.processServerDistanceSuccess(distResponse);
       }
+    }
 
-      processServerDistanceError(message) {
-      		LOG.error(message);
-      }
+  processServerDistanceSuccess(dist)
+  {
+    this.setState({distance: dist.distance});
+  }
 
-      renderDistance()
-      {
-        return(
-            <InputGroup>
-                 <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
-            </InputGroup>
-            )
-      }
+  processServerDistanceError(message) {
+      LOG.error(message);
+  }
 }
