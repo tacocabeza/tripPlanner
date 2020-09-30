@@ -24,11 +24,11 @@ public class TestPlace {
     @Test
     @DisplayName("Set Latitude Valid")
     public void testSetLatitudeValid(){
-        place.setLatitude(90.0);
+        place.setLatitudeLongitude(90.0, 0.0);
         assertEquals(90,place.getLatitude());
-        place.setLatitude(0.0);
+        place.setLatitudeLongitude(0.0, 0.0);
         assertEquals(0,place.getLatitude());
-        place.setLatitude(-90.0);
+        place.setLatitudeLongitude(-90.0, 0.0);
         assertEquals(-90,place.getLatitude());
     }
 
@@ -36,13 +36,13 @@ public class TestPlace {
     @DisplayName("Set Latitude Invalid")
     public void testSetLatitudeInvalid(){
         try{
-            place.setLatitude(-90.0001);
+            place.setLatitudeLongitude(-90.0001, 0.0);
             fail("Should have thrown an exception");
         } catch(IllegalArgumentException e){
             assertEquals(39.2203, place.getLatitude());
         }
         try{
-            place.setLatitude(90.0001);
+            place.setLatitudeLongitude(90.0001, 0.0);
             fail("Should have thrown an exception");
         } catch(IllegalArgumentException e){
             assertEquals(39.2203, place.getLatitude());
@@ -58,11 +58,11 @@ public class TestPlace {
     @Test
     @DisplayName("Set Longitude Valid")
     public void testSetLongitudeValid(){
-        place.setLongitude(180.0);
+        place.setLatitudeLongitude(0.0, 180.0);
         assertEquals(180,place.getLongitude());
-        place.setLongitude(0.0);
+        place.setLatitudeLongitude(0.0, 0.0);
         assertEquals(0,place.getLongitude());
-        place.setLongitude(-180.0);
+        place.setLatitudeLongitude(0.0, -180.0);
         assertEquals(-180,place.getLongitude());
     }
 
@@ -70,13 +70,13 @@ public class TestPlace {
     @DisplayName("Set Longitude Invalid")
     public void testSetLongitudeInvalid(){
         try{
-            place.setLongitude(-180.0001);
+            place.setLatitudeLongitude(0.0, -180.0001);
             fail("Should have thrown an exception");
         } catch(IllegalArgumentException e){
             assertEquals(-105.9927, place.getLongitude());
         }
         try{
-            place.setLongitude(180.0001);
+            place.setLatitudeLongitude(0.0,180.0001);
             fail("Should have thrown an exception");
         } catch(IllegalArgumentException e){
             assertEquals(-105.9927, place.getLongitude());
