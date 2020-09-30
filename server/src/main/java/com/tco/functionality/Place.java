@@ -12,13 +12,11 @@ public class Place {
     private Double longitude;
 
     public Place(Double latitude, Double longitude){
-        this.setLatitude(latitude);
-        this.setLongitude(longitude);
+        this.setLatitudeLongitude(latitude, longitude);
     }
 
     public Place(Double latitude, Double longitude, Integer altitude){
-        this.setLatitude(latitude);
-        this.setLongitude(longitude);
+        this.setLatitudeLongitude(latitude, longitude);
         this.altitude = altitude;
     }
 
@@ -26,22 +24,19 @@ public class Place {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitudeLongitude(Double latitude, Double longitude) {
         if(latitude < -90 || latitude > 90){
             throw new IllegalArgumentException("Latitude " + latitude + " is not in range [-90.0,90.0]");
         }
         this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
         if(longitude < -180 || longitude > 180){
             throw new IllegalArgumentException("Longitude " + longitude + " is not in range [-180.0,180.0]");
         }
         this.longitude = longitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 
     @Override
