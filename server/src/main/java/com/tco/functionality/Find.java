@@ -80,10 +80,10 @@ public class Find {
         String columns = "world.name, latitude, longitude, world.id, altitude, municipality, type";
         String joins = "inner join country on world.iso_country = country.id " +
                         "inner join region on world.iso_region = region.id";
-        String where = "world.name like \"" + match + "\" or " +
-                        "world.municipality like \"" + match + "\" or " +
-                        "region.name like \"" + match + "\" or " +
-                        "country.name like \"" + match + "\"";
+        String where = "world.name like \"%" + match + "%\" or " +
+                        "world.municipality like \"%" + match + "%\" or " +
+                        "region.name like \"%" + match + "%\" or " +
+                        "country.name like \"%" + match + "%\"";
         String sql = "select " + columns + " from world " + joins + " where " + where + ";";
 
         DBConnection dbc = new DBConnection();
