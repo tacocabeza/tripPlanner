@@ -44,6 +44,7 @@ export default class Atlas extends Component {
     this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
     this.onClickListItem = this.onClickListItem.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.prepareServerRequest = this.prepareServerRequest.bind(this);
 
     this.state = {
       distance: 0,
@@ -81,6 +82,9 @@ export default class Atlas extends Component {
                   <Button color="primary" onClick={this.recenterMap}>
                     Recenter
                   </Button>
+                  <Button color="primary" onClick={this.prepareServerRequest}>
+                    Distance
+                  </Button>
                   <DistanceForm setLocation={this.setLocation}/>
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </TabPane>
@@ -117,6 +121,7 @@ export default class Atlas extends Component {
           {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
           {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
           {this.getLine()}
+
         </Map>
     );
   }
@@ -124,24 +129,28 @@ export default class Atlas extends Component {
   renderDistance() {
     return(
       <InputGroup>
-        <Input type="text" value={"Distance: " + this.state.distance + "MI"}  disabled />
+        <Input type="text" value={"Distance: " + this.state.distance + "MI"} disabled/>
       </InputGroup>
     )
   }
 
   setLocation(location, state) {
     if (location == 1) {
+      this.setState({location2: this.state.location1})
       this.setState({location1: state});
     } else if (location == 2) {
       this.setState({location2: state});
     } else if (location == 3) {
       this.setState({mapLocation: state});
     }
+
+
   }
 
   onClickListItem(lat, lng) {
     this.toggle("1");
-    this.setState({location1: [lat, lng]});
+    this.setState({location2: this.state.location1})
+    this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({mapLocation: [lat, lng]});
   }
 
@@ -172,19 +181,25 @@ export default class Atlas extends Component {
 
   recenterMap(){
     this.setState({mapLocation: this.state.mapCenter, mapZoom: 15})
+    this.setState({location1:{"lat": this.state.mapCenter[0], "lng":this.state.mapCenter[1]}})
   }
 
   getLine(){
-    if(this.state.markerPosition && this.state.mapCenter){
+    if(this.state.location2){
       return(
-        <Polyline color="#CC5430" positions={[this.state.markerPosition, this.state.mapCenter]} />
+        <Polyline color="#CC5430" positions={[this.state.location2, this.state.location1]} />
+      );
+    }
+    else if (this.state.location1) {
+      return(
+        <Polyline color="#CC5430" positions={[this.state.location1, this.state.mapCenter]} />
       );
     }
   }
 
   setMarker(mapClickInfo) {
-    this.setState({markerPosition: mapClickInfo.latlng});
-    this.requestDistance();
+    this.setState({location2: this.state.location1})
+    this.setState({location1: mapClickInfo.latlng})
   }
 
   getMarker() {
@@ -194,36 +209,45 @@ export default class Atlas extends Component {
       }
     };
 
-    if (this.state.markerPosition) {
+    if (this.state.location1) {
       return (
-        <Marker ref={initMarker} position={this.state.markerPosition} icon={GOLD_MARKER_ICON}>
-          <Popup offset={[0, -18]} autoPan={false} className="font-weight-bold">{this.getStringMarkerPosition()}</Popup>
+        <Marker ref={initMarker} position={this.state.location1} icon={GOLD_MARKER_ICON}>
         </Marker>
       );
     }
   }
 
   getStringMarkerPosition() {
-    return this.state.markerPosition.lat.toFixed(2) + ', ' + this.state.markerPosition.lng.toFixed(2);
+    return this.state.location1.lat.toFixed(2) + ', ' + this.state.location1.lng.toFixed(2);
   }
-  requestDistance() {
-    if(this.state.markerPosition){
+
+  prepareServerRequest()
+  {
+    if(this.state.location2)
+    {
+        this.requestDistance(this.state.location1,this.state.location2)
+    }
+
+    else
+    {
+        this.requestDistance(this.state.location1,{"lat":this.state.mapCenter[0], "lng":this.state.mapCenter[1]});
+    }
+  }
+  requestDistance(place1,place2) {
       sendServerRequest({
                         "requestType"    : "distance",
                         "requestVersion" : 2,
-                        "place1"         : {"latitude":  this.state.mapCenter[0].toString(),
-                                            "longitude": this.state.mapCenter[1].toString()},
-                        "place2"         : {"latitude":  this.state.markerPosition.lat.toString(),
-                                            "longitude": this.state.markerPosition.lng.toString()},
+                        "place1"         : {"latitude":  place1.lat.toString(),
+                                            "longitude": place1.lng.toString()},
+                        "place2"         : {"latitude":  place2.lat.toString(),
+                                            "longitude": place2.lng.toString()},
                         "earthRadius"    : 3959.0
                       }, this.props.serverPort)
       .then(dist => {
         if (dist) { this.processDistanceResponse(dist.data); }
         else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
       });
-    }
   }
-
   processDistanceResponse(distResponse) {
 
     if(!isJsonResponseValid(distResponse, distanceSchema)) {
@@ -233,11 +257,9 @@ export default class Atlas extends Component {
       this.processServerDistanceSuccess(distResponse);
     }
   }
-
   processServerDistanceSuccess(dist) {
     this.setState({distance: dist.distance});
   }
-
   processServerDistanceError(message) {
     LOG.error(message);
   }
