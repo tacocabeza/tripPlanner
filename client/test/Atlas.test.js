@@ -26,7 +26,7 @@ function testMarkerIsRenderedOnClick() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
 
-  let actualMarkerPosition = atlas.state().markerPosition;
+  let actualMarkerPosition = atlas.state().location1;
   let expectedMarkerPosition = null;
 
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
@@ -34,7 +34,7 @@ function testMarkerIsRenderedOnClick() {
   let latlng = {lat: 0, lng: 0};
   simulateOnClickEvent(atlas, {latlng: latlng});
 
-  expect(atlas.state().markerPosition).toEqual(latlng);
+  expect(atlas.state().location1).toEqual(latlng);
   // expect(atlas.find('Marker')).toEqual(1); ??
 }
 
