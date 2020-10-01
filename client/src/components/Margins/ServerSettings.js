@@ -25,9 +25,33 @@ export default class ServerSettings extends Component {
                 <Modal isOpen={this.props.isOpen} toggle={() => this.props.toggleOpen()}>
                     <ModalHeader toggle={() => this.props.toggleOpen()}>Server Connection</ModalHeader>
                     {this.renderSettings(this.getCurrentServerName())}
+                    {this.renderConfig(this.getCurrentServerSettings())}
                     {this.renderActions()}
                 </Modal>
             </div>
+        );
+    }
+
+    renderConfig(configSettings) {
+        return (
+          <ModalBody>
+              <Row className="m-2">
+                  <Col xs={10}>
+                      requestType:
+                  </Col>
+                  <Col xs={20}>
+                      {configSettings.requestType}
+                  </Col>
+              </Row>
+              <Row className="m-2">
+                  <Col xs={10}>
+                      requestVersion:
+                  </Col>
+                  <Col xs={20}>
+                      {configSettings.requestVersion}
+                  </Col>
+              </Row>
+          </ModalBody>
         );
     }
 
@@ -93,10 +117,20 @@ export default class ServerSettings extends Component {
         return currentServerName;
     }
 
+    getCurrentServerSettings() {
+        let currentConfigSettings = this.props.serverSettings.serverConfig && this.state.validServer === null ?
+          {requestType: this.props.serverSettings.serverConfig.requestType, requestVersion:  this.props.serverSettings.serverConfig.requestVersion} :
+          {requestVersion: "", requestType: ""};
+        if (this.state.config && Object.keys(this.state.config).length > 0) {
+            currentConfigSettings = {requestVersion: this.state.config.requestVersion, requestType: this.state.config.requestType};
+        }
+        return currentConfigSettings;
+    }
+
     updateInput(value) {
         this.setState({inputText: value}, () => {
             if (this.shouldAttemptConfigRequest(value)) {
-                sendServerRequest({requestType: "config", requestVersion: 1}, value)
+                sendServerRequest({requestType: "config", requestVersion: 2}, value)
                     .then(config => {
                         if (config) { this.processConfigResponse(config.data) }
                         else { this.setState({validServer: true, config: config}); }
