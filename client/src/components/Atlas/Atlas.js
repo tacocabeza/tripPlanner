@@ -124,7 +124,7 @@ export default class Atlas extends Component {
   renderDistance() {
     return(
       <InputGroup>
-        <Input type="text" value={"Distance: " + this.state.distance + "MI"}  />
+        <Input type="text" value={"Distance: " + this.state.distance + "MI"}  disabled />
       </InputGroup>
     )
   }
