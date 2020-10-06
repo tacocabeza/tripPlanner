@@ -178,5 +178,51 @@ Atlas Children
 
 ####
 # Sprint 3
+
+#### User Interface
+
+![base](images/sprint3ui.png)
+
+This interface will be created for the new 'Create Trip' tab in our application.
+As shown in this diagram, there will be an input box at the top for the user to enter a name for their trip,
+alongside buttons to save the trip and load other trips. Below this, there will be a list of the locations with
+their distances from each other shown between them. Each location will have a subtraction icon that can be used
+to remove them, and there will be a button at the bottom to add a new location.
+
+#### Component Diagram
+
+![base](images/ComponentHeirarchyV3.png)
+
+As before, our component heirarchy for the application shows a top level App component with 4 children.
+* Header: renders an icon and a team name in the top banner.
+* Footer: renders the current server connection in the bottom footer.
+* Atlas: renders a map and has four children that extend the function of that map.
+* About: renders information about the team.
+Atlas Children
+* Navigation: renders a tab system that allows the user to switch between different tabs to keep the UI clean.
+* Search: renders a search bar that allows users to find places and then click on one to go to that location on the map.
+* Distance Form: renders a form below the map that allows users to find the distance between two locations on the map.
+* Create Trip: renders the trip management UI explained and shown in the above User Interface section.
+
+#### Class Diagram
+
+![base](images/ClassDiagramV3.png)
+
+The classes in purple represent the classes specific to this application.  
+* WebApplication processes command line parameters and creates MicroServer.
+* MicroServer start a web server on the given port, configures the server for security, static files, and APIs for different types of requests, and processes the requests as they arrive.
+* JSONValidator verifies a request is properly formatted before attempting to process it using JSON Schemas.
+* RequestConfig is a specific request that allows the server to respond with its configuration to allow interoperability between clients and servers. 
+* RequestHeader defines the basic components of all requests.
+* RequestDistance responds to the clients request with a calculated distance
+* RequestFind handles find requests
+* RequestTrip responds to the client's request with a JSON trip.
+
+The classes in green represent the external libraries used by the application.
+Often there are several related classes but we've listed only one to simplify the diagram.
+* GSON converts a JSON string into a Java object instance.
+* Spark provides the necessary web support for our MicroServer.
+* JSON provides libraries to manipulate JSON objects using the JSON Schema libraries.
+* Logger provides a centralized logging facility used in all of the application classes.
 # Sprint 4 
 # Sprint 5
