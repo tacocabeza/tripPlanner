@@ -8,34 +8,36 @@ public class Place {
     public String name;
     public String type;
 
-    private Double latitude;
-    private Double longitude;
+    private String latitude;
+    private String longitude;
 
-    public Place(Double latitude, Double longitude){
+    public Place(String latitude, String longitude){
         this.setLatitudeLongitude(latitude, longitude);
     }
 
-    public Place(Double latitude, Double longitude, Integer altitude){
+    public Place(String latitude, String longitude, Integer altitude){
         this.setLatitudeLongitude(latitude, longitude);
         this.altitude = altitude;
     }
 
-    public Double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitudeLongitude(Double latitude, Double longitude) {
-        if(latitude < -90 || latitude > 90){
+    public void setLatitudeLongitude(String latitude, String longitude) {
+        Double dlat = new Double(latitude);
+        Double dlon = new Double(longitude);
+        if(dlat < -90 || dlat > 90){
             throw new IllegalArgumentException("Latitude " + latitude + " is not in range [-90.0,90.0]");
         }
         this.latitude = latitude;
-        if(longitude < -180 || longitude > 180){
+        if(dlon < -180 || dlon > 180){
             throw new IllegalArgumentException("Longitude " + longitude + " is not in range [-180.0,180.0]");
         }
         this.longitude = longitude;
     }
 
-    public Double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 

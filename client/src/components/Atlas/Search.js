@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {InputGroupAddon, Input} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
-import {sendServerRequest} from "../../utils/restfulAPI";
+import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
+import * as findResponseSchema from "../../../schemas/ResponseFind.json";
+import {LOG} from "../../utils/constants";
 
 export default class Search extends Component {
     constructor(props) {
@@ -71,7 +73,7 @@ export default class Search extends Component {
     formatInputText(s) {
         // replace all non-alphanumeric characters with _
         let regex = new RegExp("[^a-zA-Z\\d]", "g");
-        return s.replaceAll(regex,"_");
+        return s.replace(regex,"_");
     }
 
     renderResults() {
@@ -101,7 +103,13 @@ export default class Search extends Component {
     }
 
     processFindResponse(response) {
-        this.setState({results: response});
+        if(isJsonResponseValid(response, findResponseSchema)) {
+            this.setState({results: response});
+        } else {
+            LOG.error("Find Response Not Valid. Check The Server.");
+            LOG.error("\n\n" + JSON.stringify(response) + "\n\n");
+            this.props.createSnackBar("The Response From the Server Is Not Valid. Please Try Again Later.");
+        }
     }
 
 }

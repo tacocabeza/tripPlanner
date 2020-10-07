@@ -82,8 +82,8 @@ public class Find {
 
         try {
             while (results.next()) {
-                double latitude = results.getDouble("latitude");
-                double longitude = results.getDouble("longitude");
+                String latitude = results.getString("latitude");
+                String longitude = results.getString("longitude");
                 int altitude = results.getInt("altitude");
 
                 Place p = new Place(latitude, longitude, altitude);
