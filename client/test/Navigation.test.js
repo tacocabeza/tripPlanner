@@ -12,20 +12,35 @@ const startProperties = {
   toggle: jest.fn(),
 }
 
-function testGoToTab() {
+function testMap() {
+  testNavToTab("1", 0);
+}
+
+function testSearch() {
+  testNavToTab("2", 1);
+}
+
+function testTrip() {
+  testNavToTab("3", 2);
+}
+
+function testNavToTab(tabString, tabInt) {
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const nav = atlas.find('Navigation').at(0);
-  let expectedTab = "3";
-  simulateTabClick(nav);
+  let expectedTab = tabString;
+  simulateTabClick(nav, 1);
+  simulateTabClick(nav, tabInt);
   atlas.update();
   let actualTab = atlas.state().currentTab;
   expect(actualTab).toEqual(expectedTab);
 }
 
-function simulateTabClick(reactWrapper) {
+function simulateTabClick(reactWrapper, tab) {
   const component = reactWrapper.find('Nav').at(0);
-  component.find('#search').at(2).simulate('click');
+  component.find('NavLink').at(tab).simulate('click');
   reactWrapper.update();
 }
 
-test("Testing that clicking a tab navigates to the correct tab in the UI", testGoToTab);
+test("Testing that clicking Map tab goes to the map", testMap);
+test("Testing that clicking Search tab goes to Search", testSearch);
+test("Testing that clicking Trip tab goes to Trip", testTrip);
