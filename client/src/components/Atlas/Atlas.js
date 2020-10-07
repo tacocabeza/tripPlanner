@@ -3,7 +3,6 @@ import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane} fro
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import { LOG } from "../../utils/constants";
 
 import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
 
@@ -232,7 +231,6 @@ export default class Atlas extends Component {
   processDistanceResponse(distResponse) {
     if(!isJsonResponseValid(distResponse, distanceSchema)) {
       this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
-
     } else {
       this.processServerDistanceSuccess(distResponse);
     }
@@ -243,6 +241,6 @@ export default class Atlas extends Component {
   }
 
   processServerDistanceError(message) {
-    LOG.error(message);
+    this.props.createSnackBar(message);
   }
 }
