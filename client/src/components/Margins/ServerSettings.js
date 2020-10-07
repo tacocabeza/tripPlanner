@@ -36,7 +36,7 @@ export default class ServerSettings extends Component {
         return (
           <ModalBody>
               <Row className="m-2">
-                  <Col xs={10}>
+                  <Col xs={5}>
                       requestType:
                   </Col>
                   <Col xs={20}>
@@ -44,11 +44,19 @@ export default class ServerSettings extends Component {
                   </Col>
               </Row>
               <Row className="m-2">
-                  <Col xs={10}>
+                  <Col xs={5}>
                       requestVersion:
                   </Col>
                   <Col xs={20}>
                       {configSettings.requestVersion}
+                  </Col>
+              </Row>
+              <Row className="m-2">
+                  <Col xs={5}>
+                      supportedRequests:
+                  </Col>
+                  <Col xs={20}>
+                      {configSettings.supportedRequests? configSettings.supportedRequests.toString(): ""}
                   </Col>
               </Row>
           </ModalBody>
@@ -119,10 +127,14 @@ export default class ServerSettings extends Component {
 
     getCurrentServerSettings() {
         let currentConfigSettings = this.props.serverSettings.serverConfig && this.state.validServer === null ?
-          {requestType: this.props.serverSettings.serverConfig.requestType, requestVersion:  this.props.serverSettings.serverConfig.requestVersion} :
-          {requestVersion: "", requestType: ""};
+          {requestType: this.props.serverSettings.serverConfig.requestType,
+              requestVersion:  this.props.serverSettings.serverConfig.requestVersion,
+          supportedRequests: this.props.serverSettings.serverConfig.supportedRequests} :
+          {requestVersion: "", requestType: "", supportedRequests: []};
         if (this.state.config && Object.keys(this.state.config).length > 0) {
-            currentConfigSettings = {requestVersion: this.state.config.requestVersion, requestType: this.state.config.requestType};
+            currentConfigSettings = {requestVersion: this.state.config.requestVersion,
+                                     requestType: this.state.config.requestType,
+                                     supportedRequests: this.state.config.supportedRequests};
         }
         return currentConfigSettings;
     }
