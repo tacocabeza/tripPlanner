@@ -41,6 +41,7 @@ export default class Atlas extends Component {
     this.mapMovement = this.mapMovement.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
+    this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
 
     this.state = {
