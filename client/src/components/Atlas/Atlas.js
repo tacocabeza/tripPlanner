@@ -34,16 +34,14 @@ export default class Atlas extends Component {
   constructor(props) {
     super(props);
 
-    this.setMarker = this.setMarker.bind(this);
+    this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
-    this.requestDistance = this.requestDistance.bind(this);
-    this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
-    this.prepareServerRequest = this.prepareServerRequest.bind(this);
+    this.processDistanceResponse = this.processDistanceResponse.bind(this);
 
     this.state = {
       distance: 0,
@@ -114,7 +112,7 @@ export default class Atlas extends Component {
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
             center={this.state.currentMapCenter}
-            onClick={this.setMarker}
+            onClick={this.setMarkerOnClick}
             onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
@@ -187,7 +185,7 @@ export default class Atlas extends Component {
     }
   }
 
-  setMarker(mapClickInfo) {
+  setMarkerOnClick(mapClickInfo) {
     this.setState({location2: this.state.location1})
     this.setState({location1: mapClickInfo.latlng})
   }
@@ -201,13 +199,10 @@ export default class Atlas extends Component {
   }
 
   prepareServerRequest() {
-    if(this.state.location2)
-    {
+    if(this.state.location2) {
         this.requestDistance(this.state.location1,this.state.location2)
     }
-
-    else
-    {
+    else {
         this.requestDistance(this.state.location1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
     }
   }
@@ -230,17 +225,10 @@ export default class Atlas extends Component {
 
   processDistanceResponse(distResponse) {
     if(!isJsonResponseValid(distResponse, distanceSchema)) {
-      this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
+      this.props.createSnackBar("Distance Response Not Valid. Check The Server.");
     } else {
-      this.processServerDistanceSuccess(distResponse);
+      this.setState({distance: distResponse.distance});
     }
   }
 
-  processServerDistanceSuccess(dist) {
-    this.setState({distance: dist.distance});
-  }
-
-  processServerDistanceError(message) {
-    this.props.createSnackBar(message);
-  }
 }
