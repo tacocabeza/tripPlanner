@@ -18,6 +18,7 @@ import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
 import Navigation from './Navigation.js';
 import DistanceForm from './DistanceForm.js';
+import Trip from './Trip.js';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -92,6 +93,9 @@ export default class Atlas extends Component {
                   <Search createSnackBar={this.props.createSnackBar}
                           serverSettings={this.state.serverSettings}
                           onClickListItem={this.onClickListItem}/>
+                </TabPane>
+                <TabPane tabId="3">
+                  <Trip/>
                 </TabPane>
               </TabContent>
             </Col>
