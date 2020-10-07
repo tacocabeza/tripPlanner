@@ -57,7 +57,7 @@ export default class ServerSettings extends Component {
                       supportedRequests:
                   </Col>
                   <Col xs={20}>
-                      {configSettings.supportedRequests.toString()}
+                      {configSettings.supportedRequests? configSettings.supportedRequests.toString(): ""}
                   </Col>
               </Row>
           </ModalBody>
@@ -131,7 +131,7 @@ export default class ServerSettings extends Component {
           {requestType: this.props.serverSettings.serverConfig.requestType,
               requestVersion:  this.props.serverSettings.serverConfig.requestVersion,
           supportedRequests: this.props.serverSettings.serverConfig.supportedRequests} :
-          {requestVersion: "", requestType: "", supportedRequests: ""};
+          {requestVersion: "", requestType: "", supportedRequests: []};
         if (this.state.config && Object.keys(this.state.config).length > 0) {
             currentConfigSettings = {requestVersion: this.state.config.requestVersion,
                                      requestType: this.state.config.requestType,
