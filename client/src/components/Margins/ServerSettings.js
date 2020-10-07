@@ -4,7 +4,6 @@ import { Button, Col, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } f
 import { sendServerRequest, isJsonResponseValid } from "../../utils/restfulAPI";
 
 import * as configSchema from "../../../schemas/ResponseConfig";
-import {forEach} from "react-bootstrap/ElementChildren";
 
 export default class ServerSettings extends Component {
 
