@@ -48,16 +48,16 @@
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *sum*  | *sum* | 
+| Epics | *3* | *count* |
+| Tasks |  *29*   | *count* | 
+| Story Points |  *37*  | *sum* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *10/7/20* | *4* | *5* | *None* | 
 
 
 ## Review
