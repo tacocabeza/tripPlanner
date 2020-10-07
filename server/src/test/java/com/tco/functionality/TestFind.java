@@ -32,7 +32,7 @@ public class TestFind {
     @DisplayName("Test Empty Match")
     public void testEmptyMatch(){
         ArrayList<Place> places = findNoMatch.getPlaces();
-        assertEquals(1, places.size());
+        assertEquals(4, places.size());
     }
 
     @Test

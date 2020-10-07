@@ -16,17 +16,9 @@ public class Find {
     private int limit;
     private int found;
     private ArrayList<Place> places;
-    private boolean feelingLucky;
 
     public Find(String match, int limit){
-        // an empty match String triggers I'm Feeling Lucky behaviour (1 random result)
-        if(match == null || match.isEmpty()){
-            this.limit = 1;
-            this.feelingLucky = true;
-        } else {
-            this.limit = limit;
-            this.feelingLucky = false;
-        }
+        this.limit = limit;
         this.match = formatMatch(match);
         if(this.limit == 0){
             this.limit = MAX_LIMIT;
@@ -58,22 +50,8 @@ public class Find {
 
     public void populatePlaces(){
         if(places == null){
-            if(this.feelingLucky){
-                queryFeelingLucky();
-            } else {
-                queryPlaces();
-            }
+            queryPlaces();
         }
-    }
-
-    private void queryFeelingLucky(){
-        String columns = "world.name, latitude, longitude, world.id, altitude, municipality, type";
-        String sql = "select " + columns + " from world order by rand() limit 1;";
-
-        DBConnection dbc = new DBConnection();
-        ResultSet results = dbc.querySQL(sql);
-
-        setResultFields(results);
     }
 
     private void queryPlaces(){
@@ -94,11 +72,7 @@ public class Find {
 
     private void setResultFields(ResultSet results){
         ArrayList<Place> newPlaces = parsePlaces(results);
-        if(this.feelingLucky){
-            this.found = 1;
-        } else {
-            this.found = newPlaces.size();
-        }
+        this.found = newPlaces.size();
         int subListLimit = Math.min(newPlaces.size(),this.limit);
         this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
     }
