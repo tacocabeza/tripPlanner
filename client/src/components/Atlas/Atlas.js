@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Form, FormGroup, Input, Row, TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane} from 'reactstrap';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
-import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import { LOG } from "../../utils/constants";
+import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
 
-import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
 
-import icon from 'leaflet/dist/images/marker-icon.png';
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
 import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
@@ -36,22 +34,21 @@ export default class Atlas extends Component {
   constructor(props) {
     super(props);
 
-    this.setMarker = this.setMarker.bind(this);
+    this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
-    this.requestDistance = this.requestDistance.bind(this);
-    this.processServerDistanceSuccess = this.processServerDistanceSuccess.bind(this);
-    this.onClickListItem = this.onClickListItem.bind(this);
-    this.toggle = this.toggle.bind(this);
+    this.searchListItemClick = this.searchListItemClick.bind(this);
+    this.toggleTab = this.toggleTab.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
+    this.processDistanceResponse = this.processDistanceResponse.bind(this);
 
     this.state = {
       distance: 0,
       markerPosition: null,
-      mapCenter: MAP_CENTER_DEFAULT,
-      mapLocation: MAP_CENTER_DEFAULT,
+      originalMapCenter: MAP_CENTER_DEFAULT,
+      currentMapCenter: MAP_CENTER_DEFAULT,
       mapZoom: 15,
       location1: null,
       location2: null,
@@ -64,7 +61,7 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggle(tab) {
+  toggleTab(tab) {
     if (this.state.currentTab != tab) {
       this.setState({currentTab: tab})
     }
@@ -76,7 +73,7 @@ export default class Atlas extends Component {
         <Container>
           <Row>
             <Col sm={12} md={{size: 10, offset: 1}}>
-              <Navigation toggle={this.toggle}/>
+              <Navigation toggle={this.toggleTab}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
                   {this.renderLeafletMap()}
@@ -92,7 +89,10 @@ export default class Atlas extends Component {
                 <TabPane tabId="2">
                   <Search createSnackBar={this.props.createSnackBar}
                           serverSettings={this.state.serverSettings}
-                          onClickListItem={this.onClickListItem}/>
+                          onClickListItem={this.searchListItemClick}/>
+                </TabPane>
+                <TabPane tabId="3">
+                  <Trip/>
                 </TabPane>
                 <TabPane tabId="3">
                   <Trip/>
@@ -115,17 +115,15 @@ export default class Atlas extends Component {
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
-            center={this.state.mapLocation}
-            onClick={this.setMarker}
+            center={this.state.currentMapCenter}
+            onClick={this.setMarkerOnClick}
             onMoveEnd={this.mapMovement}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          <Marker position={this.state.mapCenter} icon={GREEN_MARKER_ICON}></Marker>
-          {this.getMarker()}
+          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
           {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
           {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
           {this.getLine()}
-
         </Map>
     );
   }
@@ -145,17 +143,15 @@ export default class Atlas extends Component {
     } else if (location == 2) {
       this.setState({location2: state});
     } else if (location == 3) {
-      this.setState({mapLocation: state});
+      this.setState({currentMapCenter: state});
     }
-
-
   }
 
-  onClickListItem(lat, lng) {
-    this.toggle("1");
+  searchListItemClick(lat, lng) {
+    this.toggleTab("1");
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
-    this.setState({mapLocation: [lat, lng]});
+    this.setState({currentMapCenter: [lat, lng]});
   }
 
   getGeolocation() {
@@ -164,28 +160,20 @@ export default class Atlas extends Component {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
-          self.setState({mapCenter: ORIGINAL_COORDS});
-          self.setState({mapLocation: ORIGINAL_COORDS});
+          self.setState({originalMapCenter: ORIGINAL_COORDS});
+          self.setState({currentMapCenter: ORIGINAL_COORDS});
         }
       );
     }
   }
 
-  placeMarker(location, icon) {
-    if (location) {
-      return (
-        <Marker position={location} icon={icon}></Marker>
-      )
-    }
-  }
-
   mapMovement(mapMovementInfo){
-    this.setState({mapLocation: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
+    this.setState({currentMapCenter: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
   }
 
   recenterMap(){
-    this.setState({mapLocation: this.state.mapCenter, mapZoom: 15})
-    this.setState({location1:{"lat": this.state.mapCenter[0], "lng":this.state.mapCenter[1]}})
+    this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
+    this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
   }
 
   getLine(){
@@ -196,47 +184,33 @@ export default class Atlas extends Component {
     }
     else if (this.state.location1) {
       return(
-        <Polyline color="#CC5430" positions={[this.state.location1, this.state.mapCenter]} />
+        <Polyline color="#CC5430" positions={[this.state.location1, this.state.originalMapCenter]} />
       );
     }
   }
 
-  setMarker(mapClickInfo) {
+  setMarkerOnClick(mapClickInfo) {
     this.setState({location2: this.state.location1})
     this.setState({location1: mapClickInfo.latlng})
   }
 
-  getMarker() {
-    const initMarker = ref => {
-      if (ref) {
-        ref.leafletElement.openPopup()
-      }
-    };
-
-    if (this.state.location1) {
+  placeMarker(location, icon) {
+    if (location) {
       return (
-        <Marker ref={initMarker} position={this.state.location1} icon={GOLD_MARKER_ICON}>
-        </Marker>
-      );
+        <Marker position={location} icon={icon}></Marker>
+      )
     }
   }
 
-  getStringMarkerPosition() {
-    return this.state.location1.lat.toFixed(2) + ', ' + this.state.location1.lng.toFixed(2);
-  }
-
-  prepareServerRequest()
-  {
-    if(this.state.location2)
-    {
+  prepareServerRequest() {
+    if(this.state.location2) {
         this.requestDistance(this.state.location1,this.state.location2)
     }
-
-    else
-    {
-        this.requestDistance(this.state.location1,{"lat":this.state.mapCenter[0], "lng":this.state.mapCenter[1]});
+    else {
+        this.requestDistance(this.state.location1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
     }
   }
+
   requestDistance(place1,place2) {
       sendServerRequest({
                         "requestType"    : "distance",
@@ -252,19 +226,13 @@ export default class Atlas extends Component {
         else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
       });
   }
+
   processDistanceResponse(distResponse) {
-
     if(!isJsonResponseValid(distResponse, distanceSchema)) {
-      this.processServerDistanceError("Distance Response Not Valid. Check The Server.");
-
+      this.props.createSnackBar("Distance Response Not Valid. Check The Server.");
     } else {
-      this.processServerDistanceSuccess(distResponse);
+      this.setState({distance: distResponse.distance});
     }
   }
-  processServerDistanceSuccess(dist) {
-    this.setState({distance: dist.distance});
-  }
-  processServerDistanceError(message) {
-    LOG.error(message);
-  }
+
 }
