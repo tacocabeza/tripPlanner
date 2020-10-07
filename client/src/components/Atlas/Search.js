@@ -49,6 +49,9 @@ export default class Search extends Component {
                     <Button placeholder={"SEARCH"} onClick={this.sendFindRequest}>
                         <SearchIcon fontSize={"small"} className={"tco-text"}/>
                     </Button>
+                    <Button color="primary" onClick={this.sendFindRequest}>
+                        FeelingLucky?
+                    </Button>
                 </InputGroupAddon>
             </InputGroup>
         </div>;
@@ -74,11 +77,11 @@ export default class Search extends Component {
     renderResults() {
         return (
             <ListGroup variant="flush">
-                  {this.state.results.places.map(result => (
+                {this.state.results.places.map(result => (
                     <ListGroup.Item action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude)}}>
                         {result.name}
                     </ListGroup.Item>
-                  ))}
+                ))}
             </ListGroup>
         );
     }
@@ -100,4 +103,5 @@ export default class Search extends Component {
     processFindResponse(response) {
         this.setState({results: response});
     }
+
 }
