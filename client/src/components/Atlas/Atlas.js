@@ -147,7 +147,7 @@ export default class Atlas extends Component {
   }
 
   searchListItemClick(lat, lng) {
-    this.toggle("1");
+    this.toggleTab("1");
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});
