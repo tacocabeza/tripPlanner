@@ -35,31 +35,23 @@ export default class ServerSettings extends Component {
     renderConfig(configSettings) {
         return (
           <ModalBody>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      requestType:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.requestType}
-                  </Col>
-              </Row>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      requestVersion:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.requestVersion}
-                  </Col>
-              </Row>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      supportedRequests:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.supportedRequests? configSettings.supportedRequests.toString(): ""}
-                  </Col>
-              </Row>
+              {this.makeConfigBoxes("requestType", configSettings.requestType)}
+              {this.makeConfigBoxes("requestVersion", configSettings.requestVersion)}
+              {this.makeConfigBoxes("supportedRequests", configSettings.supportedRequests)}
           </ModalBody>
+        );
+    }
+
+    makeConfigBoxes(name, information) {
+        return (
+          <Row className="m-2">
+            <Col xs={5}>
+                {name}:
+            </Col>
+            <Col xs={20}>
+                {information? information.toString(): ""}
+            </Col>
+          </Row>
         );
     }
 
