@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane} from 'reactstrap';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
+import {PROTOCOL_VERSION} from "../../utils/constants";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
 
 import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
@@ -211,7 +212,7 @@ export default class Atlas extends Component {
   requestDistance(place1,place2) {
       sendServerRequest({
                         "requestType"    : "distance",
-                        "requestVersion" : 2,
+                        "requestVersion" : PROTOCOL_VERSION,
                         "place1"         : {"latitude":  place1.lat.toString(),
                                             "longitude": place1.lng.toString()},
                         "place2"         : {"latitude":  place2.lat.toString(),

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {InputGroupAddon, Input} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
+import {PROTOCOL_VERSION} from "../../utils/constants";
 import {sendServerRequest} from "../../utils/restfulAPI";
 
 export default class Search extends Component {
@@ -25,7 +26,7 @@ export default class Search extends Component {
                 "match": "",
                 "places": [],
                 "requestType": "find",
-                "requestVersion": 2
+                "requestVersion": {PROTOCOL_VERSION}
             },
             serverSettings: this.props.serverSettings
         }
@@ -88,7 +89,7 @@ export default class Search extends Component {
 
     sendFindRequest() {
         if(this.state.inputText != null && this.state.inputText != "") {
-            sendServerRequest({requestType: "find", requestVersion: 2, match: this.state.inputText},
+            sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.state.inputText},
                 this.state.serverSettings.serverPort)
                 .then(find => {
                     if (find) {
