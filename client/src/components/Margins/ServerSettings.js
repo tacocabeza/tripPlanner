@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Col, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 
+import {PROTOCOL_VERSION} from "../../utils/constants";
 import { sendServerRequest, isJsonResponseValid } from "../../utils/restfulAPI";
 
 import * as configSchema from "../../../schemas/ResponseConfig";
@@ -35,31 +36,23 @@ export default class ServerSettings extends Component {
     renderConfig(configSettings) {
         return (
           <ModalBody>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      requestType:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.requestType}
-                  </Col>
-              </Row>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      requestVersion:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.requestVersion}
-                  </Col>
-              </Row>
-              <Row className="m-2">
-                  <Col xs={5}>
-                      supportedRequests:
-                  </Col>
-                  <Col xs={20}>
-                      {configSettings.supportedRequests? configSettings.supportedRequests.toString(): ""}
-                  </Col>
-              </Row>
+              {this.makeConfigBoxes("requestType", configSettings.requestType)}
+              {this.makeConfigBoxes("requestVersion", configSettings.requestVersion)}
+              {this.makeConfigBoxes("supportedRequests", configSettings.supportedRequests)}
           </ModalBody>
+        );
+    }
+
+    makeConfigBoxes(name, information) {
+        return (
+          <Row className="m-2">
+            <Col xs={5}>
+                {name}:
+            </Col>
+            <Col xs={20}>
+                {information? information.toString(): ""}
+            </Col>
+          </Row>
         );
     }
 
@@ -142,7 +135,7 @@ export default class ServerSettings extends Component {
     updateInput(value) {
         this.setState({inputText: value}, () => {
             if (this.shouldAttemptConfigRequest(value)) {
-                sendServerRequest({requestType: "config", requestVersion: 2}, value)
+                sendServerRequest({requestType: "config", requestVersion: PROTOCOL_VERSION}, value)
                     .then(config => {
                         if (config) { this.processConfigResponse(config.data) }
                         else { this.setState({validServer: true, config: config}); }

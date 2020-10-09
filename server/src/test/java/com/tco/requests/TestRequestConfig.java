@@ -44,6 +44,6 @@ public class TestRequestConfig {
   @DisplayName("Supported Requests")
   public void testSupportedRequests() {
     List<String> supportedRequests = conf.getSupportedRequests();
-    assertEquals(3, supportedRequests.size());
+    assertEquals(4, supportedRequests.size());
   }
 }

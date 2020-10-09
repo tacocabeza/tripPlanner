@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {InputGroupAddon, Input} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
-import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
-import * as findResponseSchema from "../../../schemas/ResponseFind.json";
-import {LOG} from "../../utils/constants";
+import {PROTOCOL_VERSION} from "../../utils/constants";
+import {sendServerRequest} from "../../utils/restfulAPI";
 
 export default class Search extends Component {
     constructor(props) {
@@ -27,7 +26,7 @@ export default class Search extends Component {
                 "match": "",
                 "places": [],
                 "requestType": "find",
-                "requestVersion": 2
+                "requestVersion": {PROTOCOL_VERSION}
             },
             serverSettings: this.props.serverSettings
         }
@@ -73,14 +72,14 @@ export default class Search extends Component {
     formatInputText(s) {
         // replace all non-alphanumeric characters with _
         let regex = new RegExp("[^a-zA-Z\\d]", "g");
-        return s.replace(regex,"_");
+        return s.replaceAll(regex,"_");
     }
 
     renderResults() {
         return (
             <ListGroup variant="flush">
                 {this.state.results.places.map(result => (
-                    <ListGroup.Item action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude)}}>
+                    <ListGroup.Item key={result.id} action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude)}}>
                         {result.name}
                     </ListGroup.Item>
                 ))}
@@ -90,7 +89,7 @@ export default class Search extends Component {
 
     sendFindRequest() {
         if(this.state.inputText != null && this.state.inputText != "") {
-            sendServerRequest({requestType: "find", requestVersion: 2, match: this.state.inputText},
+            sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.state.inputText},
                 this.state.serverSettings.serverPort)
                 .then(find => {
                     if (find) {
@@ -103,13 +102,7 @@ export default class Search extends Component {
     }
 
     processFindResponse(response) {
-        if(isJsonResponseValid(response, findResponseSchema)) {
-            this.setState({results: response});
-        } else {
-            LOG.error("Find Response Not Valid. Check The Server.");
-            LOG.error("\n\n" + JSON.stringify(response) + "\n\n");
-            this.props.createSnackBar("The Response From the Server Is Not Valid. Please Try Again Later.");
-        }
+        this.setState({results: response});
     }
 
 }

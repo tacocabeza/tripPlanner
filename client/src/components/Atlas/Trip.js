@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import {InputGroupAddon, Input} from "reactstrap";
 
-export default class Search extends Component {
+export default class Trip extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      tripName: '',
+    }
   }
 
   render() {
     return(
-      <h1>Test</h1>
+      <Input
+        type="text"
+        name="tripname"
+        placeholder="Trip Name"
+        value={this.state.tripName}
+        onChange={e => this.setState({tripName: e.target.value})}/>
     );
   }
 }
