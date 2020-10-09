@@ -94,9 +94,6 @@ export default class Atlas extends Component {
                 <TabPane tabId="3">
                   <Trip/>
                 </TabPane>
-                <TabPane tabId="3">
-                  <Trip/>
-                </TabPane>
               </TabContent>
             </Col>
           </Row>
