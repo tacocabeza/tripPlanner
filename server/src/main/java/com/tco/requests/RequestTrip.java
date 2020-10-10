@@ -4,6 +4,7 @@ import com.tco.misc.BadRequestException;
 
 public class RequestTrip extends RequestHeader{
 
+    Long [] distances;
     public RequestTrip(){
         this.requestType = "trip";
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
@@ -11,7 +12,7 @@ public class RequestTrip extends RequestHeader{
 
 
     @Override
-    public void buildResponse() throws BadRequestException {
-
+    public void buildResponse(){
+        distances = new Long[]{1L,2L,3L};
     }
 }
