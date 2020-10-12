@@ -73,14 +73,14 @@ export default class Atlas extends Component {
   }
 
   toggleTab(tab) {
+    this.setState({isSearchOpen: false})
+    this.setState({isDistanceOpen: false})
     if ((tab == 1 || tab == 2) && this.state.currentTab != tab) {
-      this.setState({isSearchOpen: false})
-      this.setState({isDistanceOpen: false})
       this.setState({currentTab: tab})
     } else if (tab == 3 && this.state.currentTab == 1) {
-      {this.openCollapse(this.state.isDistanceOpen, 'distance')}
+      this.openCollapse(this.state.isDistanceOpen, "distance")
     } else if (tab == 4 && this.state.currentTab == 1) {
-      {this.openCollapse(this.state.isSearchOpen, 'search')}
+      this.openCollapse(this.state.isSearchOpen, "search")
     }
   }
 
@@ -148,13 +148,10 @@ export default class Atlas extends Component {
 
   openCollapse(isOpen, collapse) {
     if (isOpen) {
-      this.setState({isDistanceOpen: false})
-      this.setState({isSearchOpen: false})
+      //do nothing
     } else if (collapse == 'distance') {
-      this.setState({isSearchOpen: false})
       this.setState({isDistanceOpen: true})
     } else if (collapse == 'search') {
-      this.setState({isDistanceOpen: false})
       this.setState({isSearchOpen: true})
     }
   }
@@ -179,7 +176,7 @@ export default class Atlas extends Component {
   }
 
   searchListItemClick(lat, lng) {
-    this.toggleTab("1");
+    this.toggleTab("4");
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});
