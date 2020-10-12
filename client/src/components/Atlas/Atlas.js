@@ -72,15 +72,13 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggleTab(tab) {
+  toggleTab(isTab, tab) {
     this.setState({isSearchOpen: false})
     this.setState({isDistanceOpen: false})
-    if (tab == 1 || tab == 2) {
+    if (isTab && this.state.currentTab != tab) {
       this.setState({currentTab: tab})
-    } else if (tab == 3 && this.state.currentTab == 1) {
-      this.openCollapse(this.state.isDistanceOpen, "distance")
-    } else if (tab == 4 && this.state.currentTab == 1) {
-      this.openCollapse(this.state.isSearchOpen, "search")
+    } else if (this.state.currentTab == 1) {
+      this.openCollapse(tab)
     }
   }
 
@@ -146,13 +144,15 @@ export default class Atlas extends Component {
     );
   }
 
-  openCollapse(isOpen, collapse) {
-    if (isOpen) {
-      //do nothing
-    } else if (collapse == 'distance') {
-      this.setState({isDistanceOpen: true})
-    } else if (collapse == 'search') {
-      this.setState({isSearchOpen: true})
+  openCollapse(collapse) {
+    if (collapse == 3) {
+      if (!this.state.isDistanceOpen) {
+        this.setState({isDistanceOpen: true})
+      }
+    } else if (collapse == 4) {
+      if (!this.state.isSearchOpen) {
+        this.setState({isSearchOpen: true})
+      }
     }
   }
 
