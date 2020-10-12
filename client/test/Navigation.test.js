@@ -21,11 +21,11 @@ function testTrip() {
 }
 
 function testDistance() {
-  testOpenCollapse(1);
+  testOpenCollapse(2);
 }
 
 function testSearch() {
-  testOpenCollapse(2);
+  testOpenCollapse(1);
 }
 
 function testNavToTab(tabString, tabInt) {
@@ -47,9 +47,9 @@ function testOpenCollapse(tabInt) {
   simulateTabClick(nav, tabInt);
   atlas.update();
   let actualVal = null;
-  if (tabInt == 1) {
+  if (tabInt == 2) {
     actualVal = atlas.state().isDistanceOpen;
-  } else if (tabInt == 2) {
+  } else if (tabInt == 1) {
     actualVal = atlas.state().isSearchOpen;
   }
   expect(actualVal).toEqual(expectedVal);

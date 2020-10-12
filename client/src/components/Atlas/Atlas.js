@@ -77,7 +77,7 @@ export default class Atlas extends Component {
     this.setState({isDistanceOpen: false})
     if (isTab && this.state.currentTab != tab) {
       this.setState({currentTab: tab})
-    } else if (this.state.currentTab == 1) {
+    } else if (this.state.currentTab == '1') {
       this.openCollapse(tab)
     }
   }
