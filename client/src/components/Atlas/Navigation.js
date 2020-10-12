@@ -15,12 +15,17 @@ export default class Navigation extends Component {
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink onClick={() => { this.props.toggle('2'); }}>
+          <NavLink onClick={() => { this.props.toggle('3'); }}>
+            Distance
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink onClick={() => { this.props.toggle('4'); }}>
             Search
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink onClick={() => { this.props.toggle('3'); }}>
+          <NavLink onClick={() => { this.props.toggle('2'); }}>
             Create Trip
           </NavLink>
         </NavItem>
