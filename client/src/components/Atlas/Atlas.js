@@ -75,7 +75,7 @@ export default class Atlas extends Component {
   toggleTab(tab) {
     this.setState({isSearchOpen: false})
     this.setState({isDistanceOpen: false})
-    if ((tab == 1 || tab == 2) && this.state.currentTab != tab) {
+    if (tab == 1 || tab == 2) {
       this.setState({currentTab: tab})
     } else if (tab == 3 && this.state.currentTab == 1) {
       this.openCollapse(this.state.isDistanceOpen, "distance")
