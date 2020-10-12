@@ -73,28 +73,14 @@ export default class Atlas extends Component {
   }
 
   toggleTab(tab) {
-    if (tab == 1 || tab == 2) {
-      if (this.state.currentTab != tab) {
-        if (tab == 2) {
-          this.setState({isSearchOpen: false})
-          this.setState({isDistanceOpen: false})
-        }
-        this.setState({currentTab: tab})
-      }
+    if ((tab == 1 || tab == 2) && this.state.currentTab != tab) {
+      this.setState({isSearchOpen: false})
+      this.setState({isDistanceOpen: false})
+      this.setState({currentTab: tab})
     } else if (tab == 3 && this.state.currentTab == 1) {
-      if (this.state.isDistanceOpen) {
-        this.setState({isDistanceOpen: false})
-      } else {
-        this.setState({isSearchOpen: false})
-        this.setState({isDistanceOpen: true})
-      }
+      {this.openCollapse(this.state.isDistanceOpen, 'distance')}
     } else if (tab == 4 && this.state.currentTab == 1) {
-      if (this.state.isSearchOpen) {
-        this.setState({isSearchOpen: false})
-      } else {
-        this.setState({isDistanceOpen: false})
-        this.setState({isSearchOpen: true})
-      }
+      {this.openCollapse(this.state.isSearchOpen, 'search')}
     }
   }
 
@@ -158,6 +144,19 @@ export default class Atlas extends Component {
           </Control>
         </Map>
     );
+  }
+
+  openCollapse(isOpen, collapse) {
+    if (isOpen) {
+      this.setState({isDistanceOpen: false})
+      this.setState({isSearchOpen: false})
+    } else if (collapse == 'distance') {
+      this.setState({isSearchOpen: false})
+      this.setState({isDistanceOpen: true})
+    } else if (collapse == 'search') {
+      this.setState({isDistanceOpen: false})
+      this.setState({isSearchOpen: true})
+    }
   }
 
   renderDistance() {
