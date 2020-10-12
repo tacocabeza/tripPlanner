@@ -32,7 +32,7 @@ function simulateOnChangeEvent(reactWrapper, event) {
     reactWrapper.update();
 }
 
-test("Pressing Enter Should Send a Find Request",testEnterPress);
+/*test("Pressing Enter Should Send a Find Request",testEnterPress);
 
 function testEnterPress() {
     const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
@@ -99,4 +99,4 @@ function mockFindResponse() {
 function simulateOnClickEvent(reactWrapper) {
     reactWrapper.find('ListGroup.Item').at(0).simulate('click');
     reactWrapper.update();
-}
+}*/
