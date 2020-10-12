@@ -145,14 +145,10 @@ export default class Atlas extends Component {
   }
 
   openCollapse(collapse) {
-    if (collapse == 3) {
-      if (!this.state.isDistanceOpen) {
-        this.setState({isDistanceOpen: true})
-      }
-    } else if (collapse == 4) {
-      if (!this.state.isSearchOpen) {
-        this.setState({isSearchOpen: true})
-      }
+    if (collapse == 3 && !this.state.isDistanceOpen) {
+      this.setState({isDistanceOpen: true})
+    } else if (collapse == 4 && !this.state.isSearchOpen) {
+      this.setState({isSearchOpen: true})
     }
   }
 
