@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import {InputGroupAddon, Input} from "reactstrap";
+import {InputGroupAddon, Input, Collapse} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {sendServerRequest} from "../../utils/restfulAPI";
@@ -19,8 +19,11 @@ export default class Search extends Component {
         this.sendFindRequest = this.sendFindRequest.bind(this);
         this.processFindResponse = this.processFindResponse.bind(this);
 
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+
         this.state={
-            inputText: null,
+            inputText: "",
             results: {
                 "found": 0,
                 "match": "",
@@ -28,7 +31,8 @@ export default class Search extends Component {
                 "requestType": "find",
                 "requestVersion": {PROTOCOL_VERSION}
             },
-            serverSettings: this.props.serverSettings
+            serverSettings: this.props.serverSettings,
+            searchHasFocus: false,
         }
     }
 
@@ -44,16 +48,11 @@ export default class Search extends Component {
     renderBar() {
         return <div>
             <InputGroup>
-                <Input placeholder="Search TripCo" onChange={this.updateInputText}
-                       onKeyPress={this.handleKeyPress}/>
-                <InputGroupAddon addonType="append">
-                    <Button placeholder={"SEARCH"} onClick={this.sendFindRequest}>
-                        <SearchIcon fontSize={"small"} className={"tco-text"}/>
-                    </Button>
-                    <Button color="primary" onClick={this.sendFindRequest}>
-                        FeelingLucky?
-                    </Button>
-                </InputGroupAddon>
+                <Input placeholder="Search TripCo" value={this.state.inputText} onChange={this.updateInputText}
+                       onKeyPress={this.handleKeyPress}
+                       onFocus={this.onFocus}
+                       onBlur={this.onBlur}
+                />
             </InputGroup>
         </div>;
     }
@@ -67,6 +66,7 @@ export default class Search extends Component {
     updateInputText(event) {
         let formattedString = this.formatInputText(event.target.value);
         this.setState({inputText: formattedString});
+        this.sendFindRequest();
     }
 
     formatInputText(s) {
@@ -77,13 +77,18 @@ export default class Search extends Component {
 
     renderResults() {
         return (
-            <ListGroup variant="flush">
+          <Collapse isOpen={this.state.searchHasFocus}>
+            <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
+              <ListGroup.Item style={{fontWeight: '600'}} onClick={this.sendFindRequest}>
+                Feeling Lucky?
+              </ListGroup.Item>
                 {this.state.results.places.map(result => (
                     <ListGroup.Item key={result.id} action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude)}}>
                         {result.name}
                     </ListGroup.Item>
                 ))}
             </ListGroup>
+          </Collapse>
         );
     }
 
@@ -103,6 +108,14 @@ export default class Search extends Component {
 
     processFindResponse(response) {
         this.setState({results: response});
+    }
+
+    onFocus() {
+      this.setState({searchHasFocus: true});
+    }
+
+    onBlur() {
+      this.setState({searchHasFocus: false});
     }
 
 }

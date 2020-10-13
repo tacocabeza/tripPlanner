@@ -24,10 +24,6 @@ function testDistance() {
   testOpenCollapse(2);
 }
 
-function testSearch() {
-  testOpenCollapse(1);
-}
-
 function testNavToTab(tabString, tabInt) {
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const nav = atlas.find('Navigation').at(0);
@@ -62,6 +58,5 @@ function simulateTabClick(reactWrapper, tab) {
 }
 
 test("Testing that clicking Map tab goes to the map", testMap);
-test("Testing that clicking Search tab opens Search", testSearch);
 test("Testing that clicking Trip tab goes to Trip", testTrip);
 test("Testing that clicking Distance tab opens Distance", testDistance);
