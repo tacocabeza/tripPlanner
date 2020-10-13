@@ -11,6 +11,7 @@ export default class DistanceForm extends Component {
     this.state = {
       string1: '',
       string2: '',
+      submitted: false,
     }
   }
 
@@ -67,6 +68,7 @@ export default class DistanceForm extends Component {
         this.props.setLocation(3, {"lat": loc1.getLatitude(), "lng": loc1.getLongitude()});
       }
     }
+    this.setState({submitted: true});
   }
 
   isValidPosition(position) {
