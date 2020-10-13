@@ -15,6 +15,7 @@ import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.p
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import recenterIcon from '../../static/images/recenter.svg';
 import searchIcon from '../../static/images/search.svg';
+import distanceIcon from '../../static/images/distance.svg';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
@@ -77,10 +78,6 @@ export default class Atlas extends Component {
     this.setState({isDistanceOpen: false})
     if (isTab && this.state.currentTab != tab) {
       this.setState({currentTab: tab})
-    } else if (this.state.currentTab == '1') {
-      if (!this.state.isDistanceOpen) {
-        this.setState({isDistanceOpen: true})
-      }
     }
   }
 
@@ -93,6 +90,7 @@ export default class Atlas extends Component {
               <Navigation toggle={this.toggleTab}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
+                  {this.renderLeafletMap()}
                   <Collapse isOpen={this.state.isDistanceOpen}>
                     <Button color="primary" onClick={this.prepareServerRequest}>
                       Distance
@@ -100,7 +98,6 @@ export default class Atlas extends Component {
                     <DistanceForm setLocation={this.setLocation}/>
                     <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Collapse>
-                  {this.renderLeafletMap()}
                 </TabPane>
                 <TabPane tabId="2">
                   <Trip/>
@@ -136,6 +133,11 @@ export default class Atlas extends Component {
           <Control position="topleft">
             <Button style={mapButtonStyle} id="recenter" onClick={this.recenterMap}>
               <img style={{height: '23px'}} src={recenterIcon}/>
+            </Button>
+          </Control>
+          <Control position="topleft">
+            <Button style={mapButtonStyle} onClick={() => this.setState({isDistanceOpen: !this.state.isDistanceOpen})}>
+              <img style={{height: '23px'}} src={distanceIcon}/>
             </Button>
           </Control>
           <Control position="topright">

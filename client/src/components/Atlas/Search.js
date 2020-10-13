@@ -12,7 +12,6 @@ export default class Search extends Component {
         this.renderBar = this.renderBar.bind(this);
         this.renderResults = this.renderResults.bind(this);
 
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.updateInputText = this.updateInputText.bind(this);
         this.formatInputText = this.formatInputText.bind(this);
 
@@ -49,18 +48,11 @@ export default class Search extends Component {
         return <div>
             <InputGroup>
                 <Input placeholder="Search TripCo" value={this.state.inputText} onChange={this.updateInputText}
-                       onKeyPress={this.handleKeyPress}
                        onFocus={this.onFocus}
                        onBlur={this.onBlur}
                 />
             </InputGroup>
         </div>;
-    }
-
-    handleKeyPress(target) {
-        if(target.charCode==13){
-            this.sendFindRequest();
-        }
     }
 
     updateInputText(event) {

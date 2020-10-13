@@ -10,7 +10,6 @@ export default class Navigation extends Component {
     return (
       <Nav tabs>
         {this.renderLink(true, '1', 'Map')}
-        {this.renderLink(false, '3', 'Distance')}
         {this.renderLink(true, '2', 'Create Trip')}
       </Nav>
     )
