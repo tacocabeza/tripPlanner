@@ -62,7 +62,7 @@ function testRecenterButtonClicked() {
 }
 
 function simulateOnClickEventButton(reactWrapper) {
-  reactWrapper.find('Button').at(0).simulate('click');
+  reactWrapper.find('#recenter').at(0).simulate('click');
   reactWrapper.update();
 }
 
