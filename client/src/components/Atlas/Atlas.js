@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Tooltip} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -14,12 +14,15 @@ import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
 import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import recenterIcon from '../../static/images/recenter.svg';
+import showMarkerIcon from '../../static/images/showMarkerIcon.svg';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
 import Navigation from './Navigation.js';
 import DistanceForm from './DistanceForm.js';
 import Trip from './Trip.js';
+import {latLngBounds} from "leaflet";
+import {IconButton} from "@material-ui/core";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -48,8 +51,10 @@ export default class Atlas extends Component {
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
+    this.checkMapView = this.checkMapView.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
+    this.toggleToolTip = this.toggleToolTip.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
 
@@ -58,6 +63,7 @@ export default class Atlas extends Component {
       markerPosition: null,
       originalMapCenter: MAP_CENTER_DEFAULT,
       currentMapCenter: MAP_CENTER_DEFAULT,
+      currentMapBounds: null,
       mapZoom: 15,
       location1: null,
       location2: null,
@@ -65,6 +71,7 @@ export default class Atlas extends Component {
       currentTab: '1',
       isDistanceOpen: false,
       isSearchOpen: false,
+      toolTipOpen: false,
     };
   }
 
@@ -80,6 +87,10 @@ export default class Atlas extends Component {
     } else if (this.state.currentTab == '1') {
       this.openCollapse(tab)
     }
+  }
+
+  toggleToolTip() {
+    this.setState({toolTipOpen: !this.state.toolTipOpen})
   }
 
   render() {
@@ -126,6 +137,7 @@ export default class Atlas extends Component {
             minZoom={MAP_MIN_ZOOM}
             maxZoom={MAP_MAX_ZOOM}
             maxBounds={MAP_BOUNDS}
+            bounds={this.state.currentMapBounds}
             center={this.state.currentMapCenter}
             onClick={this.setMarkerOnClick}
             onMoveEnd={this.mapMovement}
@@ -139,6 +151,12 @@ export default class Atlas extends Component {
             <Button style={mapButtonStyle} id="recenter" onClick={this.recenterMap}>
               <img style={{height: '23px'}} src={recenterIcon}/>
             </Button>
+          </Control>
+          <Control position="topleft">
+            <Button style={mapButtonStyle} id="showAllMarkers" onClick={this.checkMapView} >
+              <img style={{height: '24px'}} src={showMarkerIcon}/>
+            </Button>
+            <Tooltip placement="right" isOpen={this.state.toolTipOpen} target="showAllMarkers" toggle={this.toggleToolTip}>Show All Markers</Tooltip>
           </Control>
         </Map>
     );
@@ -192,7 +210,10 @@ export default class Atlas extends Component {
   }
 
   mapMovement(mapMovementInfo){
-    this.setState({currentMapCenter: mapMovementInfo.target.getCenter(), mapZoom: mapMovementInfo.target.getZoom()})
+    this.setState({ currentMapCenter: mapMovementInfo.target.getCenter(),
+                          mapZoom: mapMovementInfo.target.getZoom(),
+                          currentMapBounds: mapMovementInfo.target.getBounds()
+                  })
   }
 
   recenterMap(){
@@ -223,6 +244,24 @@ export default class Atlas extends Component {
       return (
         <Marker position={location} icon={icon}></Marker>
       )
+    }
+  }
+
+  checkMapView(){
+    let bound = latLngBounds()
+    if(this.state.location2) {
+      bound.extend(this.state.location1)
+      bound.extend(this.state.location2)
+    }
+    else if(this.state.location1) {
+      bound.extend(this.state.location1)
+      bound.extend(this.state.originalMapCenter)
+    }
+    else{
+      bound.extend(this.state.currentMapCenter)
+    }
+    if(bound.isValid()) {
+      this.setState({currentMapBounds: bound})
     }
   }
 
