@@ -56,6 +56,8 @@ export default class Atlas extends Component {
       locations: [],
       serverSettings: this.props.serverSettings,
       currentTab: '1',
+      isDistanceOpen: false,
+      isSearchOpen: false,
     };
   }
 
@@ -63,9 +65,13 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggleTab(tab) {
-    if (this.state.currentTab != tab) {
+  toggleTab(isTab, tab) {
+    this.setState({isSearchOpen: false})
+    this.setState({isDistanceOpen: false})
+    if (isTab && this.state.currentTab != tab) {
       this.setState({currentTab: tab})
+    } else if (this.state.currentTab == '1') {
+      this.openCollapse(tab)
     }
   }
 
@@ -78,22 +84,21 @@ export default class Atlas extends Component {
               <Navigation toggle={this.toggleTab}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
+                  <Collapse isOpen={this.state.isDistanceOpen}>
+                    <Button color="primary" onClick={this.prepareServerRequest}>
+                      Distance
+                    </Button>
+                    <DistanceForm setLocation={this.setLocation}/>
+                    <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
+                  </Collapse>
+                  <Collapse isOpen={this.state.isSearchOpen}>
+                    <Search createSnackBar={this.props.createSnackBar}
+                            serverSettings={this.state.serverSettings}
+                            onClickListItem={this.searchListItemClick}/>
+                  </Collapse>
                   {this.renderLeafletMap()}
-                  <Button color="primary" onClick={this.recenterMap}>
-                    Recenter
-                  </Button>
-                  <Button color="primary" onClick={this.prepareServerRequest}>
-                    Distance
-                  </Button>
-                  <DistanceForm setLocation={this.setLocation}/>
-                  <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </TabPane>
                 <TabPane tabId="2">
-                  <Search createSnackBar={this.props.createSnackBar}
-                          serverSettings={this.state.serverSettings}
-                          onClickListItem={this.searchListItemClick}/>
-                </TabPane>
-                <TabPane tabId="3">
                   <Trip/>
                 </TabPane>
               </TabContent>
@@ -123,6 +128,11 @@ export default class Atlas extends Component {
           {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
           {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
           {this.renderTripLines(true)}
+          <Control position="topleft">
+            <Button style={mapButtonStyle} id="recenter" onClick={this.recenterMap}>
+              <img style={{height: '23px'}} src={recenterIcon}/>
+            </Button>
+          </Control>
         </Map>
     );
   }
@@ -148,6 +158,15 @@ export default class Atlas extends Component {
       );
     }
   }
+
+  openCollapse(collapse) {
+    if (collapse == 3 && !this.state.isDistanceOpen) {
+      this.setState({isDistanceOpen: true})
+    } else if (collapse == 4 && !this.state.isSearchOpen) {
+      this.setState({isSearchOpen: true})
+    }
+  }
+
 
   renderDistance() {
     return(
@@ -195,6 +214,19 @@ export default class Atlas extends Component {
   recenterMap(){
     this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
     this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
+  }
+
+  getLine(){
+    if(this.state.location2){
+      return(
+        <Polyline color="#CC5430" positions={[this.state.location2, this.state.location1]} />
+      );
+    }
+    else if (this.state.location1) {
+      return(
+        <Polyline color="#CC5430" positions={[this.state.location1, this.state.originalMapCenter]} />
+      );
+    }
   }
 
   setMarkerOnClick(mapClickInfo) {

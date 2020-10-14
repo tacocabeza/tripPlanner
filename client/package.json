@@ -22,6 +22,7 @@
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
+    "react-leaflet-control": "^2.1.2",
     "reactstrap": "^8.6.0",
     "ulog": "^1.1.0"
   },
