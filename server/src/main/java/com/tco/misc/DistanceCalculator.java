@@ -1,5 +1,9 @@
 package com.tco.misc;
 
+import com.tco.functionality.Options;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DistanceCalculator {
@@ -37,5 +41,26 @@ public class DistanceCalculator {
         Long distance = Math.round(centralAngle);
 
         return  distance;
+    }
+
+    public Long[] calculateDistances(ArrayList<HashMap<String,String>> places, Options options)
+    {
+        Long [] distances = new Long[places.size()];
+
+        System.out.println(places.size());
+
+        for(int i = 0; i<=places.size()-1; i++)
+        {
+
+            if(i == places.size()-1)
+            {
+                distances[i] = calculateGreatCircleDistance(places.get(0), places.get(i), Double.parseDouble(options.getEarthRadius()));
+                break;
+            }
+
+            distances[i] = calculateGreatCircleDistance(places.get(i), places.get(i+1), Double.parseDouble(options.getEarthRadius()));
+        }
+
+        return distances;
     }
 }

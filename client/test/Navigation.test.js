@@ -16,15 +16,14 @@ function testMap() {
   testNavToTab("1", 0);
 }
 
-function testSearch() {
+function testTrip() {
   testNavToTab("2", 1);
 }
 
-function testTrip() {
-  testNavToTab("3", 2);
-}
-
 function testNavToTab(tabString, tabInt) {
+  const div = document.createElement('div');
+  div.setAttribute("id", "showAllMarkers")
+  document.body.appendChild(div)
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const nav = atlas.find('Navigation').at(0);
   let expectedTab = tabString;
@@ -42,5 +41,4 @@ function simulateTabClick(reactWrapper, tab) {
 }
 
 test("Testing that clicking Map tab goes to the map", testMap);
-test("Testing that clicking Search tab goes to Search", testSearch);
 test("Testing that clicking Trip tab goes to Trip", testTrip);

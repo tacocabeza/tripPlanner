@@ -3,12 +3,12 @@ package com.tco.functionality;
 public class Options {
 
 
-    private String tripTitle;
+    private String title;
     private String earthRadius;
 
-    public Options(String tripTitle, String earthRadius)
+    public Options(String title, String earthRadius)
     {
-        this.tripTitle = tripTitle;
+        this.title = title;
         this.earthRadius = earthRadius;
     }
 
@@ -22,8 +22,8 @@ public class Options {
         this.earthRadius = earthRadius;
     }
 
-    public void setTripTitle(String tripTitle) {
-        this.tripTitle = tripTitle;
+    public void setTripTitle(String title) {
+        this.title = title;
     }
 
     public String getEarthRadius() {
@@ -31,6 +31,6 @@ public class Options {
     }
 
     public String getTripTitle() {
-        return tripTitle;
+        return title;
     }
 }
