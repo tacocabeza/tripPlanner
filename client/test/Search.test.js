@@ -53,50 +53,47 @@ function testEnterPress() {
 
 function simulateKeyPress(reactWrapper, event) {
     reactWrapper.find('Input').simulate('keypress', event)
-}
+}*/
 
 test("Clicking a Result Should Add it to the Map",testClickResult);
 
 function testClickResult() {
 
+    const div = document.createElement('div');
+    div.setAttribute("id", "showAllMarkers");
+    document.body.appendChild(div);
+
     const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+    const searchBar = atlas.find('Search').at(0);
+    const instance = searchBar.instance();
 
-    let inputText = 'Virgin Gorda';
-    simulateOnChangeEvent(searchBar, {target: {value: inputText}});
+    instance.processFindResponse({
+        "found":1,
+        "match":"Virgin_Gorda",
+        "limit":100,
+        "places":[
+            {
+                "altitude":9,
+                "id":"TUPW",
+                "municipality":"Spanish Town",
+                "name":"Virgin Gorda Airport",
+                "type":"small_airport",
+                "latitude":"18.446399688720703",
+                "longitude":"-64.42749786376953"
+            }
+        ],
+        "requestType":"find",
+        "requestVersion":3
+    });
+    atlas.update();
 
-    simulateKeyPress(searchBar,{key: 'Enter'});
-
-    mockFindResponse();
-
-    simulateOnClickEvent(atlas);
+    simulateOnClickEvent(searchBar);
 
     let latlng = {lat: 18.446399688720703, lng: -64.42749786376953};
     expect(atlas.state().location1).toEqual(latlng);
 }
 
-function mockFindResponse() {
-    fetch.mockResponse(JSON.stringify(
-        {
-            "found":1,
-            "match":"Virgin_Gorda",
-            "limit":100,
-            "places":[
-                {
-                    "altitude":9,
-                    "id":"TUPW",
-                    "municipality":"Spanish Town",
-                    "name":"Virgin Gorda Airport",
-                    "type":"small_airport",
-                    "latitude":"18.446399688720703",
-                    "longitude":"-64.42749786376953"
-                }
-            ],
-            "requestType":"find",
-            "requestVersion":3
-        }));
-}
-
 function simulateOnClickEvent(reactWrapper) {
-    reactWrapper.find('ListGroup.Item').at(0).simulate('click');
+    reactWrapper.find('Collapse').find('ListGroup').find('ListGroup.Item').at(0).simulate('click');
     reactWrapper.update();
-}*/
+}
