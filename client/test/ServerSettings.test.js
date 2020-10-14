@@ -71,6 +71,9 @@ test("onChangeEvent should update the component's state", testUpdateInputText);
 function testUpdateServerPort() {
     mockConfigResponse();
 
+    const div = document.createElement('div');
+    div.setAttribute("id", "showAllMarkers")
+    document.body.appendChild(div)
     const page = mount(<Page />);
     const settings = shallow(
         <ServerSettings
