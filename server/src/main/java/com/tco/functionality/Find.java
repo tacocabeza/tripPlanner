@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
 
@@ -45,6 +47,12 @@ public class Find {
 
     public ArrayList<Place> getPlaces(){
         populatePlaces();
+        if (places.size() > 1 ) {
+            Collections.shuffle(places);
+            while (places.size() != limit) {
+                places.remove(places.size() - 1);
+            }
+        }
         return places;
     }
 
@@ -73,7 +81,7 @@ public class Find {
     private void setResultFields(ResultSet results){
         ArrayList<Place> newPlaces = parsePlaces(results);
         this.found = newPlaces.size();
-        int subListLimit = Math.min(newPlaces.size(),this.limit);
+        int subListLimit = Math.min(newPlaces.size(), 100);
         this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
     }
 
