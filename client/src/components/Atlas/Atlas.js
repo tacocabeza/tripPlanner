@@ -63,6 +63,7 @@ export default class Atlas extends Component {
       mapZoom: 15,
       location1: null,
       location2: null,
+      locations: [],
       serverSettings: this.props.serverSettings,
       currentTab: '1',
       isDistanceOpen: false,
@@ -142,6 +143,7 @@ export default class Atlas extends Component {
               <img style={{height: '22px'}} src={searchIcon}/>
             </Button>
           </Control>
+          {this.renderTripLines(true)}
         </Map>
     );
   }
@@ -153,7 +155,29 @@ export default class Atlas extends Component {
           <img style={{height: '23px'}} src={icon}/>
         </Button>
       </Control>
-    )
+    );
+  }
+
+  renderTripLines(roundTrip) {
+    let lines = []
+    for(let i= 0; i < this.state.locations.length - 1; i++){
+      lines.push(this.getLine(this.state.locations[i],this.state.locations[i+1],i));
+    }
+
+    if(roundTrip == true){
+      let lastIndex = this.state.locations.length -1;
+      lines.push(this.getLine(this.state.locations[lastIndex],this.state.locations[0],lastIndex));
+    }
+
+    return <div>{lines}</div>;
+  }
+
+  getLine(location1, location2, key) {
+    if(location1 && location2) {
+      return (
+          <Polyline color="#CC5430" positions={[location1, location2]} key={key}/>
+      );
+    }
   }
 
   renderDistance() {
@@ -202,19 +226,6 @@ export default class Atlas extends Component {
   recenterMap(){
     this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
     this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
-  }
-
-  getLine(){
-    if(this.state.location2){
-      return(
-        <Polyline color="#CC5430" positions={[this.state.location2, this.state.location1]} />
-      );
-    }
-    else if (this.state.location1) {
-      return(
-        <Polyline color="#CC5430" positions={[this.state.location1, this.state.originalMapCenter]} />
-      );
-    }
   }
 
   setMarkerOnClick(mapClickInfo) {
