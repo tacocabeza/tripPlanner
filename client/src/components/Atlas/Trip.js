@@ -56,7 +56,7 @@ export default class Trip extends Component {
           <br/>
           {this.renderDestinations()}
           <p className="text-right">Total Distance: 000mi.</p>
-          <Button color="primary" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+          <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
         </Col>
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
@@ -80,6 +80,7 @@ export default class Trip extends Component {
           <Row style={{width: '40%'}}>
             <Button color="primary" style={{width: '49%', marginLeft: '1%'}}>Save</Button>
             <Button color="primary"
+                    id="loadbtn"
                     style={{width: '49%', marginLeft: '1%'}}
                     onClick={() => {this.setState({loadModal: true})}}
             >
@@ -97,7 +98,7 @@ export default class Trip extends Component {
         {this.state.loadedTrip.places.map(result => (
           <ListGroupItem key={result.id}>
             <Row>
-              <Col className="text-left">{result.name}: {result.latitude}, {result.longitude}</Col>
+              <Col className="text-left">{result.name}</Col>
               <Col>
                 <Button style={deleteBtn} className="float-right">
                   <img style={{height: '25px'}} src={DeleteIcon}/>
@@ -122,7 +123,7 @@ export default class Trip extends Component {
                       onClickListItem={this.addDestination}/>
             </Col>
             <Col xs={4}>
-              <Button color="primary" onClick={() => this.addFromMap()}>Add From Map</Button>
+              <Button color="primary" id="mapbtn" onClick={() => this.addFromMap()}>Add From Map</Button>
             </Col>
           </Row>
           <Fade in={this.state.showNewItem}>
@@ -133,7 +134,7 @@ export default class Trip extends Component {
           </Fade>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.submitDestination}>Confirm</Button>
+          <Button color="primary" id="confirmbtn" onClick={this.submitDestination}>Confirm</Button>
           <Button onClick={() => {this.setState({destinationModal: false})}}>Close</Button>
         </ModalFooter>
       </Modal>
