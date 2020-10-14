@@ -221,8 +221,6 @@ export default class Atlas extends Component {
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});
-    console.log(this.state.location1Name)
-    console.log(name)
     this.setState({location2Name: this.state.location1Name})
     this.setState({location1Name: name})
   }
@@ -291,7 +289,6 @@ export default class Atlas extends Component {
     else {
       return "Home"
     }
-    return "Error in code"
   }
 
   checkMapView(){

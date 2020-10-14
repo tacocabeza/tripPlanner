@@ -73,7 +73,7 @@ export default class Search extends Component {
         <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
           {this.showFeelingLucky()}
           {this.state.results.places.map(result => (
-            <ListGroup.Item key={result.id} action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude, result.name)}}>
+            <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.latitude, result.longitude, result.name)}}>
               {result.name}
             </ListGroup.Item>
           ))}
