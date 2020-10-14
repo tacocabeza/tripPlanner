@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Tooltip} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -54,7 +54,6 @@ export default class Atlas extends Component {
     this.checkMapView = this.checkMapView.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
-    this.toggleToolTip = this.toggleToolTip.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
 
@@ -71,7 +70,6 @@ export default class Atlas extends Component {
       currentTab: '1',
       isDistanceOpen: false,
       isSearchOpen: false,
-      toolTipOpen: false,
     };
   }
 
@@ -87,10 +85,6 @@ export default class Atlas extends Component {
     } else if (this.state.currentTab == '1') {
       this.openCollapse(tab)
     }
-  }
-
-  toggleToolTip() {
-    this.setState({toolTipOpen: !this.state.toolTipOpen})
   }
 
   render() {
@@ -156,7 +150,9 @@ export default class Atlas extends Component {
             <Button style={mapButtonStyle} id="showAllMarkers" onClick={this.checkMapView} >
               <img style={{height: '24px'}} src={showMarkerIcon}/>
             </Button>
-            <Tooltip placement="right" isOpen={this.state.toolTipOpen} target="showAllMarkers" toggle={this.toggleToolTip}>Show All Markers</Tooltip>
+            <UncontrolledTooltip placement="right"  target="showAllMarkers">
+              Show All Markers
+            </UncontrolledTooltip>
           </Control>
         </Map>
     );
