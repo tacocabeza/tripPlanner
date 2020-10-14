@@ -31,6 +31,7 @@ public class RequestFind extends RequestHeader{
         Find f = new Find(match, limit);
         this.found = f.getFound();
         this.places = f.getPlaces();
+        this.limit = f.getLimit();
         log.trace("buildResponse -> {}", this);
     }
 
