@@ -1,10 +1,13 @@
 package com.tco.functionality;
 
+import org.eclipse.jetty.security.SpnegoUserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
 
@@ -16,10 +19,14 @@ public class Find {
     private int limit;
     private int found;
     private ArrayList<Place> places;
+    private boolean lucky = false;
 
     public Find(String match, int limit){
         this.limit = limit;
         this.match = formatMatch(match);
+        if (match.equals("")) {
+            this.lucky = true;
+        }
         if(this.limit == 0){
             this.limit = MAX_LIMIT;
         }
@@ -44,7 +51,15 @@ public class Find {
     }
 
     public ArrayList<Place> getPlaces(){
-        populatePlaces();
+        if (this.lucky == true) {
+            populatePlaces();
+            Collections.shuffle(places);
+            while (places.size() != limit) {
+                places.remove(places.size() - 1);
+            }
+        } else {
+            populatePlaces();
+        }
         return places;
     }
 
@@ -73,7 +88,10 @@ public class Find {
     private void setResultFields(ResultSet results){
         ArrayList<Place> newPlaces = parsePlaces(results);
         this.found = newPlaces.size();
-        int subListLimit = Math.min(newPlaces.size(),this.limit);
+        int subListLimit = Math.min(newPlaces.size(), this.limit);
+        if (this.lucky == true) {
+            subListLimit = Math.min(newPlaces.size(), 100);
+        }
         this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
     }
 

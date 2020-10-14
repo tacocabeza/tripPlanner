@@ -23,6 +23,7 @@ public class RequestFind extends RequestHeader{
     public RequestFind(){
         this.requestType = "find";
         this.limit = this.MAX_LIMIT;
+        this.match = "";
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
@@ -31,6 +32,7 @@ public class RequestFind extends RequestHeader{
         Find f = new Find(match, limit);
         this.found = f.getFound();
         this.places = f.getPlaces();
+        this.limit = f.getLimit();
         log.trace("buildResponse -> {}", this);
     }
 

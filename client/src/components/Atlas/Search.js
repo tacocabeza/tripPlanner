@@ -71,7 +71,7 @@ export default class Search extends Component {
         return (
           <Collapse isOpen={this.state.searchHasFocus}>
             <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
-              <ListGroup.Item style={{fontWeight: '600'}} onClick={this.sendFindRequest}>
+              <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
                 Feeling Lucky?
               </ListGroup.Item>
                 {this.state.results.places.map(result => (
@@ -96,6 +96,18 @@ export default class Search extends Component {
                     }
                 });
         }
+    }
+
+    sendLuckyRequest() {
+        sendServerRequest({requestType: "find", requestVersion: 3, limit: 1},
+            this.state.serverSettings.serverPort)
+            .then(find => {
+                if (find) {
+                    this.processFindResponse(find.data);
+                } else {
+                    this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+                }
+            });
     }
 
     processFindResponse(response) {
