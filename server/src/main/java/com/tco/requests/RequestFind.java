@@ -23,6 +23,7 @@ public class RequestFind extends RequestHeader{
     public RequestFind(){
         this.requestType = "find";
         this.limit = this.MAX_LIMIT;
+        this.match = "";
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
