@@ -6,7 +6,7 @@ import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
 
-import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
+import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
@@ -47,7 +47,6 @@ export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
-
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
@@ -58,16 +57,16 @@ export default class Atlas extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
-
     this.state = {
       distance: 0,
-      markerPosition: null,
       originalMapCenter: MAP_CENTER_DEFAULT,
       currentMapCenter: MAP_CENTER_DEFAULT,
       currentMapBounds: null,
       mapZoom: 15,
       location1: null,
       location2: null,
+      location1Name: null,
+      location2Name: null,
       locations: [],
       serverSettings: this.props.serverSettings,
       currentTab: '1',
@@ -206,18 +205,26 @@ export default class Atlas extends Component {
     if (location == 1) {
       this.setState({location2: this.state.location1})
       this.setState({location1: state});
+      this.setState({location2Name: this.state.location1Name})
+      this.setState({location1Name: null})
     } else if (location == 2) {
       this.setState({location2: state});
+      this.setState({location2Name: this.state.location1Name})
+      this.setState({location1Name: null})
     } else if (location == 3) {
       this.setState({currentMapCenter: state});
     }
   }
 
-  searchListItemClick(lat, lng) {
+  searchListItemClick(lat, lng, name) {
     this.setState({isSearchOpen: false});
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});
+    console.log(this.state.location1Name)
+    console.log(name)
+    this.setState({location2Name: this.state.location1Name})
+    this.setState({location1Name: name})
   }
 
   getGeolocation() {
@@ -248,14 +255,43 @@ export default class Atlas extends Component {
   setMarkerOnClick(mapClickInfo) {
     this.setState({location2: this.state.location1})
     this.setState({location1: mapClickInfo.latlng})
+    this.setState({location2Name: this.state.location1Name})
+    this.setState({location1Name: null})
   }
 
   placeMarker(location, icon) {
     if (location) {
       return (
-        <Marker position={location} icon={icon}></Marker>
+        <Marker position={location} icon={icon}>
+          <Popup offset={[1, -18]}>
+            {location.lat? location.lat.toFixed(2) + ', ' + location.lng.toFixed(2):
+              (location[0]? location[0].toFixed(2) + ', ' + location[1].toFixed(2): "")}
+            <br/>{this.getMarkerLocationName(location)}<br/>
+            <IconButton>
+              Test
+            </IconButton>
+          </Popup>
+        </Marker>
       )
     }
+  }
+
+  getMarkerLocationName(location) {
+    if(location.lat){
+      if(location.lat == this.state.location1.lat && location.lng == this.state.location1.lng){
+        return this.state.location1Name
+      }
+      else if(location.lat == this.state.location2.lat && location.lng == this.state.location2.lng){
+        return this.state.location2Name
+      }
+      else{
+        return "Unknown Location"
+      }
+    }
+    else {
+      return "Home"
+    }
+    return "Error in code"
   }
 
   checkMapView(){
