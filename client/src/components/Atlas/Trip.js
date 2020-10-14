@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Form} from "reactstrap";
+import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade} from "reactstrap";
 
 import DeleteIcon from '../../static/images/delete.svg'
+
+import Search from './Search.js';
+import {sendServerRequest} from "../../utils/restfulAPI";
+import {PROTOCOL_VERSION} from "../../utils/constants";
 
 const deleteBtn = {
   background: '#fff',
@@ -14,14 +18,32 @@ export default class Trip extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      tripName: '',
-      loadedTrip: {
+    this.addDestination = this.addDestination.bind(this);
+    this.submitDestination = this.submitDestination.bind(this);
 
+    this.state = {
+      loadedTrip: {
+        "options": {
+          "title": "",
+          "earthRadius": ""
+        },
+        "places": [],
+        "distances": [],
+        "requestType": "find",
+        "requestVersion": {PROTOCOL_VERSION}
       },
+      tripName: '',
       destinations: [],
       destinationModal: false,
       loadModal: false,
+      newItem: {
+        "notes": '',
+        "name": '',
+        "latitude": '',
+        "longitude": '',
+      },
+      showNewItem: false,
+      serverSettings: this.props.serverSettings,
     }
   }
 
@@ -72,27 +94,18 @@ export default class Trip extends Component {
   renderDestinations() {
     return (
       <ListGroup>
-        <ListGroupItem>
-          <Row>
-            <Col className="text-left">Test Name</Col>
-            <Col>
-              <Button style={deleteBtn} className="float-right">
-                <img style={{height: '25px'}} src={DeleteIcon}/>
-              </Button>
-            </Col>
-          </Row>
-        </ListGroupItem>
-        <p className="text-right">Distance: 000mi.</p>
-        <ListGroupItem>
-          <Row>
-            <Col className="text-left">Test Name</Col>
-            <Col>
-              <Button style={deleteBtn} className="float-right">
-                <img style={{height: '25px'}} src={DeleteIcon}/>
-              </Button>
-            </Col>
-          </Row>
-        </ListGroupItem>
+        {this.state.loadedTrip.places.map(result => (
+          <ListGroupItem key={result.id}>
+            <Row>
+              <Col className="text-left">{result.name}: {result.latitude}, {result.longitude}</Col>
+              <Col>
+                <Button style={deleteBtn} className="float-right">
+                  <img style={{height: '25px'}} src={DeleteIcon}/>
+                </Button>
+              </Col>
+            </Row>
+          </ListGroupItem>
+        ))}
       </ListGroup>
     );
   }
@@ -102,9 +115,25 @@ export default class Trip extends Component {
       <Modal isOpen={this.state.destinationModal}>
         <ModalHeader>Add Destination</ModalHeader>
         <ModalBody>
+          <Row>
+            <Col xs={8}>
+              <Search createSnackBar={this.props.createSnackBar}
+                      serverSettings={this.state.serverSettings}
+                      onClickListItem={this.addDestination}/>
+            </Col>
+            <Col xs={4}>
+              <Button color="primary" onClick={() => this.addFromMap()}>Add From Map</Button>
+            </Col>
+          </Row>
+          <Fade in={this.state.showNewItem}>
+            <ListGroupItem>
+              <Col>{this.state.newItem.name}</Col>
+              <Col>{this.state.newItem.latitude}, {this.state.newItem.longitude}</Col>
+            </ListGroupItem>
+          </Fade>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary">Confirm</Button>
+          <Button color="primary" onClick={this.submitDestination}>Confirm</Button>
           <Button onClick={() => {this.setState({destinationModal: false})}}>Close</Button>
         </ModalFooter>
       </Modal>
@@ -123,5 +152,64 @@ export default class Trip extends Component {
         </ModalFooter>
       </Modal>
     )
+  }
+
+  addFromMap() {
+    this.props.toggle(true, '1');
+    this.setState({destinationModal: false});
+  }
+
+  addDestination(name, lat, lng) {
+    this.setState({
+      newItem: {
+        "notes": "",
+        "name": name,
+        "latitude": ''+lat,
+        "longitude": ''+lng
+      },
+      showNewItem: true,
+    });
+  }
+
+  submitDestination() {
+    if (this.state.newItem.latitude !== "") {
+      this.setState({
+          destinationModal: false,
+          showNewItem: false,
+          destinations: this.state.destinations.concat(this.state.newItem)
+        },
+        this.sendTripRequest,
+      );
+    }
+  }
+
+  sendTripRequest() {
+    if(this.state.destinations !== []) {
+      console.log(this.state.destinations);
+      sendServerRequest({
+          "places": this.state.destinations,
+          "options": {
+            "title": this.state.tripName,
+            "earthRadius": "3959.0"
+          },
+          "requestType": "trip",
+          "requestVersion": PROTOCOL_VERSION
+        },
+        this.state.serverSettings.serverPort)
+      .then(trip => {
+        if (trip) {
+          this.processTripResponse(trip.data);
+        } else {
+          this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+        }
+      });
+    }
+  }
+
+  processTripResponse(response) {
+    this.setState({
+      loadedTrip: response,
+      tripName: response.options.title,
+    });
   }
 }
