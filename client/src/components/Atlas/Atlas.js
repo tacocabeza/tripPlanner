@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -14,6 +14,8 @@ import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
 import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import recenterIcon from '../../static/images/recenter.svg';
+import searchIcon from '../../static/images/search.svg';
+import distanceIcon from '../../static/images/distance.svg';
 import showMarkerIcon from '../../static/images/showMarkerIcon.svg';
 
 import 'leaflet/dist/leaflet.css';
@@ -79,12 +81,9 @@ export default class Atlas extends Component {
   }
 
   toggleTab(isTab, tab) {
-    this.setState({isSearchOpen: false})
     this.setState({isDistanceOpen: false})
     if (isTab && this.state.currentTab != tab) {
       this.setState({currentTab: tab})
-    } else if (this.state.currentTab == '1') {
-      this.openCollapse(tab)
     }
   }
 
@@ -97,6 +96,7 @@ export default class Atlas extends Component {
               <Navigation toggle={this.toggleTab}/>
               <TabContent activeTab={this.state.currentTab}>
                 <TabPane tabId="1">
+                  {this.renderLeafletMap()}
                   <Collapse isOpen={this.state.isDistanceOpen}>
                     <Button color="primary" onClick={this.prepareServerRequest}>
                       Distance
@@ -104,12 +104,6 @@ export default class Atlas extends Component {
                     <DistanceForm setLocation={this.setLocation}/>
                     <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Collapse>
-                  <Collapse isOpen={this.state.isSearchOpen}>
-                    <Search createSnackBar={this.props.createSnackBar}
-                            serverSettings={this.state.serverSettings}
-                            onClickListItem={this.searchListItemClick}/>
-                  </Collapse>
-                  {this.renderLeafletMap()}
                 </TabPane>
                 <TabPane tabId="2">
                   <Trip/>
@@ -136,17 +130,15 @@ export default class Atlas extends Component {
             center={this.state.currentMapCenter}
             onClick={this.setMarkerOnClick}
             onMoveEnd={this.mapMovement}
+            scrollWheelZoom={!this.state.isSearchOpen}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
           {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
           {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
-          {this.renderTripLines(true)}
-          <Control position="topleft">
-            <Button style={mapButtonStyle} id="recenter" onClick={this.recenterMap}>
-              <img style={{height: '23px'}} src={recenterIcon}/>
-            </Button>
-          </Control>
+          {this.getLine()}
+          {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
+          {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           <Control position="topleft">
             <Button style={mapButtonStyle} id="showAllMarkers" onClick={this.checkMapView} >
               <img style={{height: '24px'}} src={showMarkerIcon}/>
@@ -155,7 +147,28 @@ export default class Atlas extends Component {
               Show All Markers
             </UncontrolledTooltip>
           </Control>
+          <Control position="topright">
+            <Fade in={this.state.isSearchOpen} className="float-left">
+              <Search createSnackBar={this.props.createSnackBar}
+                      serverSettings={this.state.serverSettings}
+                      onClickListItem={this.searchListItemClick}/>
+            </Fade>
+            <Button className="float-right" style={mapButtonStyle} onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
+              <img style={{height: '22px'}} src={searchIcon}/>
+            </Button>
+          </Control>
+          {this.renderTripLines(true)}
         </Map>
+    );
+  }
+
+  renderMapButton(id, icon, onClick) {
+    return (
+      <Control position="topleft">
+        <Button id={id} style={mapButtonStyle} onClick={onClick}>
+          <img style={{height: '23px'}} src={icon}/>
+        </Button>
+      </Control>
     );
   }
 
@@ -181,15 +194,6 @@ export default class Atlas extends Component {
     }
   }
 
-  openCollapse(collapse) {
-    if (collapse == 3 && !this.state.isDistanceOpen) {
-      this.setState({isDistanceOpen: true})
-    } else if (collapse == 4 && !this.state.isSearchOpen) {
-      this.setState({isSearchOpen: true})
-    }
-  }
-
-
   renderDistance() {
     return(
       <InputGroup>
@@ -210,7 +214,7 @@ export default class Atlas extends Component {
   }
 
   searchListItemClick(lat, lng) {
-    this.toggleTab("1");
+    this.setState({isSearchOpen: false});
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});

@@ -17,15 +17,7 @@ function testMap() {
 }
 
 function testTrip() {
-  testNavToTab("2", 3);
-}
-
-function testDistance() {
-  testOpenCollapse(2);
-}
-
-function testSearch() {
-  testOpenCollapse(1);
+  testNavToTab("2", 1);
 }
 
 function testNavToTab(tabString, tabInt) {
@@ -42,25 +34,6 @@ function testNavToTab(tabString, tabInt) {
   expect(actualTab).toEqual(expectedTab);
 }
 
-function testOpenCollapse(tabInt) {
-  const div = document.createElement('div');
-  div.setAttribute("id", "showAllMarkers")
-  document.body.appendChild(div)
-  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  const nav = atlas.find('Navigation').at(0);
-  let expectedVal = true;
-  simulateTabClick(nav, 0);
-  simulateTabClick(nav, tabInt);
-  atlas.update();
-  let actualVal = null;
-  if (tabInt == 2) {
-    actualVal = atlas.state().isDistanceOpen;
-  } else if (tabInt == 1) {
-    actualVal = atlas.state().isSearchOpen;
-  }
-  expect(actualVal).toEqual(expectedVal);
-}
-
 function simulateTabClick(reactWrapper, tab) {
   const component = reactWrapper.find('Nav').at(0);
   component.find('NavLink').at(tab).simulate('click');
@@ -68,6 +41,4 @@ function simulateTabClick(reactWrapper, tab) {
 }
 
 test("Testing that clicking Map tab goes to the map", testMap);
-test("Testing that clicking Search tab opens Search", testSearch);
 test("Testing that clicking Trip tab goes to Trip", testTrip);
-test("Testing that clicking Distance tab opens Distance", testDistance);
