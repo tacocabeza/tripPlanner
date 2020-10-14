@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse} from 'reactstrap';
+import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {PROTOCOL_VERSION} from "../../utils/constants";
@@ -12,6 +13,7 @@ import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
 import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
 import CSUReservoirMarker from '../../static/images/Markers/CSUReservoirMarker.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import recenterIcon from '../../static/images/recenter.svg';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
@@ -29,6 +31,12 @@ const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quo
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
+
+const mapButtonStyle = {
+  color: 'black',
+  background: 'white',
+  padding: '5px',
+}
 
 export default class Atlas extends Component {
 
@@ -214,19 +222,6 @@ export default class Atlas extends Component {
   recenterMap(){
     this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
     this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
-  }
-
-  getLine(){
-    if(this.state.location2){
-      return(
-        <Polyline color="#CC5430" positions={[this.state.location2, this.state.location1]} />
-      );
-    }
-    else if (this.state.location1) {
-      return(
-        <Polyline color="#CC5430" positions={[this.state.location1, this.state.originalMapCenter]} />
-      );
-    }
   }
 
   setMarkerOnClick(mapClickInfo) {
