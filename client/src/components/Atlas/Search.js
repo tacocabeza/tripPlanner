@@ -50,7 +50,7 @@ export default class Search extends Component {
                     <Button placeholder={"SEARCH"} onClick={this.sendFindRequest}>
                         <SearchIcon fontSize={"small"} className={"tco-text"}/>
                     </Button>
-                    <Button color="primary" onClick={this.sendFindRequest}>
+                    <Button color="primary" onClick={this.sendLuckyRequest}>
                         FeelingLucky?
                     </Button>
                 </InputGroupAddon>
@@ -99,6 +99,18 @@ export default class Search extends Component {
                     }
                 });
         }
+    }
+
+    sendLuckyRequest() {
+        sendServerRequest({requestType: "find", requestVersion: 3, limit: 1},
+            this.state.serverSettings.serverPort)
+            .then(find => {
+                if (find) {
+                    this.processFindResponse(find.data);
+                } else {
+                    this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+                }
+            });
     }
 
     processFindResponse(response) {
