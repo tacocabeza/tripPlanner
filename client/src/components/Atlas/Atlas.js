@@ -248,6 +248,7 @@ export default class Atlas extends Component {
   recenterMap(){
     this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
     this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
+    this.setState({location1Name: "Home"})
   }
 
   setMarkerOnClick(mapClickInfo) {
