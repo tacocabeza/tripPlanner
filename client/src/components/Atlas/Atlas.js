@@ -130,16 +130,8 @@ export default class Atlas extends Component {
           {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
           {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
           {this.getLine()}
-          <Control position="topleft">
-            <Button style={mapButtonStyle} id="recenter" onClick={this.recenterMap}>
-              <img style={{height: '23px'}} src={recenterIcon}/>
-            </Button>
-          </Control>
-          <Control position="topleft">
-            <Button style={mapButtonStyle} onClick={() => this.setState({isDistanceOpen: !this.state.isDistanceOpen})}>
-              <img style={{height: '23px'}} src={distanceIcon}/>
-            </Button>
-          </Control>
+          {this.renderMapButton(recenterIcon, this.recenterMap)}
+          {this.renderMapButton(distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           <Control position="topright">
             <Fade in={this.state.isSearchOpen} className="float-left">
               <Search createSnackBar={this.props.createSnackBar}
@@ -152,6 +144,16 @@ export default class Atlas extends Component {
           </Control>
         </Map>
     );
+  }
+
+  renderMapButton(icon, onClick) {
+    return (
+      <Control position="topleft">
+        <Button style={mapButtonStyle} onClick={onClick}>
+          <img style={{height: '23px'}} src={icon}/>
+        </Button>
+      </Control>
+    )
   }
 
   renderDistance() {
