@@ -95,12 +95,12 @@ export default class Trip extends Component {
   renderDestinations() {
     return (
       <ListGroup>
-        {this.state.loadedTrip.places.map(result => (
+        {this.state.loadedTrip.places.map((result, index) => (
           <ListGroupItem key={result.id}>
             <Row>
               <Col className="text-left">{result.name}</Col>
               <Col>
-                <Button style={deleteBtn} className="float-right">
+                <Button style={deleteBtn} className="float-right" onClick={() => this.removeDestination(index)}>
                   <img style={{height: '25px'}} src={DeleteIcon}/>
                 </Button>
               </Col>
@@ -172,6 +172,16 @@ export default class Trip extends Component {
     });
   }
 
+  removeDestination(index) {
+    let tempArr = this.state.destinations;
+    tempArr.splice(index, 1);
+    this.setState({
+        destinations: tempArr,
+      },
+      this.sendTripRequest,
+    );
+  }
+
   submitDestination() {
     if (this.state.newItem.latitude !== "") {
       this.setState({
@@ -186,7 +196,6 @@ export default class Trip extends Component {
 
   sendTripRequest() {
     if(this.state.destinations !== []) {
-      console.log(this.state.destinations);
       sendServerRequest({
           "places": this.state.destinations,
           "options": {
