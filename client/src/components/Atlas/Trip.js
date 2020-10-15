@@ -4,8 +4,10 @@ import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, Mod
 import DeleteIcon from '../../static/images/delete.svg'
 
 import Search from './Search.js';
-import {sendServerRequest} from "../../utils/restfulAPI";
+import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
+import * as tripSchema from "../../../schemas/ResponseTrip";
+import * as configSchema from "../../../schemas/ResponseConfig.json";
 
 const deleteBtn = {
   background: '#fff',
@@ -219,7 +221,11 @@ export default class Trip extends Component {
   }
 
   loadFile() {
-    this.setState({loadModal: false,});
-    this.processTripResponse(this.state.loadedFile);
+    if(!isJsonResponseValid(this.state.loadedFile, tripSchema)) {
+      this.props.createSnackBar("This file is not valid");
+    } else {
+      this.setState({loadModal: false,});
+      this.processTripResponse(this.state.loadedFile);
+    }
   }
 }
