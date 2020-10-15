@@ -22,26 +22,12 @@ export default class Trip extends Component {
     this.submitDestination = this.submitDestination.bind(this);
 
     this.state = {
-      loadedTrip: {
-        "options": {
-          "title": "",
-          "earthRadius": ""
-        },
-        "places": [],
-        "distances": [],
-        "requestType": "find",
-        "requestVersion": {PROTOCOL_VERSION}
-      },
+      loadedTrip: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
       tripName: '',
       destinations: [],
       destinationModal: false,
       loadModal: false,
-      newItem: {
-        "notes": '',
-        "name": '',
-        "latitude": '',
-        "longitude": '',
-      },
+      newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
     }
