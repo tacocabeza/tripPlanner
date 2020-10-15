@@ -20,6 +20,7 @@ export default class Trip extends Component {
 
     this.addDestination = this.addDestination.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
+    this.processFile = this.processFile.bind(this);
 
     this.state = {
       loadedTrip: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
@@ -30,6 +31,7 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
+      loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
     }
   }
 
@@ -124,13 +126,15 @@ export default class Trip extends Component {
   }
 
   renderLoadModal() {
+    const callback = (event) => {this.processFile(event.target.files)};
     return (
       <Modal isOpen={this.state.loadModal}>
         <ModalHeader>Load Trip</ModalHeader>
         <ModalBody>
+          <Input type='file' onChange={callback} />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary">Load</Button>
+          <Button color="primary" onClick={() => this.loadFile()}>Load</Button>
           <Button onClick={() => {this.setState({loadModal: false})}}>Close</Button>
         </ModalFooter>
       </Modal>
@@ -203,5 +207,19 @@ export default class Trip extends Component {
       loadedTrip: response,
       tripName: response.options.title,
     });
+  }
+
+  processFile(files) {
+    let self = this;
+    let fr = new FileReader();
+    fr.readAsText(files[0]);
+    fr.onload = function(event) {
+      self.setState({loadedFile: JSON.parse(fr.result)});
+    };
+  }
+
+  loadFile() {
+    this.setState({loadModal: false,});
+    this.processTripResponse(this.state.loadedFile);
   }
 }
