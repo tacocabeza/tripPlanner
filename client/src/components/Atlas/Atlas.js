@@ -51,6 +51,7 @@ export default class Atlas extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
+    this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
     this.state = {
       distance: 0,
       originalMapCenter: MAP_CENTER_DEFAULT,
@@ -66,6 +67,7 @@ export default class Atlas extends Component {
       currentTab: '1',
       isDistanceOpen: false,
       isSearchOpen: false,
+      tripNewLocation: {location: null, locationName: null},
     };
   }
 
@@ -101,7 +103,8 @@ export default class Atlas extends Component {
                 <TabPane tabId="2">
                   <Trip toggle={this.toggleTab}
                         createSnackBar={this.props.createSnackBar}
-                        serverSettings={this.state.serverSettings}/>
+                        serverSettings={this.state.serverSettings}
+                        tripNewLocation={this.state.tripNewLocation}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -256,19 +259,24 @@ export default class Atlas extends Component {
 
   placeMarker(location, icon) {
     if (location) {
+      let latitude = location.lat? location.lat: (location[0]? location[0]: 0)
+      let long = location.lng? location.lng: (location[1]? location[1]: 0)
       return (
         <Marker position={location} icon={icon}>
           <Popup offset={[1, -18]} autoPan={false}>
-            {location.lat? location.lat.toFixed(2) + ', ' + location.lng.toFixed(2):
-              (location[0]? location[0].toFixed(2) + ', ' + location[1].toFixed(2): "")}
+            {latitude.toFixed(2) + "," + long.toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
-            <IconButton>
-              Test
+            <IconButton onClick={this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
+              Add to trip
             </IconButton>
           </Popup>
         </Marker>
       )
     }
+  }
+
+  prepareNewTripAdd (location, name){
+    //this.setState({tripNewLocation: {location: location, locationName: name}})
   }
 
   getMarkerLocationName(location) {

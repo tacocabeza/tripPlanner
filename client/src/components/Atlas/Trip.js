@@ -141,6 +141,7 @@ export default class Trip extends Component {
   addFromMap() {
     this.props.toggle(true, '1');
     this.setState({destinationModal: false});
+    this.props.tripNewLocation.location? this.addDestination(this.props.tripNewLocation.locationName, this.props.tripNewLocation.location.lat, this.props.tripNewLocation.location.lng): ""
   }
 
   addDestination(name, lat, lng) {
