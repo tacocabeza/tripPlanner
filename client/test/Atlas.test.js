@@ -26,7 +26,7 @@ function testMarkerIsRenderedOnClick() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
 
-  let actualMarkerPosition = atlas.state().location1;
+  let actualMarkerPosition = atlas.state().distanceLocation1;
   let expectedMarkerPosition = null;
 
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
@@ -34,7 +34,7 @@ function testMarkerIsRenderedOnClick() {
   let latlng = {lat: 0, lng: 0};
   simulateOnClickEvent(atlas, {latlng: latlng});
 
-  expect(atlas.state().location1).toEqual(latlng);
+  expect(atlas.state().distanceLocation1).toEqual(latlng);
   // expect(atlas.find('Marker')).toEqual(1); ??
 }
 
@@ -87,9 +87,9 @@ function testSetLocation(location) {
   instance.setLocation(location, {lat: 0, lng: 0});
   let actualLocation = null;
   if (location == 1) {
-    actualLocation = atlas.state().location1;
+    actualLocation = atlas.state().distanceLocation1;
   } else if (location == 2) {
-    actualLocation = atlas.state().location2;
+    actualLocation = atlas.state().distanceLocation2;
   } else {
     actualLocation = atlas.state().currentMapCenter;
   }
@@ -102,13 +102,13 @@ test("Testing Atlas's Set Current Location", testLocation3);
 function testSearchListClick() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
-  atlas.state().location1 = {lat: 1, lng: 1};
+  atlas.state().distanceLocation1 = {lat: 1, lng: 1};
   let expectedLocation1 = {lat: 0, lng: 0};
-  let expectedLocation2 = atlas.state().location1;
+  let expectedLocation2 = atlas.state().distanceLocation1;
   let expectedCurrentLocation = [0, 0];
   instance.searchListItemClick("", 0, 0);
-  let actualLocation1 = atlas.state().location1;
-  let actualLocation2 = atlas.state().location2;
+  let actualLocation1 = atlas.state().distanceLocation1;
+  let actualLocation2 = atlas.state().distanceLocation2;
   let actualCurrentLocation = atlas.state().currentMapCenter;
   expect(actualLocation1).toEqual(expectedLocation1);
   expect(actualLocation2).toEqual(expectedLocation2);
@@ -121,8 +121,8 @@ function testPrepareCallsRequest() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
   instance.requestDistance = jest.fn();
-  atlas.state().location1 = {lat: 0, lng: 0};
-  atlas.state().location2 = {lat: 1, lng: 1};
+  atlas.state().distanceLocation1 = {lat: 0, lng: 0};
+  atlas.state().distanceLocation2 = {lat: 1, lng: 1};
   instance.prepareServerRequest();
   expect(instance.requestDistance).toBeCalled();
 }

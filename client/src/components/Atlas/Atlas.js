@@ -44,6 +44,7 @@ export default class Atlas extends Component {
 
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
+    this.setTripLocations = this.setTripLocations.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
@@ -60,9 +61,10 @@ export default class Atlas extends Component {
       currentMapCenter: MAP_CENTER_DEFAULT,
       currentMapBounds: null,
       mapZoom: 15,
-      location1: null,
-      location2: null,
-      locations: [],
+      distanceLocation1: null,
+      distanceLocation2: null,
+      tripLocations: [],
+      showRoundTripLine: true,
       serverSettings: this.props.serverSettings,
       currentTab: '1',
       isDistanceOpen: false,
@@ -102,7 +104,8 @@ export default class Atlas extends Component {
                 <TabPane tabId="2">
                   <Trip toggle={this.toggleTab}
                         createSnackBar={this.props.createSnackBar}
-                        serverSettings={this.state.serverSettings}/>
+                        serverSettings={this.state.serverSettings}
+                        setTripLocations={this.setTripLocations}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -130,9 +133,10 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.location1, AGGIE_MARKER_ICON)}
-          {this.placeMarker(this.state.location2, RESERVOIR_MARKER_ICON)}
-          {this.getLine()}
+          {this.placeMarker(this.state.distanceLocation1, AGGIE_MARKER_ICON)}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON)}
+          {this.renderDistanceLine()}
+          {this.renderTripLines()}
           {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
           {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           <Control position="topleft">
@@ -153,7 +157,6 @@ export default class Atlas extends Component {
               <img className="h-22px" src={searchIcon}/>
             </Button>
           </Control>
-          {this.renderTripLines(true)}
         </Map>
     );
   }
@@ -168,18 +171,27 @@ export default class Atlas extends Component {
     );
   }
 
-  renderTripLines(roundTrip) {
+  renderTripLines() {
     let lines = []
-    for(let i= 0; i < this.state.locations.length - 1; i++){
-      lines.push(this.getLine(this.state.locations[i],this.state.locations[i+1],i));
+    for(let i= 0; i < this.state.tripLocations.length - 1; i++){
+      lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],i));
     }
 
-    if(roundTrip == true){
-      let lastIndex = this.state.locations.length -1;
-      lines.push(this.getLine(this.state.locations[lastIndex],this.state.locations[0],lastIndex));
+    if(this.state.showRoundTripLine){
+      let lastIndex = this.state.tripLocations.length -1;
+      lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
 
     return <div>{lines}</div>;
+  }
+
+  renderDistanceLine(){
+    if(this.state.distanceLocation2){
+      return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
+    }
+    else if (this.state.distanceLocation1) {
+      return this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null);
+    }
   }
 
   getLine(location1, location2, key) {
@@ -188,6 +200,14 @@ export default class Atlas extends Component {
           <Polyline color="#CC5430" positions={[location1, location2]} key={key}/>
       );
     }
+  }
+
+  setTripLocations(destinations) {
+    let newLocations = [];
+    for(let i = 0; i < destinations.length; i++){
+      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude});
+    }
+    this.setState({tripLocations: newLocations});
   }
 
   renderDistance() {
@@ -200,10 +220,10 @@ export default class Atlas extends Component {
 
   setLocation(location, state) {
     if (location == 1) {
-      this.setState({location2: this.state.location1})
-      this.setState({location1: state});
+      this.setState({distanceLocation2: this.state.distanceLocation1})
+      this.setState({distanceLocation1: state});
     } else if (location == 2) {
-      this.setState({location2: state});
+      this.setState({distanceLocation2: state});
     } else if (location == 3) {
       this.setState({currentMapCenter: state});
     }
@@ -211,8 +231,8 @@ export default class Atlas extends Component {
 
   searchListItemClick(name, lat, lng) {
     this.setState({isSearchOpen: false});
-    this.setState({location2: this.state.location1})
-    this.setState({location1: {"lat":lat, "lng":lng}});
+    this.setState({distanceLocation2: this.state.distanceLocation1})
+    this.setState({distanceLocation1: {"lat":lat, "lng":lng}});
     this.setState({currentMapCenter: [lat, lng]});
   }
 
@@ -238,12 +258,12 @@ export default class Atlas extends Component {
 
   recenterMap(){
     this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
-    this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
+    this.setState({distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
   }
 
   setMarkerOnClick(mapClickInfo) {
-    this.setState({location2: this.state.location1})
-    this.setState({location1: mapClickInfo.latlng})
+    this.setState({distanceLocation2: this.state.distanceLocation1})
+    this.setState({distanceLocation1: mapClickInfo.latlng})
   }
 
   placeMarker(location, icon) {
@@ -256,12 +276,12 @@ export default class Atlas extends Component {
 
   checkMapView(){
     let bound = latLngBounds()
-    if(this.state.location2) {
-      bound.extend(this.state.location1)
-      bound.extend(this.state.location2)
+    if(this.state.distanceLocation2) {
+      bound.extend(this.state.distanceLocation1)
+      bound.extend(this.state.distanceLocation2)
     }
-    else if(this.state.location1) {
-      bound.extend(this.state.location1)
+    else if(this.state.distanceLocation1) {
+      bound.extend(this.state.distanceLocation1)
       bound.extend(this.state.originalMapCenter)
     }
     else{
@@ -273,11 +293,11 @@ export default class Atlas extends Component {
   }
 
   prepareServerRequest() {
-    if(this.state.location2) {
-        this.requestDistance(this.state.location1,this.state.location2)
+    if(this.state.distanceLocation2) {
+        this.requestDistance(this.state.distanceLocation1,this.state.distanceLocation2)
     }
     else {
-        this.requestDistance(this.state.location1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
+        this.requestDistance(this.state.distanceLocation1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
     }
   }
 
