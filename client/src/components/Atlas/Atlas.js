@@ -127,7 +127,7 @@ export default class Atlas extends Component {
             maxBounds={MAP_BOUNDS}
             bounds={this.state.currentMapBounds}
             center={this.state.currentMapCenter}
-            onClick={this.setMarkerOnClick}
+            onClick={!this.state.isSearchOpen? this.setMarkerOnClick: null}
             onMoveEnd={this.mapMovement}
             scrollWheelZoom={!this.state.isSearchOpen}
         >
@@ -262,7 +262,7 @@ export default class Atlas extends Component {
     if (location) {
       return (
         <Marker position={location} icon={icon}>
-          <Popup offset={[1, -18]}>
+          <Popup offset={[1, -18]} autoPan={false}>
             {location.lat? location.lat.toFixed(2) + ', ' + location.lng.toFixed(2):
               (location[0]? location[0].toFixed(2) + ', ' + location[1].toFixed(2): "")}
             <br/>{this.getMarkerLocationName(location)}<br/>
