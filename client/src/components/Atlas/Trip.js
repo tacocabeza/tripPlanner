@@ -41,7 +41,7 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
-          <p className="text-right">Total Distance: 000mi.</p>
+          <p className="text-right">Total Distance: {this.state.loadedTrip.distances[this.state.loadedTrip.distances.length - 1]}mi.</p>
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
         </Col>
         {this.renderDestinationModal()}
