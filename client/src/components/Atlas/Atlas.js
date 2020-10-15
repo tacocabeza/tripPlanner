@@ -37,12 +37,6 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 
-const mapButtonStyle = {
-  color: 'black',
-  background: 'white',
-  padding: '5px',
-}
-
 export default class Atlas extends Component {
 
   constructor(props) {
@@ -105,7 +99,9 @@ export default class Atlas extends Component {
                   </Collapse>
                 </TabPane>
                 <TabPane tabId="2">
-                  <Trip/>
+                  <Trip toggle={this.toggleTab}
+                        createSnackBar={this.props.createSnackBar}
+                        serverSettings={this.state.serverSettings}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -139,8 +135,8 @@ export default class Atlas extends Component {
           {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
           {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           <Control position="topleft">
-            <Button style={mapButtonStyle} id="showAllMarkers" onClick={this.checkMapView} >
-              <img style={{height: '24px'}} src={showMarkerIcon}/>
+            <Button id="showAllMarkers" className="mapButton" onClick={this.checkMapView} >
+              <img className="h-25px" src={showMarkerIcon}/>
             </Button>
             <UncontrolledTooltip placement="right"  target="showAllMarkers">
               Show All Markers
@@ -152,8 +148,8 @@ export default class Atlas extends Component {
                       serverSettings={this.state.serverSettings}
                       onClickListItem={this.searchListItemClick}/>
             </Fade>
-            <Button className="float-right" style={mapButtonStyle} onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
-              <img style={{height: '22px'}} src={searchIcon}/>
+            <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
+              <img className="h-22px" src={searchIcon}/>
             </Button>
           </Control>
           {this.renderTripLines(true)}
@@ -164,8 +160,8 @@ export default class Atlas extends Component {
   renderMapButton(id, icon, onClick) {
     return (
       <Control position="topleft">
-        <Button id={id} style={mapButtonStyle} onClick={onClick}>
-          <img style={{height: '23px'}} src={icon}/>
+        <Button id={id} className="mapButton" onClick={onClick}>
+          <img className="h-23px" src={icon}/>
         </Button>
       </Control>
     );
@@ -216,7 +212,7 @@ export default class Atlas extends Component {
     }
   }
 
-  searchListItemClick(lat, lng, name) {
+  searchListItemClick(name, lat, lng) {
     this.setState({isSearchOpen: false});
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});

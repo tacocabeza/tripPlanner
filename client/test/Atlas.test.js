@@ -108,7 +108,7 @@ function testSearchListClick() {
   let expectedLocation1 = {lat: 0, lng: 0};
   let expectedLocation2 = atlas.state().location1;
   let expectedCurrentLocation = [0, 0];
-  instance.searchListItemClick(0, 0);
+  instance.searchListItemClick("", 0, 0);
   let actualLocation1 = atlas.state().location1;
   let actualLocation2 = atlas.state().location2;
   let actualCurrentLocation = atlas.state().currentMapCenter;
