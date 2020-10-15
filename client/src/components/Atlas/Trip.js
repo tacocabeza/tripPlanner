@@ -3,13 +3,6 @@ import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, Mod
 
 import DeleteIcon from '../../static/images/delete.svg'
 
-const deleteBtn = {
-  background: '#fff',
-  color: '#000',
-  padding: '5px',
-  border: 'none',
-}
-
 export default class Trip extends Component {
   constructor(props) {
     super(props);
@@ -48,21 +41,15 @@ export default class Trip extends Component {
         <Col xs={12}>
           <Input
             type="text"
-            style={{width: '60%'}}
-            className="float-left"
+            className="float-left w-60"
             name="tripname"
             placeholder="Trip Name"
             value={this.state.tripName}
             onChange={e => this.setState({tripName: e.target.value})}
           />
-          <Row style={{width: '40%'}}>
-            <Button color="primary" style={{width: '49%', marginLeft: '1%'}}>Save</Button>
-            <Button color="primary"
-                    style={{width: '49%', marginLeft: '1%'}}
-                    onClick={() => {this.setState({loadModal: true})}}
-            >
-              Load
-            </Button>
+          <Row className="w-40">
+            <Button color="primary" className="saveLoad">Save</Button>
+            <Button color="primary" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
         </Col>
       </Row>
@@ -76,8 +63,8 @@ export default class Trip extends Component {
           <Row>
             <Col className="text-left">Test Name</Col>
             <Col>
-              <Button style={deleteBtn} className="float-right">
-                <img style={{height: '25px'}} src={DeleteIcon}/>
+              <Button className="float-right deleteBtn">
+                <img className="h-25px" src={DeleteIcon}/>
               </Button>
             </Col>
           </Row>
@@ -87,8 +74,8 @@ export default class Trip extends Component {
           <Row>
             <Col className="text-left">Test Name</Col>
             <Col>
-              <Button style={deleteBtn} className="float-right">
-                <img style={{height: '25px'}} src={DeleteIcon}/>
+              <Button className="float-right deleteBtn">
+                <img className="h-25px" src={DeleteIcon}/>
               </Button>
             </Col>
           </Row>
