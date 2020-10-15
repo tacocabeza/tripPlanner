@@ -70,8 +70,8 @@ export default class Search extends Component {
     renderResults() {
         return (
           <Collapse isOpen={this.state.searchHasFocus}>
-            <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
-              <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
+            <ListGroup variant="flush" className="searchResults">
+              <ListGroup.Item className="font-weight-bold" action onClick={this.sendLuckyRequest}>
                 Feeling Lucky?
               </ListGroup.Item>
                 {this.state.results.places.map(result => (

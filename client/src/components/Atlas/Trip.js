@@ -56,22 +56,15 @@ export default class Trip extends Component {
         <Col xs={12}>
           <Input
             type="text"
-            style={{width: '60%'}}
-            className="float-left"
+            className="float-left w-60"
             name="tripname"
             placeholder="Trip Name"
             value={this.state.tripName}
             onChange={e => this.setState({tripName: e.target.value})}
           />
-          <Row style={{width: '40%'}}>
-            <Button color="primary" style={{width: '49%', marginLeft: '1%'}}>Save</Button>
-            <Button color="primary"
-                    id="loadbtn"
-                    style={{width: '49%', marginLeft: '1%'}}
-                    onClick={() => {this.setState({loadModal: true})}}
-            >
-              Load
-            </Button>
+          <Row className="w-40">
+            <Button color="primary" className="saveLoad">Save</Button>
+            <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
         </Col>
       </Row>
