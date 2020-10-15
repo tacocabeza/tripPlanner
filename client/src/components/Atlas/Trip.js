@@ -75,16 +75,19 @@ export default class Trip extends Component {
     return (
       <ListGroup>
         {this.state.loadedTrip.places.map((result, index) => (
-          <ListGroupItem key={result.id}>
-            <Row>
-              <Col className="text-left">{result.name}</Col>
-              <Col>
-                <Button className="float-right deleteBtn" onClick={() => this.removeDestination(index)}>
-                  <img className="h-25px" src={DeleteIcon}/>
-                </Button>
-              </Col>
-            </Row>
-          </ListGroupItem>
+          <div key={result.id}>
+            <Fade in={index > 0} className="text-right">Distance: {this.state.loadedTrip.distances[index-1]}mi.</Fade>
+            <ListGroupItem key={result.id}>
+              <Row>
+                <Col className="text-left">{result.name}</Col>
+                <Col>
+                  <Button className="float-right deleteBtn" onClick={() => this.removeDestination(index)}>
+                    <img className="h-25px" src={DeleteIcon}/>
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroupItem>
+          </div>
         ))}
       </ListGroup>
     );
