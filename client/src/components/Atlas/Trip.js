@@ -41,7 +41,7 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
-          <p className="text-right">Total Distance: 000mi.</p>
+          <p className="text-right">Total Distance: {this.state.loadedTrip.distances[this.state.loadedTrip.distances.length - 1]}mi.</p>
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
         </Col>
         {this.renderDestinationModal()}
@@ -75,16 +75,19 @@ export default class Trip extends Component {
     return (
       <ListGroup>
         {this.state.loadedTrip.places.map((result, index) => (
-          <ListGroupItem key={result.id}>
-            <Row>
-              <Col className="text-left">{result.name}</Col>
-              <Col>
-                <Button style={deleteBtn} className="float-right" onClick={() => this.removeDestination(index)}>
-                  <img style={{height: '25px'}} src={DeleteIcon}/>
-                </Button>
-              </Col>
-            </Row>
-          </ListGroupItem>
+          <div key={result.id}>
+            <Fade in={index > 0} className="text-right">Distance: {this.state.loadedTrip.distances[index-1]}mi.</Fade>
+            <ListGroupItem key={result.id}>
+              <Row>
+                <Col className="text-left">{result.name}</Col>
+                <Col>
+                  <Button className="float-right deleteBtn" onClick={() => this.removeDestination(index)}>
+                    <img className="h-25px" src={DeleteIcon}/>
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroupItem>
+          </div>
         ))}
       </ListGroup>
     );
