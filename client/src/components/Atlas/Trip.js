@@ -79,8 +79,8 @@ export default class Trip extends Component {
             <Row>
               <Col className="text-left">{result.name}</Col>
               <Col>
-                <Button style={deleteBtn} className="float-right" onClick={() => this.removeDestination(index)}>
-                  <img style={{height: '25px'}} src={DeleteIcon}/>
+                <Button className="float-right deleteBtn" onClick={() => this.removeDestination(index)}>
+                  <img className="h-25px" src={DeleteIcon}/>
                 </Button>
               </Col>
             </Row>
