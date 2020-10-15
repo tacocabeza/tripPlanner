@@ -75,7 +75,7 @@ export default class Search extends Component {
                 Feeling Lucky?
               </ListGroup.Item>
                 {this.state.results.places.map(result => (
-                    <ListGroup.Item key={result.id} action onClick={() => {this.props.onClickListItem(result.latitude, result.longitude)}}>
+                    <ListGroup.Item key={result.id} action onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
                         {result.name}
                     </ListGroup.Item>
                 ))}

@@ -100,7 +100,9 @@ export default class Atlas extends Component {
                   </Collapse>
                 </TabPane>
                 <TabPane tabId="2">
-                  <Trip/>
+                  <Trip toggle={this.toggleTab}
+                        createSnackBar={this.props.createSnackBar}
+                        serverSettings={this.state.serverSettings}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -207,7 +209,7 @@ export default class Atlas extends Component {
     }
   }
 
-  searchListItemClick(lat, lng) {
+  searchListItemClick(name, lat, lng) {
     this.setState({isSearchOpen: false});
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
