@@ -30,6 +30,7 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
+      totalDistance: 0,
     }
   }
 
@@ -41,7 +42,7 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
-          <p className="text-right">Total Distance: {this.state.loadedTrip.distances[this.state.loadedTrip.distances.length - 1]}mi.</p>
+          <p className="text-right">Total Distance: {this.state.totalDistance}mi.</p>
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
         </Col>
         {this.renderDestinationModal()}
@@ -199,9 +200,14 @@ export default class Trip extends Component {
   }
 
   processTripResponse(response) {
+    let count = 0;
+    for (let i = 0; i < response.distances.length - 1; i++) {
+      count = count + response.distances[i];
+    }
     this.setState({
       loadedTrip: response,
       tripName: response.options.title,
+      totalDistance: count,
     });
   }
 }
