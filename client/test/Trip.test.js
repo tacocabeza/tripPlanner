@@ -46,22 +46,15 @@ function testLoadModal() {
 test("Load modal opened by Load button", testLoadModal);
 
 function testGoToMap() {
-  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  const trip = atlas.find('Trip').at(0);
+  const div = document.createElement('div');
+  div.setAttribute("id", "showAllMarkers")
+  document.body.appendChild(div)
+  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   let expectedTab = '1';
-  trip.find('#mapbtn').at(0).simulate('click');
+  atlas.find('#addbtn').at(0).simulate('click');
+  atlas.find('#mapbtn').at(0).simulate('click');
   let actualTab = atlas.state().currentTab;
   expect(actualTab).toEqual(expectedTab);
 }
 
-//test("Add from map button navigates to map tab", testGoToMap);
-
-function testConfirm() {
-  const trip = shallow(<Trip/>);
-  const instance = trip.instance();
-  instance.submitDestination = jest.fn();
-  trip.find("#confirmbtn").at(0).simulate('click');
-  expect(instance.submitDestination).toBeCalled();
-}
-
-//test("Confirm button submits a destination", testConfirm);
+test("Add from map button navigates to map tab", testGoToMap);
