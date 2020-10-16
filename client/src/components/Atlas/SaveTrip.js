@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade} from "reactstrap";
-import SaveAlt from '@material-ui/icons/SaveAlt'
+import {Button, Input, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 
 export default class SaveTrip extends Component {
