@@ -13,6 +13,7 @@
 |Jesus Garcia| 50 minutes |
 | Alex Hooten | 40 min. |
 | Suyash Hiray | 40 min. |
+| Nick Davidson | 40 Minutes |
 
 ### Problems found
 
@@ -36,4 +37,10 @@
 | Atlas.js:257-273 | checkMapView has too many if statements/refactor | low | Suyash | |
 | Atlas.js:general | Locations is always empty | low | Suyash | |
 | Atlas.js:general | No error handling/checking of multiple methods - locations nad geolocation | low | Suyash | |
+| Atlas.js:56 | State is getting to a length that makes it difficult to understand | low | Nick |  |
+| Atlas.js:138-146 | We have a render function for control but it is not used for all buttons | low | Nick |  |
+| Atlas.js:156 | There is a set state to true not needed if there is no way to change | low | Nick |  |
+| Atlas.js:182 | Returning with html tags should be in parens to not loose html | low | Nick |  |
+| Atlas.js:general | Lots of if statements with no else can cause unknown issues from calling function | low | Nick |  |
+| Atlas.js:general | Spacing between sections of code is not consistant | low | Nick |  |
 
