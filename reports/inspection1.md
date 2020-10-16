@@ -13,6 +13,8 @@
 |Jesus Garcia| 50 min. |
 | Alex Hooten | 40 min. |
 | Preston Dunton | 45 min. |
+| Suyash Hiray | 40 min. |
+| Nick Davidson | 40 Minutes |
 
 ### Problems found
 
@@ -40,7 +42,17 @@
 | Atlas.js:257-273 | Refactor / rename `checkMapView()` | low | Preston | |
 | Atlas.js:general | Replace `location1` and `location2` with a queue data structure.  Enforce pushes and peeks to clean code| med | Preston | |
 | Atlas.js:general | Raise test coverage| high | Preston | |
-
-
-
+| Atlas.js:65 | Is locations always empty? | low | Suyash | |
+| Atlas.js:156-169 | Would renderTripLines ever be false - hardcoded true | low | Suyash | |
+| Atlas.js:161-169 | See if map button needs to be rendered separately | low | Suyash | |
+| Atlas.js:240 | Set map zoom to a constant | low | Suyash | |
+| Atlas.js:257-273 | checkMapView has too many if statements/refactor | low | Suyash | |
+| Atlas.js:general | Locations is always empty | low | Suyash | |
+| Atlas.js:general | No error handling/checking of multiple methods - locations nad geolocation | low | Suyash | |
+| Atlas.js:56 | State is getting to a length that makes it difficult to understand | low | Nick |  |
+| Atlas.js:138-146 | We have a render function for control but it is not used for all buttons | low | Nick |  |
+| Atlas.js:156 | There is a set state to true not needed if there is no way to change | low | Nick |  |
+| Atlas.js:182 | Returning with html tags should be in parens to not loose html | low | Nick |  |
+| Atlas.js:general | Lots of if statements with no else can cause unknown issues from calling function | low | Nick |  |
+| Atlas.js:general | Spacing between sections of code is not consistant | low | Nick |  |
 
