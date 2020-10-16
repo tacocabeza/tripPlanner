@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade} from "reactstrap";
 
 import DeleteIcon from '../../static/images/delete.svg'
+import SaveTrip from './SaveTrip.js';
 
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
@@ -67,7 +68,7 @@ export default class Trip extends Component {
             onChange={e => this.setState({tripName: e.target.value})}
           />
           <Row className="w-40">
-            <Button color="primary" className="saveLoad">Save</Button>
+            <SaveTrip places={this.state.destinations} tripName={this.state.tripName} />
             <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
         </Col>
