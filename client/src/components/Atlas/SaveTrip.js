@@ -76,7 +76,7 @@ export default class SaveTrip extends Component
 
 
            let destinations = []
-           let payload = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}}
+           let payload = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION}
 
            payload.options.earthRadius = "3959.0"
            for(var i = 0; i<this.props.places.length; i++)
