@@ -11,6 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 |Jesus Garcia| 50 minutes |
+| Alex Hooten | 40 min. |
 |  |  |
 
 ### Problems found
@@ -22,4 +23,10 @@
 |Atlas.js:212| possible unused parameter => name|low|Jesus||
 |Atlas.js:27 | unused import statement | low | Jesus | |
 |Atlas.js:185| key paramater is possibly redundant| med| Jesus||
+| Atlas.js:77 | toggleTab does not need the isTab parameter anymore | low | Alex |  |
+| Atlas.js:201 | setLocation has un-descriptive parameters | low | Alex | |
+| Atlas.js:212 | searchListItemClick currently doesn't use the name parameter | low | Alex | |
+| Atlas.js:203,213,225,240,245 | setState statements should be grouped | low | Alex | |
+| Atlas.js:general | establish consistency with using semicolons or not | low | Alex | |
+| Atlas.js:general | reorder functions to be grouped by relation to each other | low | Alex | |
 
