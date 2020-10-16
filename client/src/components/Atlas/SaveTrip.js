@@ -21,7 +21,7 @@ export default class SaveTrip extends Component
     render()
     {
         return(
-           <div>
+           <div className="saveLoad">
                 {this.renderSaveButton()}
                 {this.renderPopUp()}
 
@@ -37,7 +37,7 @@ export default class SaveTrip extends Component
 
         return(
 
-            <Button color={"info"} onClick={() => this.togglePopUp()}> <SaveAlt/> </Button>
+            <Button color="primary" className="w-100" onClick={() => this.togglePopUp()}>Save</Button>
 
         )
 
@@ -53,10 +53,11 @@ export default class SaveTrip extends Component
                 Save My Trip
             </ModalHeader>
             <ModalBody>
-            <Input name="FileName" placeholder={this.props.tripName} value={this.state.saveName} onChange={e => this.setState({saveName: e.target.value})}/>
+            <Input name="FileName" placeholder="Filename" value={this.state.saveName} onChange={e => this.setState({saveName: e.target.value})}/>
             </ModalBody>
             <ModalFooter>
-                <Button disabled={!this.state.saveName} onClick={() => this.save()}>Save</Button>
+              <Button color="primary" disabled={!this.state.saveName} onClick={() => this.save()}>Save</Button>
+              <Button onClick={() => this.setState({isPopUp: false})}>Close</Button>
             </ModalFooter>
             </Modal>
 
@@ -76,7 +77,14 @@ export default class SaveTrip extends Component
 
 
            let destinations = []
-           let payload = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION}
+           let payload = {
+             "options": {
+               "title": this.props.tripData.options.title,
+               "earthRadius": this.props.tripData.options.earthRadius},
+             "places": [],
+             "distances": this.props.tripData.distances,
+             "requestType": "trip",
+             "requestVersion": PROTOCOL_VERSION}
 
            payload.options.earthRadius = "3959.0"
            for(var i = 0; i<this.props.places.length; i++)
