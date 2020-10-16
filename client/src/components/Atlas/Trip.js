@@ -4,8 +4,9 @@ import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, Mod
 import DeleteIcon from '../../static/images/delete.svg'
 
 import Search from './Search.js';
-import {sendServerRequest} from "../../utils/restfulAPI";
+import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
+import * as tripSchema from "../../../schemas/ResponseTrip";
 
 const deleteBtn = {
   background: '#fff',
@@ -20,6 +21,7 @@ export default class Trip extends Component {
 
     this.addDestination = this.addDestination.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
+    this.processFile = this.processFile.bind(this);
 
     this.state = {
       loadedTrip: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
@@ -30,6 +32,7 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
+      loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
       totalDistance: 0,
     }
   }
@@ -125,13 +128,15 @@ export default class Trip extends Component {
   }
 
   renderLoadModal() {
+    const callback = (event) => {this.processFile(event.target.files)};
     return (
       <Modal isOpen={this.state.loadModal}>
         <ModalHeader>Load Trip</ModalHeader>
         <ModalBody>
+          <Input type='file' onChange={callback} />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary">Load</Button>
+          <Button color="primary" onClick={() => this.loadFile()}>Load</Button>
           <Button onClick={() => {this.setState({loadModal: false})}}>Close</Button>
         </ModalFooter>
       </Modal>
@@ -209,5 +214,23 @@ export default class Trip extends Component {
       tripName: response.options.title,
       totalDistance: count,
     });
+  }
+
+  processFile(files) {
+    let self = this;
+    let fr = new FileReader();
+    fr.readAsText(files[0]);
+    fr.onload = function(event) {
+      self.setState({loadedFile: JSON.parse(fr.result)});
+    };
+  }
+
+  loadFile() {
+    if(!isJsonResponseValid(this.state.loadedFile, tripSchema)) {
+      this.props.createSnackBar("This file is not valid");
+    } else {
+      this.setState({loadModal: false,});
+      this.processTripResponse(this.state.loadedFile);
+    }
   }
 }
