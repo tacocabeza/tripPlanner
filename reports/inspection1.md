@@ -10,12 +10,16 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-|  |  |
+|Jesus Garcia| 50 minutes |
 |  |  |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
-|  | | | | |
+|Atlas.js:292| hard coded earthRadius|low |Jesus| |
+|Atlas.js:275| no case handling null places, causing uncaught type error| med | Jesus| |
+|Atlas.js:212| possible unused parameter => name|low|Jesus||
+|Atlas.js:27 | unused import statement | low | Jesus | |
+|Atlas.js:185| key paramater is possibly redundant| med| Jesus||
+
