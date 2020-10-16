@@ -1,5 +1,6 @@
 import './jestConfig/enzyme.config.js';
 import React from 'react';
+import {PROTOCOL_VERSION} from "../src/utils/constants";
 import {shallow} from 'enzyme';
 
 import SaveTrip from "../src/components/Atlas/SaveTrip.js";
@@ -39,7 +40,7 @@ function testLoadPlaces()
 
     let actualPayLoad = saveTrip.instance().loadPlaces();
 
-    let expectedPayload = {"options":{"title":"","earthRadius":"3959.0"},"places":[],"distances":[],"requestType":"find","requestVersion":{"PROTOCOL_VERSION":3}};
+    let expectedPayload = {"options": {"title": "", "earthRadius": "3959.0"}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION};
 
     expect(actualPayLoad).toEqual(expectedPayload);
 
