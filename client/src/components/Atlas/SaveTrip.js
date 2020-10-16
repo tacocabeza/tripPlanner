@@ -87,7 +87,7 @@ export default class SaveTrip extends Component
              "requestVersion": PROTOCOL_VERSION}
 
            payload.options.earthRadius = "3959.0"
-           for(var i = 0; i<this.props.places.length; i++)
+           for(let i = 0; i<this.props.places.length; i++)
            {
                 payload.places.push(this.props.places[i])
                 console.log(payload.places[i])
