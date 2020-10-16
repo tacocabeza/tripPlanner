@@ -10,8 +10,9 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-|Jesus Garcia| 50 minutes |
+|Jesus Garcia| 50 min. |
 | Alex Hooten | 40 min. |
+| Preston Dunton | 45 min. |
 | Suyash Hiray | 40 min. |
 | Nick Davidson | 40 Minutes |
 
@@ -28,8 +29,19 @@
 | Atlas.js:201 | setLocation has un-descriptive parameters | low | Alex | |
 | Atlas.js:212 | searchListItemClick currently doesn't use the name parameter | low | Alex | |
 | Atlas.js:203,213,225,240,245 | setState statements should be grouped | low | Alex | |
-| Atlas.js:general | establish consistency with using semicolons or not | low | Alex | |
+| Atlas.js:general (236,253) | establish consistency with using semicolons or not| low | Alex | |
 | Atlas.js:general | reorder functions to be grouped by relation to each other | low | Alex | |
+| Atlas.js:188 | Polyline color is not a constant | low | Preston | |
+| Atlas.js:275-308 | Distance request logic should be in `DistanceForm.js` | med | Preston | |
+| Atlas.js:135 | Make sure `getLine()` is replaced with `renderDistanceLine()` | low | Preston | |
+| Atlas.js:201-210 | `setLocation()` has confusing parameters and logic| med | Preston | |
+| Atlas.js:201-210 | `setLocation()` could be passed a location other than options (1,2,3) | low | Preston | |
+| Atlas.js:221,222 | Where is variable `navigator` being initialized? | med | Preston | |
+| Atlas.js:220 | What's up with using `self` instead of `this`? | low | Preston | |
+| Atlas.js:223 | Parameter `position` could be null | high | Preston | |
+| Atlas.js:257-273 | Refactor / rename `checkMapView()` | low | Preston | |
+| Atlas.js:general | Replace `location1` and `location2` with a queue data structure.  Enforce pushes and peeks to clean code| med | Preston | |
+| Atlas.js:general | Raise test coverage| high | Preston | |
 | Atlas.js:65 | Is locations always empty? | low | Suyash | |
 | Atlas.js:156-169 | Would renderTripLines ever be false - hardcoded true | low | Suyash | |
 | Atlas.js:161-169 | See if map button needs to be rendered separately | low | Suyash | |
