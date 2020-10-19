@@ -36,6 +36,7 @@ const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quo
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
+const MAP_DEFAULT_ZOOM = 15;
 
 export default class Atlas extends Component {
 
@@ -59,7 +60,7 @@ export default class Atlas extends Component {
       originalMapCenter: MAP_CENTER_DEFAULT,
       currentMapCenter: MAP_CENTER_DEFAULT,
       currentMapBounds: null,
-      mapZoom: 15,
+      mapZoom: MAP_DEFAULT_ZOOM,
       location1: null,
       location2: null,
       locations: [],
@@ -237,7 +238,7 @@ export default class Atlas extends Component {
   }
 
   recenterMap(){
-    this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
+    this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: MAP_DEFAULT_ZOOM})
     this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
   }
 
