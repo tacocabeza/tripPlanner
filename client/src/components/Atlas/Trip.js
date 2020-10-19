@@ -68,7 +68,7 @@ export default class Trip extends Component {
             onChange={e => this.setState({tripName: e.target.value})}
           />
           <Row className="w-40">
-            <SaveTrip places={this.state.destinations} tripName={this.state.tripName} />
+            <SaveTrip places={this.state.destinations} tripData={this.state.loadedTrip}/>
             <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
         </Col>

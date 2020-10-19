@@ -36,7 +36,8 @@ test("Testing Popup", testPopup);
 
 function testLoadPlaces()
 {
-    const saveTrip = shallow(<SaveTrip places={[]}/>)
+    let loadedTrip = {"options": {"title": "", "earthRadius": "3959.0"}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION};
+    const saveTrip = shallow(<SaveTrip places={[]} tripData={loadedTrip}/>)
 
     let actualPayLoad = saveTrip.instance().loadPlaces();
 
