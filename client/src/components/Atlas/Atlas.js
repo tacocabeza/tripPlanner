@@ -267,7 +267,7 @@ export default class Atlas extends Component {
   recenterMap(){
     this.setState({
       currentMapCenter: this.state.originalMapCenter, 
-      mapZoom: MAP_DEFUALT_ZOOM,
+      mapZoom: MAP_DEFAULT_ZOOM,
       distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}
     });
   }
