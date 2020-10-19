@@ -55,11 +55,10 @@ export default class Search extends Component {
     </div>;
   }
 
-  updateInputText(event) {
-    let formattedString = this.formatInputText(event.target.value);
-    this.setState({inputText: formattedString});
-    this.sendFindRequest();
-  }
+    updateInputText(event) {
+        this.setState({inputText: event.target.value});
+        this.sendFindRequest();
+    }
 
   formatInputText(s) {
     // replace all non-alphanumeric characters with _
