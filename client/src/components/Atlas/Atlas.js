@@ -42,7 +42,6 @@ export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
-
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.setTripLocations = this.setTripLocations.bind(this);
@@ -321,11 +320,11 @@ export default class Atlas extends Component {
 
   getMarkerLocationName(location) {
     if(location.lat){
-      if(location.lat == this.state.location1.lat && location.lng == this.state.location1.lng){
-        return this.state.location1Name
+      if(location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+        return this.state.distanceLocation1Name
       }
-      else if(location.lat == this.state.location2.lat && location.lng == this.state.location2.lng){
-        return this.state.location2Name
+      else if(location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+        return this.state.distanceLocation2Name
       }
       else{
         return "Unknown Location"
@@ -358,7 +357,7 @@ export default class Atlas extends Component {
     if(this.state.distanceLocation2) {
         this.requestDistance(this.state.distanceLocation1,this.state.distanceLocation2)
     }
-    else if(this.state.location1 == null && this.state.location2 == null)
+    else if(this.state.distanceLocation1 == null && this.state.distanceLocation2 == null)
     {
         return
     }
