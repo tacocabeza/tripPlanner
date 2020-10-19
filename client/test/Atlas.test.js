@@ -11,6 +11,33 @@ const startProperties = {
   createSnackBar: jest.fn()
 };
 
+const tripDestinations = [
+  {
+    "notes": "",
+    "name": "Denver International Airport",
+    "latitude": "39.861698150635",
+    "longitude": "-104.672996521"
+  },
+  {
+    "notes": "",
+    "name": "Miami International Airport",
+    "latitude": "25.79319953918457",
+    "longitude": "-80.29060363769531"
+  },
+  {
+    "notes": "",
+    "name": "San Juan Airport",
+    "latitude": "18.833332061799997",
+    "longitude": "-71.2333297729"
+  },
+  {
+    "notes": "",
+    "name": "Terrance B. Lettsome International Airport",
+    "latitude": "18.444799423217773",
+    "longitude": "-64.54299926757812"
+  }
+];
+
 function testInitialAtlasState() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
@@ -149,44 +176,42 @@ function testProcessSetsDistance() {
 
 test("Testing Atlas distance set by processDistanceResponse", testProcessSetsDistance);
 
-function testRenderTripLines() {
-  const div = document.createElement('div');
-  div.setAttribute("id", "showAllMarkers")
-  document.body.appendChild(div)
+function testSetTripLocations() {
 
-  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
-  const destinations = [
-    {
-      "notes":"",
-      "name":"Denver International Airport",
-      "latitude":"39.861698150635",
-      "longitude":"-104.672996521"
-    },
-    {
-      "notes":"",
-      "name":"Miami International Airport",
-      "latitude":"25.79319953918457",
-      "longitude":"-80.29060363769531"
-    },
-    {
-      "notes":"",
-      "name":"San Juan Airport",
-      "latitude":"18.833332061799997",
-      "longitude":"-71.2333297729"
-    },
-    {
-      "notes":"",
-      "name":"Terrance B. Lettsome International Airport",
-      "latitude":"18.444799423217773",
-      "longitude":"-64.54299926757812"
-    }
-  ]
 
-  instance.setTripLocations(destinations);
+  const expectedTripLocations = [
+    {"lat":"39.861698150635","lng":"-104.672996521"},
+    {"lat":"25.79319953918457","lng":"-80.29060363769531"},
+    {"lat":"18.833332061799997","lng":"-71.2333297729"},
+    {"lat":"18.444799423217773","lng":"-64.54299926757812"}
+    ];
 
-  //expect(atlas.find(Polyline)).to.have.length(3);
+  instance.setTripLocations(tripDestinations);
+  const tripLocations = atlas.state().tripLocations;
+  expect(tripLocations).toEqual(expectedTripLocations);
+
+}
+
+test("Testing Set Trip Locations", testSetTripLocations);
+
+function testRenderTripLines() {
+
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const instance = atlas.instance();
+
+  instance.setTripLocations(tripDestinations);
+
+  let tripLines = instance.renderTripLines();
+  expect(tripLines.props.children.length).toEqual(3);
+
+  instance.setState({isRoundTrip: true});
+
+  tripLines = instance.renderTripLines();
+  expect(tripLines.props.children.length).toEqual(4);
 }
 
 test("Testing Trip Line Rendering", testRenderTripLines);
+
 
