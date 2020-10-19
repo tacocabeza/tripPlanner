@@ -201,8 +201,10 @@ export default class Atlas extends Component {
 
   setLocation(location, state) {
     if (location == 1) {
-      this.setState({location2: this.state.location1})
-      this.setState({location1: state});
+      this.setState({
+        location2: this.state.location1,
+        location1: state
+      });
     } else if (location == 2) {
       this.setState({location2: state});
     } else if (location == 3) {
@@ -211,10 +213,12 @@ export default class Atlas extends Component {
   }
 
   searchListItemClick(name, lat, lng) {
-    this.setState({isSearchOpen: false});
-    this.setState({location2: this.state.location1})
-    this.setState({location1: {"lat":lat, "lng":lng}});
-    this.setState({currentMapCenter: [lat, lng]});
+    this.setState({
+      isSearchOpen: false,
+      location2: this.state.location1,
+      location1: {"lat":lat, "lng":lng},
+      currentMapCenter: [lat, lng]
+    });
   }
 
   getGeolocation() {
@@ -223,28 +227,35 @@ export default class Atlas extends Component {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
-          self.setState({originalMapCenter: ORIGINAL_COORDS});
-          self.setState({currentMapCenter: ORIGINAL_COORDS});
+          self.setState({
+            originalMapCenter: ORIGINAL_COORDS,
+            currentMapCenter: ORIGINAL_COORDS
+          });
         }
       );
     }
   }
 
   mapMovement(mapMovementInfo){
-    this.setState({ currentMapCenter: mapMovementInfo.target.getCenter(),
-                          mapZoom: mapMovementInfo.target.getZoom(),
-                          currentMapBounds: mapMovementInfo.target.getBounds()
-                  })
+    this.setState({
+      currentMapCenter: mapMovementInfo.target.getCenter(),
+      mapZoom: mapMovementInfo.target.getZoom(),
+      currentMapBounds: mapMovementInfo.target.getBounds()
+    });
   }
 
   recenterMap(){
-    this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: MAP_DEFAULT_ZOOM})
-    this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
+    this.setState({
+      currentMapCenter: this.state.originalMapCenter, mapZoom: MAP_DEFAULT_ZOOM,
+      location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}
+    });
   }
 
   setMarkerOnClick(mapClickInfo) {
-    this.setState({location2: this.state.location1})
-    this.setState({location1: mapClickInfo.latlng})
+    this.setState({
+      location2: this.state.location1,
+      location1: mapClickInfo.latlng
+    });
   }
 
   placeMarker(location, icon) {
