@@ -289,7 +289,7 @@ export default class Atlas extends Component {
                                             "longitude": place1.lng.toString()},
                         "place2"         : {"latitude":  place2.lat.toString(),
                                             "longitude": place2.lng.toString()},
-                        "earthRadius"    : EARTH_RADIUS_UNITS_DEFAULT
+                        "earthRadius"    : EARTH_RADIUS_UNITS_DEFAULT.miles
                       }, this.props.serverPort)
       .then(dist => {
         if (dist) { this.processDistanceResponse(dist.data); }
