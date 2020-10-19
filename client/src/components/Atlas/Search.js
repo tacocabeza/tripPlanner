@@ -56,8 +56,8 @@ export default class Search extends Component {
     }
 
     updateInputText(event) {
-        let formattedString = this.formatInputText(event.target.value);
-        this.setState({inputText: formattedString});
+        //let formattedString = this.formatInputText(event.target.value);
+        this.setState({inputText: event.target.value});
         this.sendFindRequest();
     }
 
@@ -86,7 +86,7 @@ export default class Search extends Component {
 
     sendFindRequest() {
         if(this.state.inputText != null && this.state.inputText != "") {
-            sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.state.inputText},
+            sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText)},
                 this.state.serverSettings.serverPort)
                 .then(find => {
                     if (find) {
