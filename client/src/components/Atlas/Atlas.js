@@ -5,7 +5,7 @@ import Control from 'react-leaflet-control';
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-
+import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
@@ -289,7 +289,7 @@ export default class Atlas extends Component {
                                             "longitude": place1.lng.toString()},
                         "place2"         : {"latitude":  place2.lat.toString(),
                                             "longitude": place2.lng.toString()},
-                        "earthRadius"    : 3959.0
+                        "earthRadius"    : EARTH_RADIUS_UNITS_DEFAULT
                       }, this.props.serverPort)
       .then(dist => {
         if (dist) { this.processDistanceResponse(dist.data); }
