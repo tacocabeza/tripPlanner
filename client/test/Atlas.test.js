@@ -5,10 +5,38 @@ import ReactDOM from 'react-dom';
 import {shallow, mount} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
+import Polyline from "react-leaflet/lib/Polyline";
 
 const startProperties = {
   createSnackBar: jest.fn()
 };
+
+const tripDestinations = [
+  {
+    "notes": "",
+    "name": "Denver International Airport",
+    "latitude": "39.861698150635",
+    "longitude": "-104.672996521"
+  },
+  {
+    "notes": "",
+    "name": "Miami International Airport",
+    "latitude": "25.79319953918457",
+    "longitude": "-80.29060363769531"
+  },
+  {
+    "notes": "",
+    "name": "San Juan Airport",
+    "latitude": "18.833332061799997",
+    "longitude": "-71.2333297729"
+  },
+  {
+    "notes": "",
+    "name": "Terrance B. Lettsome International Airport",
+    "latitude": "18.444799423217773",
+    "longitude": "-64.54299926757812"
+  }
+];
 
 function testInitialAtlasState() {
 
@@ -26,7 +54,7 @@ function testMarkerIsRenderedOnClick() {
 
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
 
-  let actualMarkerPosition = atlas.state().location1;
+  let actualMarkerPosition = atlas.state().distanceLocation1;
   let expectedMarkerPosition = null;
 
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
@@ -34,7 +62,7 @@ function testMarkerIsRenderedOnClick() {
   let latlng = {lat: 0, lng: 0};
   simulateOnClickEvent(atlas, {latlng: latlng});
 
-  expect(atlas.state().location1).toEqual(latlng);
+  expect(atlas.state().distanceLocation1).toEqual(latlng);
   // expect(atlas.find('Marker')).toEqual(1); ??
 }
 
@@ -87,9 +115,9 @@ function testSetLocation(location) {
   instance.setLocation(location, {lat: 0, lng: 0});
   let actualLocation = null;
   if (location == 1) {
-    actualLocation = atlas.state().location1;
+    actualLocation = atlas.state().distanceLocation1;
   } else if (location == 2) {
-    actualLocation = atlas.state().location2;
+    actualLocation = atlas.state().distanceLocation2;
   } else {
     actualLocation = atlas.state().currentMapCenter;
   }
@@ -102,13 +130,13 @@ test("Testing Atlas's Set Current Location", testLocation3);
 function testSearchListClick() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
-  atlas.state().location1 = {lat: 1, lng: 1};
+  atlas.state().distanceLocation1 = {lat: 1, lng: 1};
   let expectedLocation1 = {lat: 0, lng: 0};
-  let expectedLocation2 = atlas.state().location1;
+  let expectedLocation2 = atlas.state().distanceLocation1;
   let expectedCurrentLocation = [0, 0];
   instance.searchListItemClick("", 0, 0);
-  let actualLocation1 = atlas.state().location1;
-  let actualLocation2 = atlas.state().location2;
+  let actualLocation1 = atlas.state().distanceLocation1;
+  let actualLocation2 = atlas.state().distanceLocation2;
   let actualCurrentLocation = atlas.state().currentMapCenter;
   expect(actualLocation1).toEqual(expectedLocation1);
   expect(actualLocation2).toEqual(expectedLocation2);
@@ -121,8 +149,8 @@ function testPrepareCallsRequest() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
   instance.requestDistance = jest.fn();
-  atlas.state().location1 = {lat: 0, lng: 0};
-  atlas.state().location2 = {lat: 1, lng: 1};
+  atlas.state().distanceLocation1 = {lat: 0, lng: 0};
+  atlas.state().distanceLocation2 = {lat: 1, lng: 1};
   instance.prepareServerRequest();
   expect(instance.requestDistance).toBeCalled();
 }
@@ -147,4 +175,43 @@ function testProcessSetsDistance() {
 }
 
 test("Testing Atlas distance set by processDistanceResponse", testProcessSetsDistance);
+
+function testSetTripLocations() {
+
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const instance = atlas.instance();
+
+  const expectedTripLocations = [
+    {"lat":"39.861698150635","lng":"-104.672996521"},
+    {"lat":"25.79319953918457","lng":"-80.29060363769531"},
+    {"lat":"18.833332061799997","lng":"-71.2333297729"},
+    {"lat":"18.444799423217773","lng":"-64.54299926757812"}
+    ];
+
+  instance.setTripLocations(tripDestinations);
+  const tripLocations = atlas.state().tripLocations;
+  expect(tripLocations).toEqual(expectedTripLocations);
+
+}
+
+test("Testing Set Trip Locations", testSetTripLocations);
+
+function testRenderTripLines() {
+
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const instance = atlas.instance();
+
+  instance.setTripLocations(tripDestinations);
+
+  let tripLines = instance.renderTripLines();
+  expect(tripLines.props.children.length).toEqual(3);
+
+  instance.setState({isRoundTrip: true});
+
+  tripLines = instance.renderTripLines();
+  expect(tripLines.props.children.length).toEqual(4);
+}
+
+test("Testing Trip Line Rendering", testRenderTripLines);
+
 
