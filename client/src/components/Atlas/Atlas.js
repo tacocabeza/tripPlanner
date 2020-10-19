@@ -5,8 +5,8 @@ import Control from 'react-leaflet-control';
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-
-import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
+import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
+import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
@@ -36,11 +36,13 @@ const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quo
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
+const MAP_DEFAULT_ZOOM = 15;
 
 export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
+
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
@@ -57,7 +59,7 @@ export default class Atlas extends Component {
       originalMapCenter: MAP_CENTER_DEFAULT,
       currentMapCenter: MAP_CENTER_DEFAULT,
       currentMapBounds: null,
-      mapZoom: 15,
+      mapZoom: MAP_DEFAULT_ZOOM,
       location1: null,
       location2: null,
       location1Name: null,
@@ -202,26 +204,32 @@ export default class Atlas extends Component {
 
   setLocation(location, state) {
     if (location == 1) {
-      this.setState({location2: this.state.location1})
-      this.setState({location1: state});
-      this.setState({location2Name: this.state.location1Name})
-      this.setState({location1Name: null})
+      this.setState({
+        location2: this.state.location1,
+        location1: state,
+        location2Name: this.state.location1Name,
+        location1Name: null
+      });
     } else if (location == 2) {
-      this.setState({location2: state});
-      this.setState({location2Name: this.state.location1Name})
-      this.setState({location1Name: null})
+      this.setState({
+        location2: state,
+        location2Name: this.state.location1Name,
+        location1Name: null
+      });
     } else if (location == 3) {
       this.setState({currentMapCenter: state});
     }
   }
 
-  searchListItemClick(lat, lng, name) {
-    this.setState({isSearchOpen: false});
-    this.setState({location2: this.state.location1})
-    this.setState({location1: {"lat":lat, "lng":lng}});
-    this.setState({currentMapCenter: [lat, lng]});
-    this.setState({location2Name: this.state.location1Name})
-    this.setState({location1Name: name})
+  searchListItemClick(name, lat, lng) {
+    this.setState({
+      isSearchOpen: false,
+      location2: this.state.location1,
+      location1: {"lat":lat, "lng":lng},
+      currentMapCenter: [lat, lng],
+      location2Name: this.state.location1Name,
+      location1Name: name,
+    });
   }
 
   getGeolocation() {
@@ -230,31 +238,38 @@ export default class Atlas extends Component {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
-          self.setState({originalMapCenter: ORIGINAL_COORDS});
-          self.setState({currentMapCenter: ORIGINAL_COORDS});
+          self.setState({
+            originalMapCenter: ORIGINAL_COORDS,
+            currentMapCenter: ORIGINAL_COORDS
+          });
         }
       );
     }
   }
 
   mapMovement(mapMovementInfo){
-    this.setState({ currentMapCenter: mapMovementInfo.target.getCenter(),
-                          mapZoom: mapMovementInfo.target.getZoom(),
-                          currentMapBounds: mapMovementInfo.target.getBounds()
-                  })
+    this.setState({
+      currentMapCenter: mapMovementInfo.target.getCenter(),
+      mapZoom: mapMovementInfo.target.getZoom(),
+      currentMapBounds: mapMovementInfo.target.getBounds()
+    });
   }
 
   recenterMap(){
-    this.setState({currentMapCenter: this.state.originalMapCenter, mapZoom: 15})
-    this.setState({location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]}})
-    this.setState({location1Name: "Home"})
+    this.setState({
+      currentMapCenter: this.state.originalMapCenter, mapZoom: MAP_DEFAULT_ZOOM,
+      location1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]},
+      location1Name: "Home"
+    });
   }
 
   setMarkerOnClick(mapClickInfo) {
-    this.setState({location2: this.state.location1})
-    this.setState({location1: mapClickInfo.latlng})
-    this.setState({location2Name: this.state.location1Name})
-    this.setState({location1Name: null})
+    this.setState({
+      location2: this.state.location1,
+      location1: mapClickInfo.latlng,
+      location2Name: this.state.location1Name,
+      location1Name: null
+    });
   }
 
   placeMarker(location, icon) {
@@ -323,6 +338,10 @@ export default class Atlas extends Component {
     if(this.state.location2) {
         this.requestDistance(this.state.location1,this.state.location2)
     }
+    else if(this.state.location1 == null && this.state.location2 == null)
+    {
+        return
+    }
     else {
         this.requestDistance(this.state.location1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
     }
@@ -336,7 +355,7 @@ export default class Atlas extends Component {
                                             "longitude": place1.lng.toString()},
                         "place2"         : {"latitude":  place2.lat.toString(),
                                             "longitude": place2.lng.toString()},
-                        "earthRadius"    : 3959.0
+                        "earthRadius"    : EARTH_RADIUS_UNITS_DEFAULT.miles
                       }, this.props.serverPort)
       .then(dist => {
         if (dist) { this.processDistanceResponse(dist.data); }
