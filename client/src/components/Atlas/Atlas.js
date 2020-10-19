@@ -215,7 +215,7 @@ export default class Atlas extends Component {
     }
   }
 
-  searchListItemClick(name, lat, lng) {
+  searchListItemClick(lat, lng, name) {
     this.setState({isSearchOpen: false});
     this.setState({location2: this.state.location1})
     this.setState({location1: {"lat":lat, "lng":lng}});
@@ -260,13 +260,13 @@ export default class Atlas extends Component {
   placeMarker(location, icon) {
     if (location) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0)
-      let long = location.lng? location.lng: (location[1]? location[1]: 0)
+      let longitude = location.lng? location.lng: (location[1]? location[1]: 0)
       return (
         <Marker position={location} icon={icon}>
           <Popup offset={[1, -18]} autoPan={false}>
-            {latitude.toFixed(2) + "," + long.toFixed(2)}
+            {latitude.toFixed(2) + "," + longitude.toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
-            <IconButton onClick={this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
+            <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
               Add to trip
             </IconButton>
           </Popup>
@@ -275,8 +275,13 @@ export default class Atlas extends Component {
     }
   }
 
-  prepareNewTripAdd (location, name){
-    //this.setState({tripNewLocation: {location: location, locationName: name}})
+  prepareNewTripAdd (newLocation, name){
+    let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
+    console.log(formattedLocation)
+    if(!this.state.tripNewLocation.location) {
+      this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
+    }
+    this.toggleTab(true, '2')
   }
 
   getMarkerLocationName(location) {

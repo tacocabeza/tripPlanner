@@ -95,6 +95,7 @@ export default class Trip extends Component {
   }
 
   renderDestinationModal() {
+    {this.checkMapUpdate()}
     return (
       <Modal isOpen={this.state.destinationModal}>
         <ModalHeader>Add Destination</ModalHeader>
@@ -141,10 +142,30 @@ export default class Trip extends Component {
   addFromMap() {
     this.props.toggle(true, '1');
     this.setState({destinationModal: false});
-    this.props.tripNewLocation.location? this.addDestination(this.props.tripNewLocation.locationName, this.props.tripNewLocation.location.lat, this.props.tripNewLocation.location.lng): ""
   }
 
-  addDestination(name, lat, lng) {
+  checkMapUpdate() {
+    if(this.props.tripNewLocation){
+      let newPlace = this.props.tripNewLocation.location? this.props.tripNewLocation: null
+      if (newPlace && newPlace.location) {
+        console.log(newPlace)
+        this.setState({
+          newItem: {
+            "notes": "",
+            "name": newPlace.locationName,
+            "latitude": ''+newPlace.location[0],
+            "longitude": ''+newPlace.location[1],
+          },
+          showNewItem: true,
+        });
+        this.props.tripNewLocation.location = null;
+        this.props.tripNewLocation.locationName = null;
+      }
+    }
+    this.submitDestination();
+  }
+
+  addDestination(lat, lng, name) {
     this.setState({
       newItem: {
         "notes": "",
@@ -171,7 +192,8 @@ export default class Trip extends Component {
       this.setState({
           destinationModal: false,
           showNewItem: false,
-          destinations: this.state.destinations.concat(this.state.newItem)
+          destinations: this.state.destinations.concat(this.state.newItem),
+          newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
         },
         this.sendTripRequest,
       );
