@@ -58,3 +58,12 @@ function testGoToMap() {
 }
 
 test("Add from map button navigates to map tab", testGoToMap);
+
+function testAddButtonOnMap() {
+  let newLocationToAdd = {location: [0,0], locationName: "Zero Location"};
+  const trip = shallow(<Trip createSnackBar={startProperties.createSnackBar} tripNewLocation={newLocationToAdd}/>);
+  expect({location: null, locationName: null}).toEqual(newLocationToAdd);
+  expect(trip.state().newItem).toEqual({ "notes": '', "name": '', "latitude": '', "longitude": ''});
+}
+
+test("Add to trip from map adds to trip", testAddButtonOnMap)

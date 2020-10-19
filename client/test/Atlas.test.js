@@ -108,7 +108,7 @@ function testSearchListClick() {
   let expectedLocation1 = {lat: 0, lng: 0};
   let expectedLocation2 = atlas.state().location1;
   let expectedCurrentLocation = [0, 0];
-  instance.searchListItemClick(0, 0, "");
+  instance.searchListItemClick("", 0, 0);
   let actualLocation1 = atlas.state().location1;
   let actualLocation2 = atlas.state().location2;
   let actualCurrentLocation = atlas.state().currentMapCenter;
@@ -150,3 +150,16 @@ function testProcessSetsDistance() {
 
 test("Testing Atlas distance set by processDistanceResponse", testProcessSetsDistance);
 
+function testAddToTripButton() {
+  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const instance = atlas.instance();
+  let expectedLocationAdded = atlas.state().currentMapCenter
+  let expectedLocationNameAdded = "Home"
+  instance.prepareNewTripAdd(expectedLocationAdded, instance.getMarkerLocationName(expectedLocationAdded));
+  let actualLocationPassedToTrip = atlas.state().tripNewLocation.location;
+  let actualLocationNamePassedToTrip = atlas.state().tripNewLocation.locationName;
+  expect(expectedLocationAdded).toEqual(actualLocationPassedToTrip);
+  expect(expectedLocationNameAdded).toEqual(actualLocationNamePassedToTrip)
+}
+
+test("Testing Home Location Gets Added to the Trip when map button clicked", testAddToTripButton)

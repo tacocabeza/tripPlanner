@@ -6,7 +6,7 @@ import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
-import {Map, Marker, Polyline, TileLayer} from 'react-leaflet';
+import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';

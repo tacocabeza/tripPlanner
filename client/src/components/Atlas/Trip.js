@@ -154,7 +154,6 @@ export default class Trip extends Component {
     if(this.props.tripNewLocation){
       let newPlace = this.props.tripNewLocation.location? this.props.tripNewLocation: null
       if (newPlace && newPlace.location) {
-        console.log(newPlace)
         this.setState({
           newItem: {
             "notes": "",
@@ -164,11 +163,13 @@ export default class Trip extends Component {
           },
           showNewItem: true,
         });
-        this.props.tripNewLocation.location = null;
-        this.props.tripNewLocation.locationName = null;
       }
     }
     this.submitDestination();
+    if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
+      this.props.tripNewLocation.location = null;
+      this.props.tripNewLocation.locationName = null;
+    }
   }
 
   addDestination(lat, lng, name) {
