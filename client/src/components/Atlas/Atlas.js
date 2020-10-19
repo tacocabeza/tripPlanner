@@ -277,6 +277,11 @@ export default class Atlas extends Component {
     if(this.state.location2) {
         this.requestDistance(this.state.location1,this.state.location2)
     }
+    else if(this.state.location1 == null && this.state.location2 == null)
+    {
+
+        return
+    }
     else {
         this.requestDistance(this.state.location1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
     }
