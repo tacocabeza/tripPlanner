@@ -64,7 +64,7 @@ export default class Atlas extends Component {
       distanceLocation1: null,
       distanceLocation2: null,
       tripLocations: [],
-      showRoundTripLine: true,
+      isRoundTrip: false,
       serverSettings: this.props.serverSettings,
       currentTab: '1',
       isDistanceOpen: false,
@@ -177,12 +177,12 @@ export default class Atlas extends Component {
       lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],i));
     }
 
-    if(this.state.showRoundTripLine){
+    if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
       lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
 
-    return <div>{lines}</div>;
+    return (<div>{lines}</div>);
   }
 
   renderDistanceLine(){

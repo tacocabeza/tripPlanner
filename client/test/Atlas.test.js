@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {shallow, mount} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
+import Polyline from "react-leaflet/lib/Polyline";
 
 const startProperties = {
   createSnackBar: jest.fn()
@@ -147,4 +148,45 @@ function testProcessSetsDistance() {
 }
 
 test("Testing Atlas distance set by processDistanceResponse", testProcessSetsDistance);
+
+function testRenderTripLines() {
+  const div = document.createElement('div');
+  div.setAttribute("id", "showAllMarkers")
+  document.body.appendChild(div)
+
+  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const instance = atlas.instance();
+  const destinations = [
+    {
+      "notes":"",
+      "name":"Denver International Airport",
+      "latitude":"39.861698150635",
+      "longitude":"-104.672996521"
+    },
+    {
+      "notes":"",
+      "name":"Miami International Airport",
+      "latitude":"25.79319953918457",
+      "longitude":"-80.29060363769531"
+    },
+    {
+      "notes":"",
+      "name":"San Juan Airport",
+      "latitude":"18.833332061799997",
+      "longitude":"-71.2333297729"
+    },
+    {
+      "notes":"",
+      "name":"Terrance B. Lettsome International Airport",
+      "latitude":"18.444799423217773",
+      "longitude":"-64.54299926757812"
+    }
+  ]
+
+  instance.setTripLocations(destinations);
+
+  //expect(atlas.find(Polyline)).to.have.length(3);
+}
+
+test("Testing Trip Line Rendering", testRenderTripLines);
 
