@@ -10,11 +10,15 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-
+| Jesus | 35 minutes|
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-
+|Find.java:3| unused import|low|Jesus| | 
+|Find.java:9| unused import|low|Jesus| |
+|Find.java:28| this keyword is redundant | low| Jesus | |
+|Find.java:40| getMatch() is redundant, it is never called in find.java or in RequestFind| low| Jesus| |
+ 
 
