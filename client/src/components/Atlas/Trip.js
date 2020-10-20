@@ -99,6 +99,7 @@ export default class Trip extends Component {
   }
 
   renderDestinationModal() {
+    {this.checkMapUpdate()}
     return (
       <Modal isOpen={this.state.destinationModal}>
         <ModalHeader>Add Destination</ModalHeader>
@@ -149,7 +150,29 @@ export default class Trip extends Component {
     this.setState({destinationModal: false});
   }
 
-  addDestination(name, lat, lng) {
+  checkMapUpdate() {
+    if(this.props.tripNewLocation){
+      let newPlace = this.props.tripNewLocation.location? this.props.tripNewLocation: null
+      if (newPlace && newPlace.location) {
+        this.setState({
+          newItem: {
+            "notes": "",
+            "name": newPlace.locationName,
+            "latitude": ''+newPlace.location[0],
+            "longitude": ''+newPlace.location[1],
+          },
+          showNewItem: true,
+        });
+      }
+    }
+    this.submitDestination();
+    if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
+      this.props.tripNewLocation.location = null;
+      this.props.tripNewLocation.locationName = null;
+    }
+  }
+
+  addDestination(lat, lng, name) {
     this.setState({
       newItem: {
         "notes": "",
@@ -176,7 +199,8 @@ export default class Trip extends Component {
       this.setState({
           destinationModal: false,
           showNewItem: false,
-          destinations: this.state.destinations.concat(this.state.newItem)
+          destinations: this.state.destinations.concat(this.state.newItem),
+          newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
         },
         this.sendTripRequest,
       );
