@@ -17,6 +17,7 @@ import recenterIcon from '../../static/images/recenter.svg';
 import searchIcon from '../../static/images/search.svg';
 import distanceIcon from '../../static/images/distance.svg';
 import showMarkerIcon from '../../static/images/showMarkerIcon.svg';
+import hideMarkerIcon from '../../static/images/hideMarkerIcon.svg';
 
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
@@ -71,6 +72,7 @@ export default class Atlas extends Component {
       isDistanceOpen: false,
       isSearchOpen: false,
       tripNewLocation: {location: null, locationName: null},
+      showDistanceMarkers: true,
     };
   }
 
@@ -136,12 +138,13 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation1, AGGIE_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON)}
+          {this.placeMarker(this.state.distanceLocation1, AGGIE_MARKER_ICON, this.state.showDistanceMarkers)}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
           {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
+          {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
           <Control position="topleft">
             <Button id="showAllMarkers" className="mapButton" onClick={this.checkMapView} >
               <img className="h-25px" src={showMarkerIcon}/>
@@ -189,11 +192,12 @@ export default class Atlas extends Component {
   }
 
   renderDistanceLine(){
-    if(this.state.distanceLocation2){
-      return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
-    }
-    else if (this.state.distanceLocation1) {
-      return this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null);
+    if(this.state.showDistanceMarkers) {
+      if (this.state.distanceLocation2) {
+        return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
+      } else if (this.state.distanceLocation1) {
+        return this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null);
+      }
     }
   }
 
@@ -292,8 +296,8 @@ export default class Atlas extends Component {
     });
   }
 
-  placeMarker(location, icon) {
-    if (location) {
+  placeMarker(location, icon, showBoolean = true) {
+    if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0)
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0)
       return (
