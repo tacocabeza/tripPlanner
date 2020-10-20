@@ -172,7 +172,7 @@ export default class Trip extends Component {
     }
   }
 
-  addDestination(lat, lng, name) {
+  addDestination(name, lat, lng) {
     this.setState({
       newItem: {
         "notes": "",

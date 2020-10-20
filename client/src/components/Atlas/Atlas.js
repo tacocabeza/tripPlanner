@@ -62,8 +62,8 @@ export default class Atlas extends Component {
       mapZoom: MAP_DEFAULT_ZOOM,
       distanceLocation1: null,
       distanceLocation2: null,
-      distanceLocation1Name: null,
-      distanceLocation2Name: null,
+      distanceLocation1Name: '',
+      distanceLocation2Name: '',
       tripLocations: [],
       isRoundTrip: false,
       serverSettings: this.props.serverSettings,
@@ -227,13 +227,13 @@ export default class Atlas extends Component {
         distanceLocation2: this.state.distanceLocation1,
         distanceLocation1: state,
         distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: null
+        distanceLocation1Name: ''
       });
     } else if (location == 2) {
       this.setState({
         distanceLocation2: state,
         distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: null
+        distanceLocation1Name: ''
       });
     } else if (location == 3) {
       this.setState({currentMapCenter: state});
@@ -247,7 +247,7 @@ export default class Atlas extends Component {
       distanceLocation1: {"lat":lat, "lng":lng},
       currentMapCenter: [lat, lng],
       distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: null
+      distanceLocation1Name: ''
     });
   }
 
