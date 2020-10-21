@@ -48,11 +48,11 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Limit is equal to MAX_LIMIT")
+    @DisplayName("Limit is equal to 0")
     public void testLimit()
     {
         Integer limit = findRequest.getLimit();
-        assertEquals(MAX_LIMIT, limit);
+        assertEquals(0, limit);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TestRequestFind {
     public void testPlaces()
     {
         Integer places = findRequest.getPlaces();
-        assertEquals(MAX_LIMIT, places);
+        assertEquals(1, places);
     }
 
 }
