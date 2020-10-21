@@ -229,3 +229,23 @@ function testAddToTripButton() {
 }
 
 test("Testing Home Location Gets Added to the Trip when map button clicked", testAddToTripButton)
+
+function testRenderRoundTripSwitch()
+{
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>, {attachTo: div});
+    const distanceButton = atlas.find('#distancebtn').at(0);
+    distanceButton.simulate('click');
+    const switchButton = atlas.find('#toggleRoundTrip').at(1);
+
+    switchButton.simulate('click');
+
+
+    // Test the output
+    expect(atlas.state().isRoundTrip).toEqual(true);
+
+}
+
+test("Test that user click on RoundTrip switch works",testRenderRoundTripSwitch);

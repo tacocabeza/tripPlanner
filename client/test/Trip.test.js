@@ -67,3 +67,27 @@ function testAddButtonOnMap() {
 }
 
 test("Add to trip from map adds to trip", testAddButtonOnMap)
+
+
+function testRenderRoundTrip()
+{
+
+    let shoppingTrip = {
+                   "requestType"    : "trip",
+                   "requestVersion" : 3,
+                   "options"        : { "title":"Shopping Loop",
+                                        "earthRadius":"3959.0"
+                                      },
+                   "places"         : [{"name":"Denver",       "latitude": "39.7", "longitude": "-105.0", "notes":"The big city"},
+                                       {"name":"Boulder",      "latitude": "40.0", "longitude": "-105.4", "notes":"Home of CU"},
+                                       {"name":"Fort Collins", "latitude": "40.6", "longitude": "-105.1", "notes":"Home of CSU"}],
+                   "distances"      : [20, 40, 50]
+                 };
+    let trip = shallow(<Trip/>);
+    trip.instance().processTripResponse(shoppingTrip);
+    trip.instance().calculateRoundTrip();
+    let actual = trip.state().roundTripDistance;
+    expect(actual).toEqual(110);
+}
+
+test("test round trip distance", testRenderRoundTrip)

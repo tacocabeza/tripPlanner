@@ -35,6 +35,7 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
       totalDistance: 0,
+      roundTripDistance:0
     }
   }
 
@@ -46,13 +47,25 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
+          {this.renderRoundTrip()}
           <p className="text-right">Total Distance: {this.state.totalDistance}mi.</p>
+
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+
         </Col>
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
       </div>
     );
+  }
+
+  renderRoundTrip(){
+    if(this.props.isRoundTrip){
+        return(
+            <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
+
+        )
+    }
   }
 
   renderBar() {
@@ -248,6 +261,20 @@ export default class Trip extends Component {
       tripName: response.options.title,
       totalDistance: count,
     });
+
+    this.calculateRoundTrip()
+
+  }
+
+  calculateRoundTrip(){
+
+    let sum = 0
+
+    for(var i = 0; i<this.state.loadedTrip.distances.length; i++)
+    {
+        sum += this.state.loadedTrip.distances[i]
+    }
+    this.setState({roundTripDistance: sum})
   }
 
   processFile(files) {
