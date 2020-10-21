@@ -38,6 +38,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 const MAP_DEFAULT_ZOOM = 15;
+const CANYON = "#CC5430";
 
 export default class Atlas extends Component {
 
@@ -207,7 +208,7 @@ export default class Atlas extends Component {
   getLine(location1, location2, key) {
     if(location1 && location2) {
       return (
-          <Polyline color="#CC5430" positions={[location1, location2]} key={key}/>
+          <Polyline color={CANYON} positions={[location1, location2]} key={key}/>
       );
     }
   }
@@ -285,6 +286,7 @@ export default class Atlas extends Component {
     this.setState({
       currentMapCenter: this.state.originalMapCenter,
       mapZoom: MAP_DEFAULT_ZOOM,
+      currentMapBounds: null,
       distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]},
       distanceLocation1Name: "Home"
     });
