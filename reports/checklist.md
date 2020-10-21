@@ -43,9 +43,3 @@ The checklist will be updated as we identify new faults in our code that we wish
 ### Exception faults
 * Have all possible error conditions been considered?
 * Are there tests for both correct and incorrect possibilites?
-
-### Style faults
-* Do all variables and method names follow a consistent naming convention?
-* Are there descriptive comments?
-* Would one of us be able to understand code another team member wrote(with comments)?
-* Is code structured in a modular format to allow for easier testing?

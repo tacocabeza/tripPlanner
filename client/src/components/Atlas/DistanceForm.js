@@ -27,8 +27,8 @@ export default class DistanceForm extends Component {
             <FormGroup>
               <Input
                 type="text"
-                name="location1"
-                id="location1"
+                name="distanceLocation1"
+                id="distanceLocation1"
                 required={true}
                 placeholder="Location 1"
                 value={this.state.string1}
@@ -40,8 +40,8 @@ export default class DistanceForm extends Component {
             <FormGroup>
               <Input
                 type="text"
-                name="location2"
-                id="location2"
+                name="distanceLocation2"
+                id="distanceLocation2"
                 placeholder="Location 2"
                 value={this.state.string2}
                 onChange={e => this.setState({string2: e.target.value})}

@@ -5,6 +5,11 @@ import ReactDOM from 'react-dom';
 import {shallow, mount} from 'enzyme';
 
 import Trip from '../src/components/Atlas/Trip';
+import Atlas from '../src/components/Atlas/Atlas';
+
+const startProperties = {
+  createSnackBar: jest.fn()
+};
 
 function testTripName() {
   const trip = mount(<Trip/>);
@@ -21,3 +26,44 @@ function simulateEnterName(reactWrapper) {
 }
 
 test("Trip Name field sets trip name", testTripName);
+
+function testDestinationModal() {
+  const trip = shallow(<Trip/>);
+  trip.find('#addbtn').at(0).simulate('click');
+  let actualState = trip.state().destinationModal;
+  expect(actualState).toEqual(true);
+}
+
+test("Destination modal opened by Add Trip button", testDestinationModal);
+
+function testLoadModal() {
+  const trip = shallow(<Trip/>);
+  trip.find('#loadbtn').at(0).simulate('click');
+  let actualState = trip.state().loadModal;
+  expect(actualState).toEqual(true);
+}
+
+test("Load modal opened by Load button", testLoadModal);
+
+function testGoToMap() {
+  const div = document.createElement('div');
+  div.setAttribute("id", "showAllMarkers")
+  document.body.appendChild(div)
+  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  let expectedTab = '1';
+  atlas.find('#addbtn').at(0).simulate('click');
+  atlas.find('#mapbtn').at(0).simulate('click');
+  let actualTab = atlas.state().currentTab;
+  expect(actualTab).toEqual(expectedTab);
+}
+
+test("Add from map button navigates to map tab", testGoToMap);
+
+function testAddButtonOnMap() {
+  let newLocationToAdd = {location: [0,0], locationName: "Zero Location"};
+  const trip = shallow(<Trip createSnackBar={startProperties.createSnackBar} tripNewLocation={newLocationToAdd}/>);
+  expect({location: null, locationName: null}).toEqual(newLocationToAdd);
+  expect(trip.state().newItem).toEqual({ "notes": '', "name": '', "latitude": '', "longitude": ''});
+}
+
+test("Add to trip from map adds to trip", testAddButtonOnMap)
