@@ -11,6 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Jesus | 35 minutes|
+| Nick | 30 Minutes |
 
 ### Problems found
 
@@ -18,7 +19,11 @@
 | --- | --- | :---: | :---: | --- |
 |Find.java:3| unused import|low|Jesus| | 
 |Find.java:9| unused import|low|Jesus| |
+| Find.java:9-10 | unused import and misspelled import | low | Nick | |
 |Find.java:28| this keyword is redundant | low| Jesus | |
 |Find.java:40| getMatch() is redundant, it is never called in find.java or in RequestFind| low| Jesus| |
+| Find.java:53-64 | populate places is in twice if its before the if it would be more clear and less redundant | Low | Nick | |
+| Find.java:61 | Populate places never gets limited on size could lead to issues | med | Nick | |
+| Find.java:93 | Lucky limit is 100 hardcoded instead of max limit or variable limits | med | Nick | |
  
 
