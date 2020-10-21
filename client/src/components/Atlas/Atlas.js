@@ -327,18 +327,23 @@ export default class Atlas extends Component {
 
   getMarkerLocationName(location) {
     if(location.lat){
-      if(location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+      if(this.state.distanceLocation1 && location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
         return this.state.distanceLocation1Name
       }
-      else if(location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+      else if(this.state.distanceLocation2 && location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
         return this.state.distanceLocation2Name
       }
       else{
         return "Unknown Location"
       }
     }
-    else {
-      return "Home"
+    else if (location[0]) {
+      if(location[0] == this.state.originalMapCenter[0] && location[1] == this.state.originalMapCenter[1]) {
+        return "Home"
+      }
+      else{
+        return "Unknown Location"
+      }
     }
   }
 
