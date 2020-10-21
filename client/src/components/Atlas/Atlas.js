@@ -145,6 +145,7 @@ export default class Atlas extends Component {
           {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
+          {this.renderTripMarkers()}
           {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
           {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
@@ -215,7 +216,7 @@ export default class Atlas extends Component {
   setTripLocations(destinations) {
     let newLocations = [];
     for(let i = 0; i < destinations.length; i++){
-      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude});
+      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
     }
     this.setState({tripLocations: newLocations});
   }
@@ -226,6 +227,18 @@ export default class Atlas extends Component {
         <Input type="text" value={"Distance: " + this.state.distance + "MI"} disabled/>
       </InputGroup>
     )
+  }
+
+  renderTripMarkers()
+  {
+
+    let markers = []
+
+    for(var i = 0; i<this.state.tripLocations.length; i++){
+        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.showDistanceMarkers))
+    }
+
+    return (<div> {markers} </div>);
   }
 
   setLocation(location, state) {
@@ -306,7 +319,7 @@ export default class Atlas extends Component {
       return (
         <Marker position={location} icon={icon}>
           <Popup offset={[1, -18]} autoPan={false}>
-            {latitude.toFixed(2) + "," + longitude.toFixed(2)}
+            {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
             <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
               Add to trip
@@ -326,24 +339,21 @@ export default class Atlas extends Component {
   }
 
   getMarkerLocationName(location) {
-    if(location.lat){
-      if(this.state.distanceLocation1 && location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
-        return this.state.distanceLocation1Name
-      }
-      else if(this.state.distanceLocation2 && location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
-        return this.state.distanceLocation2Name
-      }
-      else{
-        return "Unknown Location"
-      }
+    var index = this.state.tripLocations.indexOf(location)
+
+    if(index != -1)
+    {
+        return this.state.tripLocations[index].name;
     }
-    else if (location[0]) {
-      if(location[0] == this.state.originalMapCenter[0] && location[1] == this.state.originalMapCenter[1]) {
+
+    else if(location.lat)
+    {
+        return "Unknown"
+    }
+
+    else
+    {
         return "Home"
-      }
-      else{
-        return "Unknown Location"
-      }
     }
   }
 

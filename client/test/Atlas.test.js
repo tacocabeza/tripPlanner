@@ -184,10 +184,10 @@ function testSetTripLocations() {
   const instance = atlas.instance();
 
   const expectedTripLocations = [
-    {"lat":"39.861698150635","lng":"-104.672996521"},
-    {"lat":"25.79319953918457","lng":"-80.29060363769531"},
-    {"lat":"18.833332061799997","lng":"-71.2333297729"},
-    {"lat":"18.444799423217773","lng":"-64.54299926757812"}
+    {"lat":"39.861698150635","lng":"-104.672996521","name": "Denver International Airport",},
+    {"lat":"25.79319953918457","lng":"-80.29060363769531", "name": "Miami International Airport"},
+    {"lat":"18.833332061799997","lng":"-71.2333297729","name": "San Juan Airport"},
+    {"lat":"18.444799423217773","lng":"-64.54299926757812","name": "Terrance B. Lettsome International Airport"}
     ];
 
   instance.setTripLocations(tripDestinations);
