@@ -13,6 +13,7 @@
 | Jesus | 35 Minutes|
 | Nick | 30 Minutes |
 | Preston | 28 Minutes |
+| Suyash | 30 Minutes |
 | Alex | 30 Minutes |
 
 ### Problems found
@@ -26,11 +27,14 @@
 |Find.java:25| What happens if `limit < 0`? | med | Preston | |
 |Find.java:26| Are we sending back the `match` we received in the request? | high | Preston | |
 |Find.java:28| this keyword is redundant | low| Jesus | |
+| Find.java:30 | Is there a better way to do this - change limit? | low | Suyash | | 
 | Find.java:30 | should use `<= 0` to avoid potential negative limits | med | Alex | |
 | Find.java:35 | Do we need to validate match on the client side and the server side? | low | Alex |  |
 |Find.java:40| getMatch() is redundant, it is never called in find.java or in RequestFind| low| Jesus| |
+| Find.java:49 | getFound is once again populating places | medium | Suyash | | 
 | Find.java:53-64 | populate places is in twice if its before the if it would be more clear and less redundant | Low | Nick | |
 | Find.java:53-64 | Ordering and limiting logic should be done with SQL if possible | low | Preston | |
+| Find.java:53 | Confusing if statements to change places() | low | Suyash | | 
 | Find.java:54 | Unnecessary `== true` | low | Preston | |
 | Find.java:54 | Don't need `== true` here | low | Alex |  |
 | Find.java:56 | We should use SQL `order by RANDOM` instead of Collections.shuffle | med | Preston | |
@@ -39,6 +43,7 @@
 | Find.java:61 | Populate places never gets limited on size could lead to issues | med | Nick | |
 | Find.java:80 | Buffer overflow on our sql querry? Char limit on search bar! | med | Preston | |
 | Find.java:92 | Unnecessary `== true` | low | Preston | |
+| Find.java:92-94 | Might be redundant | low | Suyash | | 
 | Find.java:92 | Don't need `== true` here | low | Alex |  |
 | Find.java:93 | Lucky limit is 100 hardcoded instead of max limit or variable limits | med | Nick | |
 | Find.java:93 | Lucky limit is 100 hardcoded instead of max limit or variable limits | med | Preston | |
