@@ -339,27 +339,20 @@ export default class Atlas extends Component {
   }
 
   getMarkerLocationName(location) {
-    var index = this.state.tripLocations.indexOf(location)
-
-    if(index != -1)
-    {
-        return this.state.tripLocations[index].name;
+    let index = this.state.tripLocations.indexOf(location)
+    if(index != -1) {
+      return this.state.tripLocations[index].name;
     }
-
-    else if(location.lat)
-    {
-           if(location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
-                return this.state.distanceLocation1.name
-              }
-
-           else if(location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
-                   return this.state.distanceLocation2.name
-                 }
+    else if(location.lat) {
+      if(this.state.distanceLocation1 && location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+        return this.state.distanceLocation1.name
+      }
+      else if(this.state.distanceLocation2 &&location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+        return this.state.distanceLocation2.name
+      }
     }
-
-    else
-    {
-        return "Home"
+    else {
+      return "Home"
     }
   }
 
