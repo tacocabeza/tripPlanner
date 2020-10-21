@@ -35,6 +35,7 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
       totalDistance: 0,
+      roundTripDistance:0
     }
   }
 
@@ -46,13 +47,25 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
+          {this.renderRoundTrip()}
           <p className="text-right">Total Distance: {this.state.totalDistance}mi.</p>
+
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+
         </Col>
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
       </div>
     );
+  }
+
+  renderRoundTrip(){
+    if(this.props.isRoundTrip){
+        return(
+            <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
+
+        )
+    }
   }
 
   renderBar() {
@@ -154,10 +167,14 @@ export default class Trip extends Component {
     if(this.props.tripNewLocation){
       let newPlace = this.props.tripNewLocation.location? this.props.tripNewLocation: null
       if (newPlace && newPlace.location) {
+        let placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
+        if (newPlace.locationName != '') {
+          placeName = newPlace.locationName;
+        }
         this.setState({
           newItem: {
             "notes": "",
-            "name": newPlace.locationName,
+            "name": placeName,
             "latitude": ''+newPlace.location[0],
             "longitude": ''+newPlace.location[1],
           },
@@ -173,10 +190,14 @@ export default class Trip extends Component {
   }
 
   addDestination(name, lat, lng) {
+    let placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
+    if (name != '') {
+      placeName = name;
+    }
     this.setState({
       newItem: {
         "notes": "",
-        "name": name,
+        "name": placeName,
         "latitude": ''+lat,
         "longitude": ''+lng
       },
@@ -240,6 +261,20 @@ export default class Trip extends Component {
       tripName: response.options.title,
       totalDistance: count,
     });
+
+    this.calculateRoundTrip()
+
+  }
+
+  calculateRoundTrip(){
+
+    let sum = 0
+
+    for(var i = 0; i<this.state.loadedTrip.distances.length; i++)
+    {
+        sum += this.state.loadedTrip.distances[i]
+    }
+    this.setState({roundTripDistance: sum})
   }
 
   processFile(files) {

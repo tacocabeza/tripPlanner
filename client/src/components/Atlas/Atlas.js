@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
+import {CustomInput,Label,FormGroup,Form,FormText,Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -73,6 +73,7 @@ export default class Atlas extends Component {
       isSearchOpen: false,
       tripNewLocation: {location: null, locationName: ''},
       showDistanceMarkers: true,
+
     };
   }
 
@@ -102,6 +103,7 @@ export default class Atlas extends Component {
                       Distance
                     </Button>
                     <DistanceForm setLocation={this.setLocation}/>
+                    {this.renderRoundTripSwitch()}
                     <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                   </Collapse>
                 </TabPane>
@@ -110,7 +112,8 @@ export default class Atlas extends Component {
                         createSnackBar={this.props.createSnackBar}
                         serverSettings={this.state.serverSettings}
                         setTripLocations={this.setTripLocations}
-                        tripNewLocation={this.state.tripNewLocation}/>
+                        tripNewLocation={this.state.tripNewLocation}
+                        isRoundTrip={this.state.isRoundTrip}/>
                 </TabPane>
               </TabContent>
             </Col>
@@ -394,4 +397,16 @@ export default class Atlas extends Component {
     }
   }
 
+
+  renderRoundTripSwitch()
+  {
+       console.log(this.state.isRoundTrip)
+       return(
+        <FormGroup>
+            <div>
+              <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.setState({isRoundTrip: !this.state.isRoundTrip})}/>
+            </div>
+        </FormGroup>
+        )
+  }
 }

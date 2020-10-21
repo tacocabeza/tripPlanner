@@ -28,7 +28,7 @@ public class Find {
             this.lucky = true;
         }
         if(this.limit == 0){
-            this.limit = MAX_LIMIT;
+            this.limit = 1;
         }
     }
 
@@ -54,11 +54,11 @@ public class Find {
         if (this.lucky == true) {
             populatePlaces();
             Collections.shuffle(places);
-            while (places.size() != limit) {
-                places.remove(places.size() - 1);
-            }
         } else {
             populatePlaces();
+        }
+        while (places.size() > limit && places.size() != 0) {
+            places.remove(places.size() - 1);
         }
         return places;
     }

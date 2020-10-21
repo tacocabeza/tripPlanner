@@ -46,7 +46,7 @@ public class TestFind {
     @DisplayName("Test No Limit")
     public void testNoLimit(){
         ArrayList<Place> places = findMatchNoLimit.getPlaces();
-        assertEquals(MAX_LIMIT, places.size());
+        assertEquals(1, places.size());
     }
 
     @Test
