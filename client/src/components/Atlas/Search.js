@@ -4,6 +4,7 @@ import {InputGroupAddon, Input, Collapse} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {sendServerRequest} from "../../utils/restfulAPI";
+let Coordinates = require('coordinate-parser');
 
 export default class Search extends Component {
   constructor(props) {
@@ -55,10 +56,10 @@ export default class Search extends Component {
     </div>;
   }
 
-    updateInputText(event) {
-        this.setState({inputText: event.target.value});
-        this.sendFindRequest();
-    }
+  updateInputText(event) {
+      this.setState({inputText: event.target.value});
+      this.sendFindRequest();
+  }
 
   formatInputText(s) {
     // replace all non-alphanumeric characters with _
@@ -92,8 +93,20 @@ export default class Search extends Component {
   }
 
   sendFindRequest() {
-    if(this.state.inputText != null && this.state.inputText != "") {
-      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.state.inputText},
+    if (this.isValidPosition(this.state.inputText)) {
+      let coords = new Coordinates(this.state.inputText);
+      let response = {
+        "places": [
+          {
+            "name": coords.getLatitude() + ', ' + coords.getLongitude(),
+            "latitude": coords.getLatitude(),
+            "longitude": coords.getLongitude(),
+          }
+        ]
+      };
+      this.processFindResponse(response);
+    } else if (this.state.inputText != null && this.state.inputText != "") {
+      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText)},
         this.state.serverSettings.serverPort)
         .then(find => {
           if (find) {
@@ -127,6 +140,19 @@ export default class Search extends Component {
 
   onBlur() {
     this.setState({searchHasFocus: false});
+  }
+
+  isValidPosition(position) {
+    let error;
+    let isValid;
+    try {
+      isValid = true;
+      new Coordinates(position);
+      return isValid;
+    } catch (error) {
+      isValid = false;
+      return isValid;
+    }
   }
 
 }
