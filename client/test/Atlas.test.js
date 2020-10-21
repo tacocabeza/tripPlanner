@@ -132,8 +132,8 @@ test("Testing Atlas's Set Current Location", testLocation3);
 function testSearchListClick() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
-  atlas.state().distanceLocation1 = {lat: 1, lng: 1};
-  let expectedLocation1 = {lat: 0, lng: 0};
+  atlas.state().distanceLocation1 = {lat: 1, lng: 1, "name":""};
+  let expectedLocation1 = {lat: 0, lng: 0, "name":""};
   let expectedLocation2 = atlas.state().distanceLocation1;
   let expectedCurrentLocation = [0, 0];
   instance.searchListItemClick("", 0, 0);

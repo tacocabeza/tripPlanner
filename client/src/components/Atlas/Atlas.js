@@ -264,7 +264,7 @@ export default class Atlas extends Component {
     this.setState({
       isSearchOpen: false,
       distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: {"lat":lat, "lng":lng},
+      distanceLocation1: {"lat":lat, "lng":lng ,"name":name},
       currentMapCenter: [lat, lng],
       distanceLocation2Name: this.state.distanceLocation1Name,
       distanceLocation1Name: ''
@@ -348,7 +348,13 @@ export default class Atlas extends Component {
 
     else if(location.lat)
     {
-        return "Unknown"
+           if(location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+                return this.state.distanceLocation1.name
+              }
+
+           else if(location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+                   return this.state.distanceLocation2.name
+                 }
     }
 
     else
