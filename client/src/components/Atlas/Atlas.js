@@ -82,9 +82,9 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggleTab(isTab, tab) {
+  toggleTab(tab) {
     this.setState({isDistanceOpen: false})
-    if (isTab && this.state.currentTab != tab) {
+    if (this.state.currentTab != tab) {
       this.setState({currentTab: tab})
     }
   }
