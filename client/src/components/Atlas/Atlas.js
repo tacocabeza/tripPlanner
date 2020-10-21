@@ -324,7 +324,7 @@ export default class Atlas extends Component {
     if(!this.state.tripNewLocation.location) {
       this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
     }
-    this.toggleTab(true, '2')
+    this.toggleTab('2')
   }
 
   getMarkerLocationName(location) {
