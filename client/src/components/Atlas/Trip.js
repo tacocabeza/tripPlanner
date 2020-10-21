@@ -159,7 +159,7 @@ export default class Trip extends Component {
   }
 
   addFromMap() {
-    this.props.toggle(true, '1');
+    this.props.toggle('1');
     this.setState({destinationModal: false});
   }
 

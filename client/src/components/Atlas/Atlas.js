@@ -82,9 +82,9 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggleTab(isTab, tab) {
+  toggleTab(tab) {
     this.setState({isDistanceOpen: false})
-    if (isTab && this.state.currentTab != tab) {
+    if (this.state.currentTab != tab) {
       this.setState({currentTab: tab})
     }
   }
@@ -314,7 +314,7 @@ export default class Atlas extends Component {
     if(!this.state.tripNewLocation.location) {
       this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
     }
-    this.toggleTab(true, '2')
+    this.toggleTab('2')
   }
 
   getMarkerLocationName(location) {
