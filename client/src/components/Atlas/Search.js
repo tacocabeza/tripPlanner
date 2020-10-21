@@ -106,7 +106,7 @@ export default class Search extends Component {
       };
       this.processFindResponse(response);
     } else if (this.state.inputText != null && this.state.inputText != "") {
-      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText)},
+      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
         this.state.serverSettings.serverPort)
         .then(find => {
           if (find) {
@@ -119,7 +119,7 @@ export default class Search extends Component {
   }
 
   sendLuckyRequest() {
-    sendServerRequest({requestType: "find", requestVersion: 3, limit: 1},
+    sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION},
       this.state.serverSettings.serverPort)
       .then(find => {
         if (find) {
