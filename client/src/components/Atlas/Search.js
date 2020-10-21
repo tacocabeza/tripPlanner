@@ -57,8 +57,11 @@ export default class Search extends Component {
   }
 
   updateInputText(event) {
-      this.setState({inputText: event.target.value});
-      this.sendFindRequest();
+    this.setState({
+        inputText: event.target.value
+      },
+      this.sendFindRequest
+    );
   }
 
   formatInputText(s) {
