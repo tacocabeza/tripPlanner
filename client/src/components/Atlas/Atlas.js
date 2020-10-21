@@ -71,7 +71,7 @@ export default class Atlas extends Component {
       currentTab: '1',
       isDistanceOpen: false,
       isSearchOpen: false,
-      tripNewLocation: {location: null, locationName: null},
+      tripNewLocation: {location: null, locationName: ''},
       showDistanceMarkers: true,
     };
   }
@@ -292,7 +292,7 @@ export default class Atlas extends Component {
       distanceLocation2: this.state.distanceLocation1,
       distanceLocation1: mapClickInfo.latlng,
       distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: null
+      distanceLocation1Name: ''
     });
   }
 
