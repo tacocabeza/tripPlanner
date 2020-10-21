@@ -94,7 +94,7 @@ export default class Search extends Component {
 
   sendFindRequest() {
     if(this.state.inputText != null && this.state.inputText != "") {
-      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.state.inputText},
+      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText)},
         this.state.serverSettings.serverPort)
         .then(find => {
           if (find) {
@@ -119,8 +119,11 @@ export default class Search extends Component {
   }
 
     processFindResponse(response) {
-        console.log("\n\n" + JSON.stringify(response) + "\n\n");
         if(isJsonResponseValid(response, findSchema)) {
+            for(let i = 0; i < response.places.length; i++){
+              response.places[i].latitude = parseFloat(response.places[i].latitude);
+              response.places[i].longitude = parseFloat(response.places[i].longitude);
+            }
             this.setState({results: response});
         } else {
             this.props.createSnackBar("Find Response Not Valid. Check The Server.");
