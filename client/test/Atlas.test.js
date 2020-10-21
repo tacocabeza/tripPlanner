@@ -98,36 +98,15 @@ function simulateOnClickEventButton(reactWrapper) {
 
 test("Testing Atlas's Resetting Center", testRecenterButtonClicked);
 
-function testLocation1() {
-  testSetLocation(1);
-}
-
-function testLocation2() {
-  testSetLocation(2);
-}
-
-function testLocation3() {
-  testSetLocation(3);
-}
-
-function testSetLocation(location) {
+function testSetLocation() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const instance = atlas.instance();
   let expectedLocation = {lat: 0, lng: 0};
-  instance.setLocation(location, {lat: 0, lng: 0});
-  let actualLocation = null;
-  if (location == 1) {
-    actualLocation = atlas.state().distanceLocation1;
-  } else if (location == 2) {
-    actualLocation = atlas.state().distanceLocation2;
-  } else {
-    actualLocation = atlas.state().currentMapCenter;
-  }
+  instance.setLocation({lat: 1, lng: 1}, {lat: 0, lng: 0});
+  let actualLocation = atlas.state().distanceLocation2;
   expect(actualLocation).toEqual(expectedLocation);
 }
-test("Testing Atlas's Set Single Location", testLocation1);
-test("Testing Atlas's Set Dual Location", testLocation2);
-test("Testing Atlas's Set Current Location", testLocation3);
+test("Testing Atlas's Set Distance Locations", testSetLocation);
 
 function testSearchListClick() {
   const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);

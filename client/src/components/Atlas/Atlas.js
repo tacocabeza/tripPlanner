@@ -229,23 +229,13 @@ export default class Atlas extends Component {
     )
   }
 
-  setLocation(location, state) {
-    if (location == 1) {
-      this.setState({
-        distanceLocation2: this.state.distanceLocation1,
-        distanceLocation1: state,
-        distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: ''
-      });
-    } else if (location == 2) {
-      this.setState({
-        distanceLocation2: state,
-        distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: ''
-      });
-    } else if (location == 3) {
-      this.setState({currentMapCenter: state});
-    }
+  setLocation(location1, location2) {
+    this.setState({
+      distanceLocation1: location1,
+      distanceLocation1Name: '',
+      distanceLocation2: location2,
+      distanceLocation2Name: '',
+    });
   }
 
   searchListItemClick(name, lat, lng) {
