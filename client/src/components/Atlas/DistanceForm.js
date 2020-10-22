@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Col, Form, FormGroup, Input, Row} from 'reactstrap';
 let Coordinates = require('coordinate-parser');
+import {isValidPosition} from "../../utils/misc";
 
 export default class DistanceForm extends Component {
   constructor(props) {
@@ -58,24 +59,11 @@ export default class DistanceForm extends Component {
 
   submitCoords(e) {
     e.preventDefault();
-    if (this.isValidPosition(this.state.string1) && this.isValidPosition(this.state.string2)) {
+    if (isValidPosition(this.state.string1) && isValidPosition(this.state.string2)) {
       let loc1 = new Coordinates(this.state.string1);
       let loc2 = new Coordinates(this.state.string2);
       this.props.setLocation({"lat": loc1.getLatitude(), "lng": loc1.getLongitude()}, {"lat": loc2.getLatitude(), "lng": loc2.getLongitude()});
     }
     this.setState({submitted: true});
-  }
-
-  isValidPosition(position) {
-    let error;
-    let isValid;
-    try {
-      isValid = true;
-      new Coordinates(position);
-      return isValid;
-    } catch (error) {
-      isValid = false;
-      return isValid;
-    }
   }
 }

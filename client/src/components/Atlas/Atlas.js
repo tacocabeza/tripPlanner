@@ -91,36 +91,32 @@ export default class Atlas extends Component {
 
   render() {
     return (
-      <div>
-        <Container>
-          <Row>
-            <Col sm={12} md={{size: 10, offset: 1}}>
-              <Navigation toggle={this.toggleTab}/>
-              <TabContent activeTab={this.state.currentTab}>
-                <TabPane tabId="1">
-                  {this.renderLeafletMap()}
-                  <Collapse isOpen={this.state.isDistanceOpen}>
-                    <Button color="primary" onClick={this.prepareServerRequest}>
-                      Distance
-                    </Button>
-                    <DistanceForm setLocation={this.setLocation}/>
-                    {this.renderRoundTripSwitch()}
-                    <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
-                  </Collapse>
-                </TabPane>
-                <TabPane tabId="2">
-                  <Trip toggle={this.toggleTab}
-                        createSnackBar={this.props.createSnackBar}
-                        serverSettings={this.state.serverSettings}
-                        setTripLocations={this.setTripLocations}
-                        tripNewLocation={this.state.tripNewLocation}
-                        isRoundTrip={this.state.isRoundTrip}/>
-                </TabPane>
-              </TabContent>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <Container>
+        <Row>
+          <Col sm={12} md={{size: 10, offset: 1}}>
+            <Navigation toggle={this.toggleTab}/>
+            <TabContent activeTab={this.state.currentTab}>
+              <TabPane tabId="1">
+                {this.renderLeafletMap()}
+                <Collapse isOpen={this.state.isDistanceOpen}>
+                  <Button color="primary" onClick={this.prepareServerRequest}>Distance</Button>
+                  <DistanceForm setLocation={this.setLocation}/>
+                  {this.renderRoundTripSwitch()}
+                  <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
+                </Collapse>
+              </TabPane>
+              <TabPane tabId="2">
+                <Trip toggle={this.toggleTab}
+                      createSnackBar={this.props.createSnackBar}
+                      serverSettings={this.state.serverSettings}
+                      setTripLocations={this.setTripLocations}
+                      tripNewLocation={this.state.tripNewLocation}
+                      isRoundTrip={this.state.isRoundTrip}/>
+              </TabPane>
+            </TabContent>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
@@ -147,28 +143,36 @@ export default class Atlas extends Component {
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
-          {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
-          {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
-          {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
-          <Control position="topleft">
-            <Button id="showAllMarkers" className="mapButton" onClick={this.checkMapView} >
-              <img className="h-25px" src={showMarkerIcon}/>
-            </Button>
-            <UncontrolledTooltip placement="right"  target="showAllMarkers">
-              Show All Markers
-            </UncontrolledTooltip>
-          </Control>
-          <Control position="topright">
-            <Fade in={this.state.isSearchOpen} className="float-left">
-              <Search createSnackBar={this.props.createSnackBar}
-                      serverSettings={this.state.serverSettings}
-                      onClickListItem={this.searchListItemClick}/>
-            </Fade>
-            <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
-              <img className="h-22px" src={searchIcon}/>
-            </Button>
-          </Control>
+          {this.renderMapControls()}
         </Map>
+    );
+  }
+
+  renderMapControls() {
+    return (
+      <div>
+        {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
+        {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
+        {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
+        <Control position="topleft">
+          <Button id="showAllMarkers" className="mapButton" onClick={this.checkMapView} >
+            <img className="h-25px" src={showMarkerIcon}/>
+          </Button>
+          <UncontrolledTooltip placement="right"  target="showAllMarkers">
+            Show All Markers
+          </UncontrolledTooltip>
+        </Control>
+        <Control position="topright">
+          <Fade in={this.state.isSearchOpen} className="float-left">
+            <Search createSnackBar={this.props.createSnackBar}
+                    serverSettings={this.state.serverSettings}
+                    onClickListItem={this.searchListItemClick}/>
+          </Fade>
+          <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
+            <img className="h-22px" src={searchIcon}/>
+          </Button>
+        </Control>
+      </div>
     );
   }
 
