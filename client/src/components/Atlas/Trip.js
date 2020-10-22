@@ -168,7 +168,7 @@ export default class Trip extends Component {
       let newPlace = this.props.tripNewLocation.location? this.props.tripNewLocation: null
       if (newPlace && newPlace.location) {
         let placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
-        if (newPlace.locationName != '') {
+        if (newPlace.locationName != '' && newPlace.locationName != null) {
           placeName = newPlace.locationName;
         }
         this.setState({
@@ -185,7 +185,7 @@ export default class Trip extends Component {
     this.submitDestination();
     if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
       this.props.tripNewLocation.location = null;
-      this.props.tripNewLocation.locationName = null;
+      this.props.tripNewLocation.locationName = '';
     }
   }
 

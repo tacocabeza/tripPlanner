@@ -321,6 +321,7 @@ export default class Atlas extends Component {
   }
 
   prepareNewTripAdd (newLocation, name){
+    console.log(name);
     let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
     if(!this.state.tripNewLocation.location) {
       this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
