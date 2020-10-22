@@ -9,16 +9,16 @@ export default class Navigation extends Component {
   render() {
     return (
       <Nav tabs>
-        {this.renderLink(true, '1', 'Map')}
-        {this.renderLink(true, '2', 'Create Trip')}
+        {this.renderLink('1', 'Map')}
+        {this.renderLink('2', 'Create Trip')}
       </Nav>
     )
   }
 
-  renderLink(isTab, tab, name) {
+  renderLink(tab, name) {
     return (
       <NavItem>
-        <NavLink onClick={() => { this.props.toggle(isTab, tab); }}>
+        <NavLink onClick={() => { this.props.toggle(tab); }}>
           {name}
         </NavLink>
       </NavItem>

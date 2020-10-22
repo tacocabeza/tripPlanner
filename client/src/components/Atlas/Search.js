@@ -18,6 +18,7 @@ export default class Search extends Component {
 
     this.sendFindRequest = this.sendFindRequest.bind(this);
     this.processFindResponse = this.processFindResponse.bind(this);
+    this.sendLuckyRequest = this.sendLuckyRequest.bind(this);
 
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -38,10 +39,10 @@ export default class Search extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderBar()}
-        {this.renderResults()}
-      </div>
+        <div>
+          {this.renderBar()}
+          {this.renderResults()}
+        </div>
     );
   }
 
@@ -58,9 +59,9 @@ export default class Search extends Component {
 
   updateInputText(event) {
     this.setState({
-        inputText: event.target.value
-      },
-      this.sendFindRequest
+          inputText: event.target.value
+        },
+        this.sendFindRequest
     );
   }
 
@@ -72,25 +73,25 @@ export default class Search extends Component {
 
   renderResults() {
     return (
-      <Collapse isOpen={this.state.searchHasFocus}>
-        <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
-          {this.showFeelingLucky()}
-          {this.state.results.places.map(result => (
-            <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
-              {result.name}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </Collapse>
+        <Collapse isOpen={this.state.searchHasFocus}>
+          <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
+            {this.showFeelingLucky()}
+            {this.state.results.places.map(result => (
+                <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
+                  {result.name}
+                </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Collapse>
     );
   }
 
   showFeelingLucky(){
     if(this.state.inputText == null || this.state.inputText == "") {
       return(
-        <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
-          Feeling Lucky?
-        </ListGroup.Item>
+          <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
+            Feeling Lucky?
+          </ListGroup.Item>
       )
     }
   }
@@ -110,6 +111,20 @@ export default class Search extends Component {
       this.processFindResponse(response);
     } else if (this.state.inputText != null && this.state.inputText != "") {
       sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
+          this.state.serverSettings.serverPort)
+          .then(find => {
+            if (find) {
+              this.processFindResponse(find.data);
+            } else {
+              this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+            }
+          });
+    }
+  }
+
+  sendLuckyRequest() {
+    this.setState({searchHasFocus: true});
+    sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION},
         this.state.serverSettings.serverPort)
         .then(find => {
           if (find) {
@@ -118,19 +133,6 @@ export default class Search extends Component {
             this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
           }
         });
-    }
-  }
-
-  sendLuckyRequest() {
-    sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION},
-      this.state.serverSettings.serverPort)
-      .then(find => {
-        if (find) {
-          this.processFindResponse(find.data);
-        } else {
-          this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
-        }
-      });
   }
 
   processFindResponse(response) {
