@@ -21,8 +21,13 @@ public class Find {
     private ArrayList<Place> places;
     private boolean lucky = false;
 
-    public Find(String match, int limit){
-        this.limit = limit;
+    public Find(String match, Integer limit){
+        if(limit == null){
+            this.limit = 1;
+        } else {
+            this.limit = limit;
+        }
+
         this.match = formatMatch(match);
         if (match.equals("")) {
             this.lucky = true;
@@ -34,7 +39,11 @@ public class Find {
 
     private String formatMatch(String match){
         // replace all non alpha-numeric characters with _
-        return match.replaceAll("[^a-zA-Z\\d]","_");
+        if(match == null){
+            return "";
+        } else {
+            return match.replaceAll("[^a-zA-Z\\d]", "_");
+        }
     }
 
     public String getMatch(){
@@ -100,8 +109,8 @@ public class Find {
 
         try {
             while (results.next()) {
-                double latitude = results.getDouble("latitude");
-                double longitude = results.getDouble("longitude");
+                String latitude = results.getString("latitude");
+                String longitude = results.getString("longitude");
                 int altitude = results.getInt("altitude");
 
                 Place p = new Place(latitude, longitude, altitude);

@@ -3,8 +3,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import {InputGroupAddon, Input, Collapse} from "reactstrap";
 import {Button, InputGroup, ListGroup} from "react-bootstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
-import {sendServerRequest} from "../../utils/restfulAPI";
+import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
+import * as findSchema from "../../../schemas/ResponseFind.json";
 
 export default class Search extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ export default class Search extends Component {
   formatInputText(s) {
     // replace all non-alphanumeric characters with _
     let regex = new RegExp("[^a-zA-Z\\d]", "g");
-    return s.replaceAll(regex,"_");
+    return s.replace(regex,"_");
   }
 
   renderResults() {
@@ -100,11 +101,14 @@ export default class Search extends Component {
     if (this.isValidPosition(this.state.inputText)) {
       let coords = new Coordinates(this.state.inputText);
       let response = {
+        "requestVersion": 2,
+        "requestType": "find",
+        "found": 1,
         "places": [
           {
             "name": coords.getLatitude() + ', ' + coords.getLongitude(),
-            "latitude": coords.getLatitude(),
-            "longitude": coords.getLongitude(),
+            "latitude": String(coords.getLatitude()),
+            "longitude": String(coords.getLongitude()),
           }
         ]
       };
@@ -135,9 +139,17 @@ export default class Search extends Component {
         });
   }
 
-  processFindResponse(response) {
-    this.setState({results: response});
-  }
+    processFindResponse(response) {
+      if(isJsonResponseValid(response, findSchema)) {
+        for(let i = 0; i < response.places.length; i++){
+          response.places[i].latitude = parseFloat(response.places[i].latitude);
+          response.places[i].longitude = parseFloat(response.places[i].longitude);
+        }
+        this.setState({results: response});
+      } else {
+        this.props.createSnackBar("Find Response Not Valid. Check The Server.");
+      }
+    }
 
   onFocus() {
     this.setState({searchHasFocus: true});

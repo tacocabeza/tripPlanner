@@ -30,7 +30,7 @@ public class TestRequestDistance {
     }
 
     @Test
-    @DisplayName("Version Number is equal to 2")
+    @DisplayName("Version Number is equal to 3")
     public void testVersion()
     {
         Integer version = distanceRequest.getRequestVersion();

@@ -304,8 +304,8 @@ export default class Atlas extends Component {
 
   placeMarker(location, icon, showBoolean = true) {
     if (location && showBoolean) {
-      let latitude = location.lat? location.lat: (location[0]? location[0]: 0)
-      let longitude = location.lng? location.lng: (location[1]? location[1]: 0)
+      let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
+      let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
       return (
         <Marker position={location} icon={icon}>
           <Popup offset={[1, -18]} autoPan={false}>

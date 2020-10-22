@@ -46,9 +46,7 @@ export default class SaveTrip extends Component {
   }
 
   togglePopUp() {
-    console.log(this.state.isPopUp)
     this.setState({isPopUp: !this.state.isPopUp});
-    console.log(this.state.isPopUp)
   }
 
 
@@ -65,7 +63,6 @@ export default class SaveTrip extends Component {
     payload.options.earthRadius = "3959.0"
     for(let i = 0; i<this.props.places.length; i++) {
       payload.places.push(this.props.places[i])
-      console.log(payload.places[i])
     }
     return payload
   }
