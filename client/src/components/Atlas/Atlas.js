@@ -404,7 +404,6 @@ export default class Atlas extends Component {
 
   renderRoundTripSwitch()
   {
-       console.log(this.state.isRoundTrip)
        return(
         <FormGroup>
             <div>
