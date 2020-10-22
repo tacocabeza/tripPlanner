@@ -5,6 +5,7 @@ import {Button, InputGroup, ListGroup} from "react-bootstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
+import {isValidPosition} from "../../utils/misc";
 import * as findSchema from "../../../schemas/ResponseFind.json";
 
 export default class Search extends Component {
@@ -98,19 +99,14 @@ export default class Search extends Component {
   }
 
   sendFindRequest() {
-    if (this.isValidPosition(this.state.inputText)) {
+    if (isValidPosition(this.state.inputText)) {
       let coords = new Coordinates(this.state.inputText);
-      let response = {
-        "requestVersion": 2,
-        "requestType": "find",
-        "found": 1,
-        "places": [
-          {
+      let response = { "requestVersion": 2, "requestType": "find", "found": 1,
+        "places": [{
             "name": coords.getLatitude() + ', ' + coords.getLongitude(),
             "latitude": String(coords.getLatitude()),
             "longitude": String(coords.getLongitude()),
-          }
-        ]
+        }]
       };
       this.processFindResponse(response);
     } else if (this.state.inputText != null && this.state.inputText != "") {
@@ -139,19 +135,19 @@ export default class Search extends Component {
         });
   }
 
-    processFindResponse(response) {
-      if(isJsonResponseValid(response, findSchema)) {
-        for(let i = 0; i < response.places.length; i++){
-          let coords = new Coordinates(
-            response.places[i].latitude + " " + response.places[i].longitude);
-          response.places[i].latitude = coords.getLatitude();
-          response.places[i].longitude = coords.getLongitude();
-        }
-        this.setState({results: response});
-      } else {
-        this.props.createSnackBar("Find Response Not Valid. Check The Server.");
+  processFindResponse(response) {
+    if(isJsonResponseValid(response, findSchema)) {
+      for(let i = 0; i < response.places.length; i++){
+        let coords = new Coordinates(
+          response.places[i].latitude + " " + response.places[i].longitude);
+        response.places[i].latitude = coords.getLatitude();
+        response.places[i].longitude = coords.getLongitude();
       }
+      this.setState({results: response});
+    } else {
+      this.props.createSnackBar("Find Response Not Valid. Check The Server.");
     }
+  }
 
   onFocus() {
     this.setState({searchHasFocus: true});
@@ -160,18 +156,4 @@ export default class Search extends Component {
   onBlur() {
     this.setState({searchHasFocus: false});
   }
-
-  isValidPosition(position) {
-    let error;
-    let isValid;
-    try {
-      isValid = true;
-      new Coordinates(position);
-      return isValid;
-    } catch (error) {
-      isValid = false;
-      return isValid;
-    }
-  }
-
 }
