@@ -37,11 +37,11 @@ test("Testing Popup", testPopup);
 function testLoadPlaces()
 {
     let loadedTrip = {"options": {"title": "", "earthRadius": "3959.0"}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION};
-    const saveTrip = shallow(<SaveTrip places={[]} tripData={loadedTrip}/>)
+    const saveTrip = shallow(<SaveTrip places={[{"name":"black hole", "latitude": "0", "longitude":"0"}]} tripData={loadedTrip}/>)
 
     let actualPayLoad = saveTrip.instance().loadPlaces();
 
-    let expectedPayload = {"options": {"title": "", "earthRadius": "3959.0"}, "places": [], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION};
+    let expectedPayload = {"options": {"title": "", "earthRadius": "3959.0"}, "places": [{"name":"black hole", "latitude": "0", "longitude":"0"}], "distances": [], "requestType": "trip", "requestVersion": PROTOCOL_VERSION};
 
     expect(actualPayLoad).toEqual(expectedPayload);
 
