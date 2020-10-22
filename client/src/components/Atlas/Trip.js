@@ -7,7 +7,7 @@ import SaveTrip from './SaveTrip.js';
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
-import * as tripSchema from "../../../schemas/ResponseTrip";
+import * as tripFile from "../../../schemas/TripFile";
 
 const deleteBtn = {
   background: '#fff',
@@ -283,12 +283,17 @@ export default class Trip extends Component {
   }
 
   loadFile() {
-    if(!isJsonResponseValid(this.state.loadedFile, tripSchema)) {
+    if(!isJsonResponseValid(this.state.loadedFile, tripFile)) {
       this.props.createSnackBar("This file is not valid");
     } else {
       this.props.setTripLocations(this.state.loadedFile.places)
-      this.setState({loadModal: false,});
-      this.processTripResponse(this.state.loadedFile);
+      this.setState({
+          loadModal: false,
+          destinations: this.state.loadedFile.places,
+          tripName: this.state.loadedFile.options.title
+        },
+        this.sendTripRequest,
+      );
     }
   }
 }
