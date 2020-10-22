@@ -58,15 +58,10 @@ export default class DistanceForm extends Component {
 
   submitCoords(e) {
     e.preventDefault();
-    if (this.isValidPosition(this.state.string1)) {
+    if (this.isValidPosition(this.state.string1) && this.isValidPosition(this.state.string2)) {
       let loc1 = new Coordinates(this.state.string1);
-      this.props.setLocation(1, {"lat": loc1.getLatitude(), "lng": loc1.getLongitude()});
-      if (this.isValidPosition(this.state.string2)) {
-        let loc2 = new Coordinates(this.state.string2);
-        this.props.setLocation(2, {"lat": loc2.getLatitude(), "lng": loc2.getLongitude()});
-      } else {
-        this.props.setLocation(3, {"lat": loc1.getLatitude(), "lng": loc1.getLongitude()});
-      }
+      let loc2 = new Coordinates(this.state.string2);
+      this.props.setLocation({"lat": loc1.getLatitude(), "lng": loc1.getLongitude()}, {"lat": loc2.getLatitude(), "lng": loc2.getLongitude()});
     }
     this.setState({submitted: true});
   }

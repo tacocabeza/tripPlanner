@@ -38,6 +38,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 const MAP_DEFAULT_ZOOM = 15;
+const CANYON = "#CC5430";
 
 export default class Atlas extends Component {
 
@@ -81,9 +82,9 @@ export default class Atlas extends Component {
     {this.getGeolocation()}
   }
 
-  toggleTab(isTab, tab) {
+  toggleTab(tab) {
     this.setState({isDistanceOpen: false})
-    if (isTab && this.state.currentTab != tab) {
+    if (this.state.currentTab != tab) {
       this.setState({currentTab: tab})
     }
   }
@@ -145,6 +146,7 @@ export default class Atlas extends Component {
           {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
+          {this.renderTripMarkers()}
           {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
           {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
           {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
@@ -207,7 +209,7 @@ export default class Atlas extends Component {
   getLine(location1, location2, key) {
     if(location1 && location2) {
       return (
-          <Polyline color="#CC5430" positions={[location1, location2]} key={key}/>
+          <Polyline color={CANYON} positions={[location1, location2]} key={key}/>
       );
     }
   }
@@ -215,7 +217,7 @@ export default class Atlas extends Component {
   setTripLocations(destinations) {
     let newLocations = [];
     for(let i = 0; i < destinations.length; i++){
-      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude});
+      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
     }
     this.setState({tripLocations: newLocations});
   }
@@ -228,30 +230,30 @@ export default class Atlas extends Component {
     )
   }
 
-  setLocation(location, state) {
-    if (location == 1) {
-      this.setState({
-        distanceLocation2: this.state.distanceLocation1,
-        distanceLocation1: state,
-        distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: ''
-      });
-    } else if (location == 2) {
-      this.setState({
-        distanceLocation2: state,
-        distanceLocation2Name: this.state.distanceLocation1Name,
-        distanceLocation1Name: ''
-      });
-    } else if (location == 3) {
-      this.setState({currentMapCenter: state});
+  setLocation(location1, location2) {
+    this.setState({
+      distanceLocation1: location1,
+      distanceLocation1Name: '',
+      distanceLocation2: location2,
+      distanceLocation2Name: '',
+    });}
+  renderTripMarkers()
+  {
+
+    let markers = []
+
+    for(var i = 0; i<this.state.tripLocations.length; i++){
+        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
+
+    return (<div> {markers} </div>);
   }
 
   searchListItemClick(name, lat, lng) {
     this.setState({
       isSearchOpen: false,
       distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: {"lat":lat, "lng":lng},
+      distanceLocation1: {"lat":lat, "lng":lng ,"name":name},
       currentMapCenter: [lat, lng],
       distanceLocation2Name: this.state.distanceLocation1Name,
       distanceLocation1Name: ''
@@ -285,6 +287,7 @@ export default class Atlas extends Component {
     this.setState({
       currentMapCenter: this.state.originalMapCenter,
       mapZoom: MAP_DEFAULT_ZOOM,
+      currentMapBounds: null,
       distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]},
       distanceLocation1Name: "Home"
     });
@@ -306,7 +309,7 @@ export default class Atlas extends Component {
       return (
         <Marker position={location} icon={icon}>
           <Popup offset={[1, -18]} autoPan={false}>
-            {latitude.toFixed(2) + "," + longitude.toFixed(2)}
+            {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
             <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
               Add to trip
@@ -322,19 +325,20 @@ export default class Atlas extends Component {
     if(!this.state.tripNewLocation.location) {
       this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
     }
-    this.toggleTab(true, '2')
+    this.toggleTab('2')
   }
 
   getMarkerLocationName(location) {
-    if(location.lat){
-      if(location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
-        return this.state.distanceLocation1Name
+    let index = this.state.tripLocations.indexOf(location)
+    if(index != -1) {
+      return this.state.tripLocations[index].name;
+    }
+    else if(location.lat) {
+      if(this.state.distanceLocation1 && location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+        return this.state.distanceLocation1.name
       }
-      else if(location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
-        return this.state.distanceLocation2Name
-      }
-      else{
-        return "Unknown Location"
+      else if(this.state.distanceLocation2 &&location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+        return this.state.distanceLocation2.name
       }
     }
     else {
