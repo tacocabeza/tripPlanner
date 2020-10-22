@@ -101,11 +101,14 @@ export default class Search extends Component {
     if (this.isValidPosition(this.state.inputText)) {
       let coords = new Coordinates(this.state.inputText);
       let response = {
+        "requestVersion": 2,
+        "requestType": "find",
+        "found": 1,
         "places": [
           {
             "name": coords.getLatitude() + ', ' + coords.getLongitude(),
-            "latitude": coords.getLatitude(),
-            "longitude": coords.getLongitude(),
+            "latitude": String(coords.getLatitude()),
+            "longitude": String(coords.getLongitude()),
           }
         ]
       };
@@ -137,15 +140,15 @@ export default class Search extends Component {
   }
 
     processFindResponse(response) {
-        if(isJsonResponseValid(response, findSchema)) {
-            for(let i = 0; i < response.places.length; i++){
-              response.places[i].latitude = parseFloat(response.places[i].latitude);
-              response.places[i].longitude = parseFloat(response.places[i].longitude);
-            }
-            this.setState({results: response});
-        } else {
-            this.props.createSnackBar("Find Response Not Valid. Check The Server.");
+      if(isJsonResponseValid(response, findSchema)) {
+        for(let i = 0; i < response.places.length; i++){
+          response.places[i].latitude = parseFloat(response.places[i].latitude);
+          response.places[i].longitude = parseFloat(response.places[i].longitude);
         }
+        this.setState({results: response});
+      } else {
+        this.props.createSnackBar("Find Response Not Valid. Check The Server.");
+      }
     }
 
   onFocus() {
