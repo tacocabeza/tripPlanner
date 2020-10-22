@@ -14,8 +14,6 @@ public class RequestFind extends RequestHeader{
     private Integer found;
     String match;
     Integer limit;
-    private Integer sentLimit;
-    private String sentMatch;
     private ArrayList<Place> places;
 
 
@@ -26,20 +24,12 @@ public class RequestFind extends RequestHeader{
         this.requestType = "find";
         this.match = "";
         this.limit = 0;
-        this.sentLimit = 0;
-        this.sentMatch = "";
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
     @Override
     public void buildResponse() {
-        if (limit == null) {
-            this.sentLimit = 1;
-        } else {
-            this.sentLimit = limit;
-        }
-        this.sentMatch = match;
-        Find f = new Find(this.sentMatch, this.sentLimit);
+        Find f = new Find(this.match, this.limit);
         this.found = f.getFound();
         this.places = f.getPlaces();
         log.trace("buildResponse -> {}", this);
