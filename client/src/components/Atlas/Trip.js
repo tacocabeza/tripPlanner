@@ -249,6 +249,7 @@ export default class Trip extends Component {
 
   processTripResponse(response) {
     let count = 0;
+    this.calculateRoundTrip(response);
     for (let i = 0; i < response.distances.length - 1; i++) {
       count = count + response.distances[i];
     }
@@ -259,17 +260,15 @@ export default class Trip extends Component {
       destinations:response.places
     });
 
-    this.calculateRoundTrip()
 
   }
 
-  calculateRoundTrip(){
+  calculateRoundTrip(response){
 
     let sum = 0
 
-    for(var i = 0; i<this.state.loadedTrip.distances.length; i++)
-    {
-        sum += this.state.loadedTrip.distances[i]
+    for(var i = 0; i<response.distances.length; i++){
+        sum +=response.distances[i];
     }
     this.setState({roundTripDistance: sum})
   }

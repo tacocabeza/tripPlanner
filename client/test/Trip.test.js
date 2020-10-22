@@ -85,7 +85,6 @@ function testRenderRoundTrip()
                  };
     let trip = shallow(<Trip/>);
     trip.instance().processTripResponse(shoppingTrip);
-    trip.instance().calculateRoundTrip();
     let actual = trip.state().roundTripDistance;
     expect(actual).toEqual(110);
 }
