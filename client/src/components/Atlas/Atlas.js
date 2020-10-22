@@ -220,6 +220,7 @@ export default class Atlas extends Component {
       newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
     }
     this.setState({tripLocations: newLocations});
+    console.log(destinations);
   }
 
   renderDistance() {
