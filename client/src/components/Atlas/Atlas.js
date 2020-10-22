@@ -44,37 +44,37 @@ export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
-    this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
-    this.setLocation = this.setLocation.bind(this);
-    this.setTripLocations = this.setTripLocations.bind(this);
-    this.getGeolocation = this.getGeolocation.bind(this);
-    this.recenterMap = this.recenterMap.bind(this);
-    this.mapMovement = this.mapMovement.bind(this);
     this.checkMapView = this.checkMapView.bind(this);
-    this.searchListItemClick = this.searchListItemClick.bind(this);
-    this.toggleTab = this.toggleTab.bind(this);
+    this.getGeolocation = this.getGeolocation.bind(this);
+    this.mapMovement = this.mapMovement.bind(this);
+    this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
     this.prepareServerRequest = this.prepareServerRequest.bind(this);
     this.processDistanceResponse = this.processDistanceResponse.bind(this);
-    this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
+    this.recenterMap = this.recenterMap.bind(this);
+    this.searchListItemClick = this.searchListItemClick.bind(this);
+    this.setLocation = this.setLocation.bind(this);
+    this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
+    this.setTripLocations = this.setTripLocations.bind(this);
+    this.toggleTab = this.toggleTab.bind(this);
+
     this.state = {
-      distance: 0,
-      originalMapCenter: MAP_CENTER_DEFAULT,
-      currentMapCenter: MAP_CENTER_DEFAULT,
       currentMapBounds: null,
-      mapZoom: MAP_DEFAULT_ZOOM,
+      currentMapCenter: MAP_CENTER_DEFAULT,
+      currentTab: '1',
+      distance: 0,
       distanceLocation1: null,
       distanceLocation2: null,
       distanceLocation1Name: '',
       distanceLocation2Name: '',
-      tripLocations: [],
-      isRoundTrip: false,
-      serverSettings: this.props.serverSettings,
-      currentTab: '1',
       isDistanceOpen: false,
+      isRoundTrip: false,
       isSearchOpen: false,
-      tripNewLocation: {location: null, locationName: ''},
+      mapZoom: MAP_DEFAULT_ZOOM,
+      originalMapCenter: MAP_CENTER_DEFAULT,
+      serverSettings: this.props.serverSettings,
       showDistanceMarkers: true,
-
+      tripLocations: [],
+      tripNewLocation: {location: null, locationName: ''},
     };
   }
 
