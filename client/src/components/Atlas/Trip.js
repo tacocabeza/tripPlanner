@@ -211,7 +211,7 @@ export default class Trip extends Component {
     this.setState({
         destinations: tempArr,
       },
-      this.sendTripRequest,
+      this.sendTripRequest(),
     );
   }
 
@@ -260,6 +260,7 @@ export default class Trip extends Component {
       loadedTrip: response,
       tripName: response.options.title,
       totalDistance: count,
+      destinations:response.places
     });
 
     this.calculateRoundTrip()
@@ -290,6 +291,7 @@ export default class Trip extends Component {
     if(!isJsonResponseValid(this.state.loadedFile, tripSchema)) {
       this.props.createSnackBar("This file is not valid");
     } else {
+      this.props.setTripLocations(this.state.loadedFile.places)
       this.setState({loadModal: false,});
       this.processTripResponse(this.state.loadedFile);
     }
