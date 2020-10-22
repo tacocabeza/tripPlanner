@@ -335,10 +335,10 @@ export default class Atlas extends Component {
       return this.state.tripLocations[index].name;
     }
     else if(location.lat) {
-      if(this.state.distanceLocation1 && location.lat == this.state.distanceLocation1.lat && location.lng == this.state.distanceLocation1.lng){
+      if(this.state.distanceLocation1 && this.state.distanceLocation1.lat == location.lat){
         return this.state.distanceLocation1.name
       }
-      else if(this.state.distanceLocation2 &&location.lat == this.state.distanceLocation2.lat && location.lng == this.state.distanceLocation2.lng){
+      else{
         return this.state.distanceLocation2.name
       }
     }
