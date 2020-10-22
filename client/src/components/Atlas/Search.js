@@ -142,8 +142,10 @@ export default class Search extends Component {
     processFindResponse(response) {
       if(isJsonResponseValid(response, findSchema)) {
         for(let i = 0; i < response.places.length; i++){
-          response.places[i].latitude = parseFloat(response.places[i].latitude);
-          response.places[i].longitude = parseFloat(response.places[i].longitude);
+          let coords = new Coordinates(
+            response.places[i].latitude + " " + response.places[i].longitude);
+          response.places[i].latitude = coords.getLatitude();
+          response.places[i].longitude = coords.getLongitude();
         }
         this.setState({results: response});
       } else {
