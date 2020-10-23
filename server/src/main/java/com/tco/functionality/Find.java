@@ -46,14 +46,6 @@ public class Find {
         }
     }
 
-    public String getMatch(){
-        return match;
-    }
-
-    public int getLimit(){
-        return limit;
-    }
-
     public int getFound(){
         populatePlaces();
         return found;

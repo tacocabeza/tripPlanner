@@ -23,23 +23,10 @@ public class TestFind {
     }
 
     @Test
-    @DisplayName("Test Match")
-    public void testMatch(){
-        assert(findMatchLimit.getMatch().equals("Heli__"));
-    }
-
-    @Test
     @DisplayName("Test Empty Match")
     public void testEmptyMatch(){
         ArrayList<Place> places = findNoMatch.getPlaces();
         assertEquals(4, places.size());
-    }
-
-    @Test
-    @DisplayName("Test Limit")
-    public void testLimit(){
-        ArrayList<Place> places = findMatchLimit.getPlaces();
-        assertEquals(findMatchLimit.getLimit(), places.size());
     }
 
     @Test
