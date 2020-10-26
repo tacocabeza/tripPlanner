@@ -32,8 +32,10 @@ export default class Footer extends Component {
                 <Container>
                     <div className="centered">
                         {linkStatusSymbol} Connected to {serverName} &nbsp;
-                        <InfoOutlinedIcon className="tco-text"
-                            onClick={() => this.setState({serverSettingsOpen: true})}/>
+                        <a>
+                            <InfoOutlinedIcon className="tco-text"
+                                onClick={() => this.setState({serverSettingsOpen: true})}/>
+                        </a>
                     {this.renderServerSettings()}
                     </div>
                 </Container>
