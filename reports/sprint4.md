@@ -38,7 +38,10 @@
 
 
 ## Planned Epics
-
+* V4 Protocol
+* Shorter
+* User Experience
+* Modify Trip
 
 ## Metrics
 
