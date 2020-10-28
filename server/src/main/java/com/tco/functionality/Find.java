@@ -30,7 +30,7 @@ public class Find {
 
         this.match = formatMatch(match);
         if (match.equals("")) {
-            this.lucky = true;
+            lucky = true;
         }
         if(this.limit == 0){
             this.limit = 1;
@@ -52,7 +52,7 @@ public class Find {
     }
 
     public ArrayList<Place> getPlaces(){
-        if (this.lucky) {
+        if (lucky) {
             populatePlaces();
             Collections.shuffle(places);
         } else {
@@ -90,7 +90,7 @@ public class Find {
         ArrayList<Place> newPlaces = parsePlaces(results);
         this.found = newPlaces.size();
         int subListLimit = Math.min(newPlaces.size(), this.limit);
-        if (this.lucky) {
+        if (lucky) {
             subListLimit = Math.min(newPlaces.size(), 100);
         }
         this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
