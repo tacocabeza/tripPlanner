@@ -38,25 +38,55 @@
 
 
 ## Planned Epics
-* V4 Protocol
-* Shorter
-* User Experience
-* Modify Trip
+Here we list the epics we plan to complete this sprint and describe what
+kind of work will be done under each epic.
+
+#### V4 Protocol
+**V4 Protocol** adds the ability for the user to be able to filter
+search results. For example, the user my filter by location **type**(airport, heliport, balloonport,e.g). In addition
+to filtering by location **type** the user may also filter by the **where** property. The **where** property can be country name
+, region name, or municipality. **Note**: not specifying filters is the same as "filters": {}.
+
+Additionally, V4 protocol will add a **narrow** field in the find request. The narrow field will contain the set of filters
+returned by the **config** object. Similarly, as noted above, not specifying narrow is the same as "narrow":{}.
+
+Finally, V4 Protocol will add an optional "response" field to **options** of a trip. If the response is 0.0 or not specified there should
+be no optimization. Otherwise, the server is expected to respond in **less** than the specified response time.
+#### Shorter
+**Shorter** gives the user the ability to ask for optimized(**shorter**). Previously, when a user created a trip there was no efficiency, lines
+between locations would cross each other. The larger the trip would get the more chaos would be introduced into the resulting trip in Atlas. As a result,
+**Shorter** will always respond to the users trip request less than one second, using heuristic optimization techniques mainly, nearest neighbor, 2-opt, and 3-opt. Finally, with
+the help of concurrency we will eb able to reduce the computational overhead from using the methods described above.
+
+##### User Experience
+Members of our group will have friends and/or family use and navigate our application **on their own**. We will then ask for their feedback on functionality and 
+ease of use. These suggestions will help drive some UI changes in our application in hopes of creating a 
+friendlier experience to the user. Additionally, we have already identified some shortcomings in our UI, and
+we will be fixing them in this epic.
+
+#### Modify Trip
+**Modify Trip** will be giving the user a whole set of new functionality. The user will have the ability to select a new starting location without affecting the order
+of the destinations. Individual trip destinations can now be reordered and deleted, and the order of destinations can be reversed from the starting location. Users can now
+add notes on their destinations and even modify/correct existing information.
 
 ## Metrics
+#### Ability
+Previously in sprint 3, we planned for 3 epics, and we ended the sprint completing the three
+epics, completing 75 tasks and 99 story points. This sprint we planned for 4 epics, 46 tasks and 74 story points nearly double the tasks
+and story points than last sprint. That being said, these numbers are the similar to the numbers we got at the end of sprint 3 so, we are 
+confident that we will be able to complete our planned epics, story points and tasks.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *sum*  | *sum* | 
+| Epics | *4* | *count* |
+| Tasks |  *46*   | *count* | 
+| Story Points |  *74*  | *sum* | 
 
 
 ## Scrums
-
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *10/28/2020* | *366, 369,410, 411,418, ...* | *427, ...* | none | 
 
 
 ## Review
