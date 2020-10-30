@@ -22,8 +22,6 @@ public class RequestFind extends RequestHeader{
 
     public RequestFind(){
         this.requestType = "find";
-        this.match = "";
-        this.limit = 0;
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
@@ -43,6 +41,6 @@ public class RequestFind extends RequestHeader{
 
     public Integer getFound() { return found; }
 
-    public Integer getPlaces() { return places.size(); }
+    public ArrayList<Place> getPlaces() { return places; }
 
 }

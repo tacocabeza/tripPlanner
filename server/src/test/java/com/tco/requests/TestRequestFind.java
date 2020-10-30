@@ -1,11 +1,14 @@
 package com.tco.requests;
 
+import com.tco.functionality.Place;
 import com.tco.requests.RequestConfig;
 import com.tco.requests.RequestFind;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
@@ -48,14 +51,6 @@ public class TestRequestFind {
     }
 
     @Test
-    @DisplayName("Limit is equal to 0")
-    public void testLimit()
-    {
-        Integer limit = findRequest.getLimit();
-        assertEquals(0, limit);
-    }
-
-    @Test
     @DisplayName("Found is equal to 9403")
     public void testFound()
     {
@@ -67,8 +62,8 @@ public class TestRequestFind {
     @DisplayName("Test Places")
     public void testPlaces()
     {
-        Integer places = findRequest.getPlaces();
-        assertEquals(1, places);
+        ArrayList<Place> places = findRequest.getPlaces();
+        assertEquals(MAX_LIMIT, places.size());
     }
 
 }
