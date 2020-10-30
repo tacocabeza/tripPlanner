@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import SearchIcon from '@material-ui/icons/Search';
-import {InputGroupAddon, Input, Collapse} from "reactstrap";
-import {Button, InputGroup, ListGroup} from "react-bootstrap";
+import {Input, Collapse} from "reactstrap";
+import {InputGroup, ListGroup} from "react-bootstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');

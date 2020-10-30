@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CustomInput,Label,FormGroup,Form,FormText,Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
+import {CustomInput,FormGroup,Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
