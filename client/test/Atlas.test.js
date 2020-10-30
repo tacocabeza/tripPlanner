@@ -126,36 +126,6 @@ function testSearchListClick() {
 
 test("Testing Atlas goes to correct location on search list item click", testSearchListClick);
 
-function testPrepareCallsRequest() {
-  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  const instance = atlas.instance();
-  instance.requestDistance = jest.fn();
-  atlas.state().distanceLocation1 = {lat: 0, lng: 0};
-  atlas.state().distanceLocation2 = {lat: 1, lng: 1};
-  instance.prepareServerRequest();
-  expect(instance.requestDistance).toBeCalled();
-}
-
-test("Testing Atlas calls RequestDistance when PrepareServerRequest called", testPrepareCallsRequest);
-
-function testProcessSetsDistance() {
-  const atlas = shallow(<Atlas createSnackBar={startProperties.createSnackBar}/>);
-  const instance = atlas.instance();
-  let expectedDistance = 12345;
-  instance.processDistanceResponse({
-    "requestType"    : "distance",
-    "requestVersion" : 3,
-    "place1"         : {"latitude":  "40.6", "longitude": "-105.1"},
-    "place2"         : {"latitude":  "-33.9", "longitude": "151.2"},
-    "earthRadius"    : 6371.0,
-    "distance"       : 12345
-  });
-  atlas.update();
-  let actualDistance = atlas.state().distance;
-  expect(actualDistance).toEqual(expectedDistance);
-}
-
-test("Testing Atlas distance set by processDistanceResponse", testProcessSetsDistance);
 
 function testSetTripLocations() {
 
