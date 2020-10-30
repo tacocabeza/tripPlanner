@@ -63,7 +63,7 @@ public class Find {
         } else {
             populatePlaces();
         }
-        while (places.size() > limit && places.size() != 0) {
+        while (places.size() > limit && places.size() >= 0) {
             places.remove(places.size() - 1);
         }
         return places;
