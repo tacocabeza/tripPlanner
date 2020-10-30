@@ -22,18 +22,23 @@ public class Find {
     private boolean lucky = false;
 
     public Find(String match, Integer limit){
+        this.match = formatMatch(match);
+        if (this.match.equals("")) {
+            lucky = true;
+        }
+
         if(limit == null){
-            this.limit = 1;
+            if(lucky) {
+                this.limit = 1;
+            } else {
+                this.limit = MAX_LIMIT;
+            }
         } else {
             this.limit = limit;
         }
 
-        this.match = formatMatch(match);
-        if (match.equals("")) {
-            lucky = true;
-        }
         if(this.limit == 0){
-            this.limit = 1;
+            this.limit = MAX_LIMIT;
         }
     }
 
@@ -88,11 +93,16 @@ public class Find {
 
     private void setResultFields(ResultSet results){
         ArrayList<Place> newPlaces = parsePlaces(results);
-        this.found = newPlaces.size();
-        int subListLimit = Math.min(newPlaces.size(), this.limit);
+        int subListLimit;
+
         if (lucky) {
+            found = limit;
             subListLimit = Math.min(newPlaces.size(), 100);
+        } else {
+            found = newPlaces.size();
+            subListLimit = Math.min(newPlaces.size(), this.limit);
         }
+
         this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
     }
 
