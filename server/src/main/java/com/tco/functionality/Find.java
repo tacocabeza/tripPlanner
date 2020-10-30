@@ -37,7 +37,7 @@ public class Find {
             this.limit = limit;
         }
 
-        if(this.limit == 0){
+        if(this.limit <= 0){
             this.limit = MAX_LIMIT;
         }
     }
