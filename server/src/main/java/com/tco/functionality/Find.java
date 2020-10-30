@@ -1,12 +1,10 @@
 package com.tco.functionality;
 
-import org.eclipse.jetty.security.SpnegoUserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
