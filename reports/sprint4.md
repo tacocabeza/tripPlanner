@@ -87,6 +87,7 @@ confident that we will be able to complete our planned epics, story points and t
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *10/28/2020* | *366, 369,410, 411,418, ...* | *427, ...* | none | 
+| *10/30/2020* | *370, 452, 415,425*  | *427,363,323,367,362,372*| none|
 
 
 ## Review
