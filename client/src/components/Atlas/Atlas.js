@@ -154,7 +154,7 @@ export default class Atlas extends Component {
         {this.renderMapButton('recenter', recenterIcon, this.recenterMap, "Recenter Map")}
         {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}), "Open Distance")}
         {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}),"Toggle Markers")}
-        {this.renderMapButton('showAllMarkers', showMarkerIcon, this.checkMapView, "Show All Markers")}
+        {this.renderMapButton('showAllMarkers', showMarkerIcon, this.showAllMarkers, "Show All Markers")}
         <Control position="topright">
           <Fade in={this.state.isSearchOpen} className="float-left">
             <Search createSnackBar={this.props.createSnackBar}

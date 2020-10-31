@@ -46,9 +46,6 @@ function testLoadModal() {
 test("Load modal opened by Load button", testLoadModal);
 
 function testGoToMap() {
-  const div = document.createElement('div');
-  div.setAttribute("id", "showAllMarkers")
-  document.body.appendChild(div)
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   let expectedTab = '1';
   atlas.find('#addbtn').at(0).simulate('click');
