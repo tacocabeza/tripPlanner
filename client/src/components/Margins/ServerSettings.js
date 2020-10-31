@@ -46,10 +46,10 @@ export default class ServerSettings extends Component {
     makeConfigBoxes(name, information) {
         return (
           <Row className="m-2">
-            <Col xs={5}>
+            <Col xs={true}>
                 {name}:
             </Col>
-            <Col xs={20}>
+            <Col xs={true}>
                 {information? information.toString(): ""}
             </Col>
           </Row>
@@ -60,18 +60,18 @@ export default class ServerSettings extends Component {
         return (
             <ModalBody>
                 <Row className="m-2">
-                    <Col xs={2}>
+                    <Col xs={true}>
                         Name:
                     </Col>
-                    <Col xs={10}>
+                    <Col xs={true}>
                         {currentServerName}
                     </Col>
                 </Row>
                 <Row className="m-2">
-                    <Col xs={2}>
+                    <Col xs={true}>
                         URL:
                     </Col>
-                    <Col xs={10}>
+                    <Col xs={true}>
                         {this.renderInputField()}
                     </Col>
                 </Row>
