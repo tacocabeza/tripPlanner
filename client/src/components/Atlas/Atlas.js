@@ -22,6 +22,7 @@ import hideMarkerIcon from '../../static/images/hideMarkerIcon.svg';
 import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
 import Navigation from './Navigation.js';
+import Distance from './Distance.js';
 import DistanceForm from './DistanceForm.js';
 import Trip from './Trip.js';
 import {latLngBounds} from "leaflet";
@@ -48,14 +49,13 @@ export default class Atlas extends Component {
     this.getGeolocation = this.getGeolocation.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
     this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
-    this.prepareServerRequest = this.prepareServerRequest.bind(this);
-    this.processDistanceResponse = this.processDistanceResponse.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setTripLocations = this.setTripLocations.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
+    this.setDistance = this.setDistance.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -99,7 +99,7 @@ export default class Atlas extends Component {
               <TabPane tabId="1">
                 {this.renderLeafletMap()}
                 <Collapse isOpen={this.state.isDistanceOpen}>
-                  <Button color="primary" onClick={this.prepareServerRequest}>Distance</Button>
+                  {this.renderDistanceBtn()}
                   <DistanceForm setLocation={this.setLocation}/>
                   {this.renderRoundTripSwitch()}
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
@@ -319,7 +319,6 @@ export default class Atlas extends Component {
   }
 
   prepareNewTripAdd (newLocation, name){
-    console.log(name);
     let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
     if(!this.state.tripNewLocation.location) {
       this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
@@ -356,42 +355,21 @@ export default class Atlas extends Component {
       this.setState({currentMapBounds: bound})
     }
   }
+    setDistance(dist){
+      this.setState({distance:dist})
+    }
 
-  prepareServerRequest() {
-    if(this.state.distanceLocation2) {
-        this.requestDistance(this.state.distanceLocation1,this.state.distanceLocation2)
-    }
-    else if(this.state.distanceLocation1 == null && this.state.distanceLocation2 == null)
-    {
-        return
-    }
-    else {
-        this.requestDistance(this.state.distanceLocation1,{"lat":this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]});
-    }
-  }
+  renderDistanceBtn()
+  {
+    return(
+      <Distance distanceLocation1={this.state.distanceLocation1}
+                distanceLocation2={this.state.distanceLocation2}
+                originalMapCenter={this.state.originalMapCenter}
+                serverSettings={this.state.serverSettings}
+                onDistanceChange={this.setDistance}
+                createSnackBar={this.props.createSnackBar}/>
+    )
 
-  requestDistance(place1,place2) {
-      sendServerRequest({
-                        "requestType"    : "distance",
-                        "requestVersion" : PROTOCOL_VERSION,
-                        "place1"         : {"latitude":  place1.lat.toString(),
-                                            "longitude": place1.lng.toString()},
-                        "place2"         : {"latitude":  place2.lat.toString(),
-                                            "longitude": place2.lng.toString()},
-                        "earthRadius"    : EARTH_RADIUS_UNITS_DEFAULT.miles
-                      }, this.props.serverPort)
-      .then(dist => {
-        if (dist) { this.processDistanceResponse(dist.data); }
-        else { this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later."); }
-      });
-  }
-
-  processDistanceResponse(distResponse) {
-    if(!isJsonResponseValid(distResponse, distanceSchema)) {
-      this.props.createSnackBar("Distance Response Not Valid. Check The Server.");
-    } else {
-      this.setState({distance: distResponse.distance});
-    }
   }
 
 
