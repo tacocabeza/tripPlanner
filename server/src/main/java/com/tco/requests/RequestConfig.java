@@ -1,6 +1,7 @@
 package com.tco.requests;
 
 import com.tco.misc.BadRequestException;
+import com.tco.misc.FillFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
@@ -27,8 +28,8 @@ public class RequestConfig extends RequestHeader {
     this.supportedRequests.add("find");
     this.supportedRequests.add("trip");
     String [] type = new String[] {"balloonport","airport", "heliport"};
-    String [] where = new String[] {"Mexico"};
-    this.filters.put("where",where);
+    FillFilters fillFilters = new FillFilters();
+    this.filters.put("where",fillFilters.getCountries());
     this.filters.put("type",type);
 
     log.trace("buildResponse -> {}", this);
