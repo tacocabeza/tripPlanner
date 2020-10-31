@@ -35,7 +35,7 @@ export default class Distance extends Component{
   
   renderSaveButton(){
     return(
-       <Button color="primary" className="w-100" onClick={() => this.prepareServerRequest()}>Distance</Button>
+       <Button color="primary" onClick={() => this.prepareServerRequest()}>Distance</Button>
     )
   }
   
