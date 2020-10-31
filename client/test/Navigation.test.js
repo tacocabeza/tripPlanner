@@ -21,9 +21,6 @@ function testTrip() {
 }
 
 function testNavToTab(tabString, tabInt) {
-  const div = document.createElement('div');
-  div.setAttribute("id", "showAllMarkers")
-  document.body.appendChild(div)
   const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
   const nav = atlas.find('Navigation').at(0);
   let expectedTab = tabString;

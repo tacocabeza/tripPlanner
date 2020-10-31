@@ -151,17 +151,10 @@ export default class Atlas extends Component {
   renderMapControls() {
     return (
       <div>
-        {this.renderMapButton('recenter', recenterIcon, this.recenterMap)}
-        {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}))}
-        {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}))}
-        <Control position="topleft">
-          <Button id="showAllMarkers" className="mapButton" onClick={this.showAllMarkers} >
-            <img className="h-25px" src={showMarkerIcon}/>
-          </Button>
-          <UncontrolledTooltip placement="right"  target="showAllMarkers">
-            Show All Markers
-          </UncontrolledTooltip>
-        </Control>
+        {this.renderMapButton('recenter', recenterIcon, this.recenterMap, "Recenter Map")}
+        {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}), "Open Distance")}
+        {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}),"Toggle Markers")}
+        {this.renderMapButton('showAllMarkers', showMarkerIcon, this.showAllMarkers, "Show All Markers")}
         <Control position="topright">
           <Fade in={this.state.isSearchOpen} className="float-left">
             <Search createSnackBar={this.props.createSnackBar}
@@ -176,10 +169,10 @@ export default class Atlas extends Component {
     );
   }
 
-  renderMapButton(id, icon, onClick) {
+  renderMapButton(id, icon, onClick, hoverText) {
     return (
       <Control position="topleft">
-        <Button id={id} className="mapButton" onClick={onClick}>
+        <Button id={id} className="mapButton" onClick={onClick} title={hoverText}>
           <img className="h-23px" src={icon}/>
         </Button>
       </Control>
