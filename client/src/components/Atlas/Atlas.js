@@ -44,7 +44,7 @@ export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
-    this.checkMapView = this.checkMapView.bind(this);
+    this.showAllMarkers = this.showAllMarkers.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
     this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
@@ -233,13 +233,14 @@ export default class Atlas extends Component {
       distanceLocation1Name: '',
       distanceLocation2: location2,
       distanceLocation2Name: '',
-    });}
-  renderTripMarkers()
-  {
+    });
+  }
+
+  renderTripMarkers() {
 
     let markers = []
 
-    for(var i = 0; i<this.state.tripLocations.length; i++){
+    for(let i = 0; i<this.state.tripLocations.length; i++){
         markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
 
@@ -344,18 +345,12 @@ export default class Atlas extends Component {
     }
   }
 
-  checkMapView(){
+  showAllMarkers(){
     let bound = latLngBounds()
-    if(this.state.distanceLocation2) {
-      bound.extend(this.state.distanceLocation1)
-      bound.extend(this.state.distanceLocation2)
-    }
-    else if(this.state.distanceLocation1) {
-      bound.extend(this.state.distanceLocation1)
-      bound.extend(this.state.originalMapCenter)
-    }
-    else{
-      bound.extend(this.state.currentMapCenter)
+    this.state.distanceLocation2? bound.extend(this.state.distanceLocation2): bound.extend(this.state.originalMapCenter)
+    this.state.distanceLocation1? bound.extend(this.state.distanceLocation1): bound.extend(this.state.originalMapCenter)
+    for (let i = 0; i < this.state.tripLocations.length; i++ ){
+      bound.extend(this.state.tripLocations[i])
     }
     if(bound.isValid()) {
       this.setState({currentMapBounds: bound})
