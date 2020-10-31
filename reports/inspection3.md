@@ -10,12 +10,18 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-|  |  |
+| nd0905 | 30 Minutes |
 |  |  |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
-|  | | | | |
+| Trip.js:12-17 | Many hardcode values in css const  | low | nd0905 | |
+| Trip.js:37-38 | Naming is confusing total or round trip | med | nd0905 | |
+| Trip.js:96 | Key not needed in the div | low | nd0905 | |
+| Trip.js:115 | Check map update should not be in destination model | low | nd0905| |
+| Trip.js:234 | Earth Radius is hard coded | med | nd0905 | |
+| Trip.js:270 | var instead of let | low | nd0905 | |
+|  |  |  |  | |
+|  |  |  |  | |
