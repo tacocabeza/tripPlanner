@@ -8,11 +8,13 @@ import java.util.*;
 public class RequestConfig extends RequestHeader {
 
   private String serverName;
+  private Map<String,String[]> filters;
   private List<String> supportedRequests;
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
   public RequestConfig() {
     this.requestType = "config";
+    this.filters = new HashMap<>();
     this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
   }
 
@@ -24,13 +26,18 @@ public class RequestConfig extends RequestHeader {
     this.supportedRequests.add("distance");
     this.supportedRequests.add("find");
     this.supportedRequests.add("trip");
+    String [] type = new String[] {"balloonport","airport", "heliport"};
+    String [] where = new String[] {"Mexico"};
+    this.filters.put("where",where);
+    this.filters.put("type",type);
+
     log.trace("buildResponse -> {}", this);
   }
 
   public String getServerName() {
     return serverName;
   }
-
+  public Map<String, String[]> getFilters(){return filters;}
   public List<String> getSupportedRequests() {
     return supportedRequests;
   }

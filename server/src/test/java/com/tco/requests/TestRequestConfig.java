@@ -30,7 +30,7 @@ public class TestRequestConfig {
   @DisplayName("Version number is equal to 3")
   public void testVersion() {
     int version = conf.getRequestVersion();
-    assertEquals(3, version);
+    assertEquals(4, version);
   }
 
   @Test
@@ -45,5 +45,13 @@ public class TestRequestConfig {
   public void testSupportedRequests() {
     List<String> supportedRequests = conf.getSupportedRequests();
     assertEquals(4, supportedRequests.size());
+  }
+
+  @Test
+  @DisplayName("Supported Filters")
+  public void testSupportedFilters()
+  {
+    Map<String,String[]> filters = conf.getFilters();
+    assertEquals(2,filters.size());
   }
 }

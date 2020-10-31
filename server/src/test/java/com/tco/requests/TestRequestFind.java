@@ -39,7 +39,7 @@ public class TestRequestFind {
     public void testVersion()
     {
         Integer version = findRequest.getRequestVersion();
-        assertEquals(3, version);
+        assertEquals(4, version);
     }
 
     @Test
