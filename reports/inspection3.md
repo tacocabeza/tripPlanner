@@ -12,6 +12,7 @@
 | ---- | ---- |
 | nd0905 | 30 Minutes |
 | jgarc110 | 45 Minutes |
+| pdunton | 45 Minutes |
 
 ### Problems found
 
@@ -23,9 +24,20 @@
 | Trip.js:92-113&204-213| Deleting a destination causes destinations to be duplicated and not deletable| med|jgarc110| |
 | Trip.js:96 | Key not needed in the div | low | nd0905 | |
 | Trip.js:115 | Check map update should not be in destination model | low | nd0905| |
+| Trip.js:164, 182-185 | Would it be easier to have `tripNewLocation` just initialize to `null`?  | med | pdunton | |
+| Trip.js:165 | Is checking `newPlace.location` redundant? | med | pdunton | |
+| Trip.js:166, 174, 175 | Can we access object data with `.latitude` and `.longitude`?  | med | pdunton | |
+| Trip.js:166 | Value should be set in an else in `if` below.  | low | pdunton | |
+| Trip.js:182 | Why do we need to check if both are `null`? | low | pdunton | |
+| Trip.js:190 | String equality.  What if `name` is `null`?  | low | pdunton | |
+| Trip.js:215 | String equality.  What if `this.state.newItem.latitude` is `null`?  | low | pdunton | |
+| Trip.js:210, 222 | Do we need parentheses? | low | pdunton | |
+| Trip.js:215 | What is this checking?  Does it really have anything to do with `latitude`? | med | pdunton | |
 | Trip.js:223 | should the to sendTripRequest really be in the setState ?| low| jgarc110| |
+| Trip.js:229 | We should check `this.state.destinations.length > 0` instead | low | pdunton | |
 | Trip.js:231-239| we could create this in constants and import it, keeping things dry 💧💧| low | jgarc110| |
 | Trip.js:234 | Earth Radius is hard coded | med | nd0905 | |
+| Trip.js:234 | Earth Radius not a constant | low | pdunton | |
 | Trip.js:270 | var instead of let | low | nd0905 | |
-|  |  |  |  | |
-|  |  |  |  | |
+| Trip.js:281 | Do we have error checking here? | high | pdunton | |
+| UI | When adding destinations, clicking a search result will directly add to trip, bypassing the "new item" | low | pdunton | |
