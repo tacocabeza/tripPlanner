@@ -11,16 +11,20 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | nd0905 | 30 Minutes |
-|  |  |
+| jgarc110 | 45 Minutes |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
 | Trip.js:12-17 | Many hardcode values in css const  | low | nd0905 | |
+| Trip.js:28&36| not very DRY, object can be created in constants and be imported| low | jgarc110| |
 | Trip.js:37-38 | Naming is confusing total or round trip | med | nd0905 | |
+| Trip.js:92-113&204-213| Deleting a destination causes destinations to be duplicated and not deletable| med|jgarc110| |
 | Trip.js:96 | Key not needed in the div | low | nd0905 | |
 | Trip.js:115 | Check map update should not be in destination model | low | nd0905| |
+| Trip.js:223 | should the to sendTripRequest really be in the setState ?| low| jgarc110| |
+| Trip.js:231-239| we could create this in constants and import it, keeping things dry 💧💧| low | jgarc110| |
 | Trip.js:234 | Earth Radius is hard coded | med | nd0905 | |
 | Trip.js:270 | var instead of let | low | nd0905 | |
 |  |  |  |  | |
