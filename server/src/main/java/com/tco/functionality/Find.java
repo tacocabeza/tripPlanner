@@ -83,7 +83,9 @@ public class Find {
                         "world.municipality like \"%" + match + "%\" or " +
                         "region.name like \"%" + match + "%\" or " +
                         "country.name like \"%" + match + "%\"";
-        String sql = "select " + columns + " from world " + joins + " where " + where + ";";
+        String order = "order by world.name";
+        String sql = "select " + columns + " from world " + joins +
+                " where " + where + " " + order + ";";
 
         DBConnection dbc = new DBConnection();
         ResultSet results = dbc.querySQL(sql);
