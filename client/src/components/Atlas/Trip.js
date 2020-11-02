@@ -166,9 +166,11 @@ export default class Trip extends Component {
     if(this.props.tripNewLocation){
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
-        let placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
+        let placeName;
         if (newPlace.locationName != '' && newPlace.locationName != null) {
           placeName = newPlace.locationName;
+        } else {
+          placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
         }
         this.setState({
           newItem: {
