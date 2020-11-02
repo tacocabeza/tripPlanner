@@ -63,10 +63,9 @@ export default class Trip extends Component {
 
   renderRoundTrip(){
     if(this.props.isRoundTrip){
-        return(
-            <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
-
-        )
+      return(
+        <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
+      );
     }
   }
 
@@ -97,7 +96,7 @@ export default class Trip extends Component {
         {this.state.loadedTrip.places.map((result, index) => (
           <div key={result.id}>
             <Fade in={index > 0} className="text-right">Distance: {this.state.loadedTrip.distances[index-1]}mi.</Fade>
-            <ListGroupItem key={result.id}>
+            <ListGroupItem key={index}>
               <Row>
                 <Col className="text-left">{result.name}</Col>
                 <Col>

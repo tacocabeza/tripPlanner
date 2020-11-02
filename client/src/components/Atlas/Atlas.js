@@ -99,10 +99,7 @@ export default class Atlas extends Component {
               <TabPane tabId="1">
                 {this.renderLeafletMap()}
                 <Collapse isOpen={this.state.isDistanceOpen}>
-                  {this.renderDistanceBtn()}
-                  <DistanceForm setLocation={this.setLocation}/>
                   {this.renderRoundTripSwitch()}
-                  <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </Collapse>
               </TabPane>
               <TabPane tabId="2">
@@ -184,21 +181,27 @@ export default class Atlas extends Component {
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
       lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],i));
     }
-
     if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
       lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
-
     return (<div>{lines}</div>);
   }
 
   renderDistanceLine(){
     if(this.state.showDistanceMarkers) {
       if (this.state.distanceLocation2) {
-        return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
+        return (
+          <div>
+            {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null)}
+          </div>
+        );
       } else if (this.state.distanceLocation1) {
-        return this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null);
+        return (
+          <div>
+            {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null)}
+          </div>
+        );
       }
     }
   }
@@ -206,7 +209,9 @@ export default class Atlas extends Component {
   getLine(location1, location2, key) {
     if(location1 && location2) {
       return (
-          <Polyline color={CANYON} positions={[location1, location2]} key={key}/>
+          <Polyline color={CANYON} positions={[location1, location2]} key={key}>
+            {this.state.isDistanceOpen? this.renderDistance(): null}
+          </Polyline>
       );
     }
   }
@@ -219,14 +224,6 @@ export default class Atlas extends Component {
     this.setState({tripLocations: newLocations});
   }
 
-  renderDistance() {
-    return(
-      <InputGroup>
-        <Input type="text" value={"Distance: " + this.state.distance + "MI"} disabled/>
-      </InputGroup>
-    )
-  }
-
   setLocation(location1, location2) {
     this.setState({
       distanceLocation1: location1,
@@ -237,14 +234,11 @@ export default class Atlas extends Component {
   }
 
   renderTripMarkers() {
-
     let markers = []
-
     for(let i = 0; i<this.state.tripLocations.length; i++){
         markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
-
-    return (<div> {markers} </div>);
+    return (markers);
   }
 
   searchListItemClick(name, lat, lng) {
@@ -346,8 +340,9 @@ export default class Atlas extends Component {
 
   showAllMarkers(){
     let bound = latLngBounds()
-    this.state.distanceLocation2? bound.extend(this.state.distanceLocation2): bound.extend(this.state.originalMapCenter)
-    this.state.distanceLocation1? bound.extend(this.state.distanceLocation1): bound.extend(this.state.originalMapCenter)
+    bound.extend(this.state.distanceLocation2)
+    bound.extend(this.state.originalMapCenter)
+    bound.extend(this.state.distanceLocation1)
     for (let i = 0; i < this.state.tripLocations.length; i++ ){
       bound.extend(this.state.tripLocations[i])
     }
@@ -355,32 +350,32 @@ export default class Atlas extends Component {
       this.setState({currentMapBounds: bound})
     }
   }
-    setDistance(dist){
-      this.setState({distance:dist})
-    }
 
-  renderDistanceBtn()
-  {
+  setDistance(dist){
+      this.setState({distance:dist})
+  }
+
+  renderDistance() {
     return(
       <Distance distanceLocation1={this.state.distanceLocation1}
                 distanceLocation2={this.state.distanceLocation2}
                 originalMapCenter={this.state.originalMapCenter}
                 serverSettings={this.state.serverSettings}
                 onDistanceChange={this.setDistance}
-                createSnackBar={this.props.createSnackBar}/>
+                createSnackBar={this.props.createSnackBar}
+                isDistanceOpen={this.state.isDistanceOpen}/>
     )
-
   }
 
 
   renderRoundTripSwitch()
   {
-       return(
-        <FormGroup>
-            <div>
-              <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.setState({isRoundTrip: !this.state.isRoundTrip})}/>
-            </div>
-        </FormGroup>
-        )
+    return(
+      <FormGroup>
+        <div>
+          <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.setState({isRoundTrip: !this.state.isRoundTrip})}/>
+        </div>
+      </FormGroup>
+    );
   }
 }
