@@ -52,6 +52,8 @@ export default class Trip extends Component {
           {this.renderRoundTrip()}
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
           {this.renderDestinations()}
+          <br/>
+          <Button color="primary" href="#">To Top</Button>
         </Col>
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
