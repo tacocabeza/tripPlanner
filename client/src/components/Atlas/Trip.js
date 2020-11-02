@@ -50,6 +50,8 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
+          <br/>
+          <Button color="primary" href="#">To Top</Button>
         </Col>
         {this.checkMapUpdate()}
         {this.renderDestinationModal()}
