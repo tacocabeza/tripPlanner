@@ -254,28 +254,17 @@ export default class Trip extends Component {
 
   processTripResponse(response) {
     let count = 0;
-    this.calculateRoundTrip(response);
     for (let i = 0; i < response.distances.length - 1; i++) {
       count = count + response.distances[i];
     }
+    let roundTripCount = count + response.distances[response.distances.length - 1];
     this.setState({
       loadedTrip: response,
       tripName: response.options.title,
       oneWayDistance: count,
+      roundTripDistance: roundTripCount,
       destinations:response.places
     });
-
-
-  }
-
-  calculateRoundTrip(response){
-
-    let sum = 0
-
-    for(var i = 0; i<response.distances.length; i++){
-        sum +=response.distances[i];
-    }
-    this.setState({roundTripDistance: sum})
   }
 
   processFile(files) {
