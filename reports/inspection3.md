@@ -14,6 +14,7 @@
 | jgarc110 | 45 Minutes |
 | pdunton | 45 Minutes |
 | ah00t13 | 40 Minutes |
+| suyashh | 30 Minutes |
 
 ### Problems found
 
@@ -21,6 +22,7 @@
 | --- | --- | :---: | :---: | --- |
 | Trip.js:12-17 | Many hardcode values in css const  | low | nd0905 | |
 | Trip.js:12-17 | unused CSS const should be removed | low | ah00t13 | |
+| Trip.js:12-17 | no constants used here | low | suyashh | |
 | Trip.js:28&36| not very DRY, object can be created in constants and be imported| low | jgarc110| |
 | Trip.js:37-38 | Naming is confusing total or round trip | med | nd0905 | |
 | Trip.js:92-113&204-213| Deleting a destination causes destinations to be duplicated and not deletable| med|jgarc110| |
@@ -43,6 +45,8 @@
 | Trip.js:231-239| we could create this in constants and import it, keeping things dry 💧💧| low | jgarc110| |
 | Trip.js:234 | Earth Radius is hard coded | med | nd0905 | |
 | Trip.js:234 | Earth Radius not a constant | low | pdunton | |
+| Trip.js:234 | make Earth Radius a constant | low | suyashh | |
+| Trip.js:253-255 | Isn't this calculation done in calculateRoundTrip | low | suyashh | |
 | Trip.js:270 | var instead of let | low | nd0905 | |
 | Trip.js:281 | Do we have error checking here? | high | pdunton | |
 | UI | When adding destinations, clicking a search result will directly add to trip, bypassing the "new item" | low | pdunton | |
