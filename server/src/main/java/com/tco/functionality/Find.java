@@ -35,7 +35,7 @@ public class Find {
             this.limit = limit;
         }
 
-        if(this.limit <= 0){
+        if(this.limit <= 0 || this.limit > MAX_LIMIT){
             this.limit = MAX_LIMIT;
         }
     }
@@ -55,15 +55,7 @@ public class Find {
     }
 
     public ArrayList<Place> getPlaces(){
-        if (lucky) {
-            populatePlaces();
-            Collections.shuffle(places);
-        } else {
-            populatePlaces();
-        }
-        while (places.size() > limit && places.size() >= 0) {
-            places.remove(places.size() - 1);
-        }
+        populatePlaces();
         return places;
     }
 
@@ -81,7 +73,8 @@ public class Find {
                         "world.municipality like \"%" + match + "%\" or " +
                         "region.name like \"%" + match + "%\" or " +
                         "country.name like \"%" + match + "%\"";
-        String order = "order by world.name";
+        String order = lucky ? ("order by rand() limit " + limit) : "order by world.name";
+
         String sql = "select " + columns + " from world " + joins +
                 " where " + where + " " + order + ";";
 
@@ -93,17 +86,16 @@ public class Find {
 
     private void setResultFields(ResultSet results){
         ArrayList<Place> newPlaces = parsePlaces(results);
-        int subListLimit;
 
         if (lucky) {
             found = limit;
-            subListLimit = Math.min(newPlaces.size(), 100);
         } else {
             found = newPlaces.size();
-            subListLimit = Math.min(newPlaces.size(), this.limit);
+            if(newPlaces.size() > limit) {
+                newPlaces = new ArrayList<Place>(newPlaces.subList(0,limit));
+            }
         }
-
-        this.places = new ArrayList<Place>(newPlaces.subList(0,subListLimit));
+        this.places = newPlaces;
     }
 
     private ArrayList<Place> parsePlaces(ResultSet results){
