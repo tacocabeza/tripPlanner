@@ -26,6 +26,7 @@
 | Trip.js:28&36| not very DRY, object can be created in constants and be imported| low | jgarc110| |
 | Trip.js:37-38 | Naming is confusing total or round trip | med | nd0905 | |
 | Trip.js:92-113&204-213| Deleting a destination causes destinations to be duplicated and not deletable| med|jgarc110| |
+| Trip.js:96 | Should we be rendering with the `distances` aray?  Why do we have both `distances` and `loadedTrip.places`? | low | pdunton | |
 | Trip.js:96 | Key not needed in the div | low | nd0905 | |
 | Trip.js:115 | Check map update should not be in destination model | low | nd0905| |
 | Trip.js:164, 182-185 | Would it be easier to have `tripNewLocation` just initialize to `null`?  | med | pdunton | |
