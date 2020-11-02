@@ -49,8 +49,6 @@ export default class Trip extends Component {
           <br/>
           {this.renderBar()}
           <br/>
-          {this.renderRoundTrip()}
-          <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
           {this.renderDestinations()}
         </Col>
         {this.renderDestinationModal()}
@@ -59,7 +57,7 @@ export default class Trip extends Component {
     );
   }
 
-  renderRoundTrip(){
+  renderTotalDistance(){
     if(this.props.isRoundTrip){
       return(
         <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance}mi.</p>
@@ -87,6 +85,12 @@ export default class Trip extends Component {
             <SaveTrip places={this.state.destinations} tripData={this.state.loadedTrip}/>
             <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
+          <br/>
+          <Row className="float-left w-50">
+            <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+            <Button color="primary" className="saveLoad" href="javascript: document.body.scrollIntoView(false);">To Bottom</Button>
+          </Row>
+          <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
         </Col>
       </Row>
     );
