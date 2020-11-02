@@ -49,12 +49,9 @@ export default class Trip extends Component {
           <br/>
           {this.renderBar()}
           <br/>
-          {this.renderDestinations()}
           {this.renderRoundTrip()}
-          <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
-
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
-
+          {this.renderDestinations()}
         </Col>
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
@@ -64,10 +61,13 @@ export default class Trip extends Component {
 
   renderRoundTrip(){
     if(this.props.isRoundTrip){
-        return(
-            <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
-
-        )
+      return(
+        <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance}mi.</p>
+      )
+    } else {
+      return (
+        <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
+      )
     }
   }
 
