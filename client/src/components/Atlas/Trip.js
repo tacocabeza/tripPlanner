@@ -12,6 +12,9 @@ import {PROTOCOL_VERSION} from "../../utils/constants";
 import {TRIP} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
 
+const destinationsEnd = React.createRef();
+const destinationsStart = React.createRef()
+
 const deleteBtn = {
   background: '#fff',
   color: '#000',
@@ -51,7 +54,7 @@ export default class Trip extends Component {
           <br/>
           {this.renderDestinations()}
           <br/>
-          <Button color="primary" href="#">To Top</Button>
+          <Button color="primary" onClick={() => {destinationsStart.current.scrollIntoView({ behavior: 'smooth' })}}>To Top</Button>
         </Col>
         {this.checkMapUpdate()}
         {this.renderDestinationModal()}
@@ -75,6 +78,7 @@ export default class Trip extends Component {
   renderBar() {
     return(
       <Row>
+        <div ref={destinationsStart}/>
         <Col xs={12}>
           <Input
             type="text"
@@ -91,7 +95,7 @@ export default class Trip extends Component {
           <br/>
           <Row className="float-left w-50">
             <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
-            <Button color="primary" className="saveLoad" href="javascript: document.body.scrollIntoView(false);">To Bottom</Button>
+            <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
           </Row>
           <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
         </Col>
@@ -117,6 +121,7 @@ export default class Trip extends Component {
             </ListGroupItem>
           </div>
         ))}
+        <div ref={destinationsEnd}/>
       </ListGroup>
     );
   }
