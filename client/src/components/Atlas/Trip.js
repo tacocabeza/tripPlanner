@@ -9,6 +9,7 @@ import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
+import {TRIP} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
 
 const deleteBtn = {
@@ -27,7 +28,7 @@ export default class Trip extends Component {
     this.processFile = this.processFile.bind(this);
 
     this.state = {
-      loadedTrip: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
+      loadedTrip: TRIP,
       tripName: '',
       destinations: [],
       destinationModal: false,
@@ -35,7 +36,7 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
-      loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
+      loadedFile: TRIP,
       oneWayDistance: 0,
       roundTripDistance:0
     }
