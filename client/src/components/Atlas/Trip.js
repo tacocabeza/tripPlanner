@@ -34,7 +34,7 @@ export default class Trip extends Component {
       showNewItem: false,
       serverSettings: this.props.serverSettings,
       loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
-      totalDistance: 0,
+      oneWayDistance: 0,
       roundTripDistance:0
     }
   }
@@ -48,7 +48,7 @@ export default class Trip extends Component {
           <br/>
           {this.renderDestinations()}
           {this.renderRoundTrip()}
-          <p className="text-right">Total Distance: {this.state.totalDistance}mi.</p>
+          <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
 
           <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
 
@@ -256,7 +256,7 @@ export default class Trip extends Component {
     this.setState({
       loadedTrip: response,
       tripName: response.options.title,
-      totalDistance: count,
+      oneWayDistance: count,
       destinations:response.places
     });
 
