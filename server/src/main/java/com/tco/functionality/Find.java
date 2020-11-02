@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
 
