@@ -231,7 +231,7 @@ export default class Trip extends Component {
 
   sendTripRequest() {
     this.props.setTripLocations(this.state.destinations);
-    if(this.state.destinations !== []) {
+    if(this.state.destinations.length > 0) {
       sendServerRequest({
           "places": this.state.destinations,
           "options": {
