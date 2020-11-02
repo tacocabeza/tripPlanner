@@ -3,6 +3,8 @@ import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, Mod
 
 import DeleteIcon from '../../static/images/delete.svg'
 import SaveTrip from './SaveTrip.js';
+import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
+
 
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
@@ -231,7 +233,7 @@ export default class Trip extends Component {
           "places": this.state.destinations,
           "options": {
             "title": this.state.tripName,
-            "earthRadius": "3959.0"
+            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString()
           },
           "requestType": "trip",
           "requestVersion": PROTOCOL_VERSION
