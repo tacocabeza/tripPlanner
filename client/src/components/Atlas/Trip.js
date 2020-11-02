@@ -51,6 +51,7 @@ export default class Trip extends Component {
           <br/>
           {this.renderDestinations()}
         </Col>
+        {this.checkMapUpdate()}
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
       </div>
@@ -119,7 +120,6 @@ export default class Trip extends Component {
   }
 
   renderDestinationModal() {
-    {this.checkMapUpdate()}
     return (
       <Modal isOpen={this.state.destinationModal}>
         <ModalHeader>Add Destination</ModalHeader>
@@ -171,7 +171,7 @@ export default class Trip extends Component {
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
         let placeName;
-        if (newPlace.locationName != '' && newPlace.locationName != null) {
+        if (newPlace.locationName !== '' && newPlace.locationName !== null) {
           placeName = newPlace.locationName;
         } else {
           placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
@@ -184,10 +184,10 @@ export default class Trip extends Component {
             "longitude": ''+newPlace.location[1],
           },
           showNewItem: true,
+          destinationModal: true,
         });
       }
     }
-    this.submitDestination();
     if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
       this.props.tripNewLocation.location = null;
       this.props.tripNewLocation.locationName = '';
@@ -196,7 +196,7 @@ export default class Trip extends Component {
 
   addDestination(name, lat, lng) {
     let placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
-    if (name != '') {
+    if (name !== '') {
       placeName = name;
     }
     this.setState({

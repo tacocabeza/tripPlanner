@@ -184,12 +184,10 @@ export default class Atlas extends Component {
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
       lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],i));
     }
-
     if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
       lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
-
     return (<div>{lines}</div>);
   }
 
@@ -237,13 +235,10 @@ export default class Atlas extends Component {
   }
 
   renderTripMarkers() {
-
     let markers = []
-
     for(let i = 0; i<this.state.tripLocations.length; i++){
         markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
-
     return (<div> {markers} </div>);
   }
 
