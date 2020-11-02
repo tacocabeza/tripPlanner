@@ -164,7 +164,7 @@ export default class Trip extends Component {
   checkMapUpdate() {
     if(this.props.tripNewLocation){
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
-      if (newPlace && newPlace.location) {
+      if (newPlace) {
         let placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
         if (newPlace.locationName != '' && newPlace.locationName != null) {
           placeName = newPlace.locationName;
