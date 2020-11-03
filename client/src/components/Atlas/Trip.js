@@ -15,13 +15,6 @@ import * as tripFile from "../../../schemas/TripFile";
 const destinationsEnd = React.createRef();
 const destinationsStart = React.createRef()
 
-const deleteBtn = {
-  background: '#fff',
-  color: '#000',
-  padding: '5px',
-  border: 'none',
-}
-
 export default class Trip extends Component {
   constructor(props) {
     super(props);
@@ -223,7 +216,7 @@ export default class Trip extends Component {
     this.setState({
         destinations: tempArr,
       },
-      this.sendTripRequest(),
+      this.sendTripRequest,
     );
   }
 
