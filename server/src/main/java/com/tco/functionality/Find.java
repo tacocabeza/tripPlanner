@@ -17,6 +17,7 @@ public class Find {
     private int found;
     private ArrayList<Place> places;
     private boolean lucky = false;
+    final int maxMatch = 256;
 
     public Find(String match, Integer limit){
         this.match = formatMatch(match);
@@ -44,6 +45,7 @@ public class Find {
         if(match == null){
             return "";
         } else {
+            match = match.substring(0, Math.min(match.length(), maxMatch));
             return match.replaceAll("[^a-zA-Z\\d]", "_");
         }
     }
