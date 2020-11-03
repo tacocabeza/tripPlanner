@@ -287,9 +287,15 @@ export default class Atlas extends Component {
   }
 
   setMarkerOnClick(mapClickInfo) {
+    let distanceLocation = mapClickInfo.latlng
+    if(distanceLocation.lng > 180) {
+      distanceLocation.lng = distanceLocation.lng - 360
+    } else if (distanceLocation.lng < -180) {
+      distanceLocation.lng = distanceLocation.lng + 360
+    }
     this.setState({
       distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: mapClickInfo.latlng,
+      distanceLocation1: distanceLocation,
       distanceLocation2Name: this.state.distanceLocation1Name,
       distanceLocation1Name: ''
     });
