@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade} from "reactstrap";
+import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
 
 import DeleteIcon from '../../static/images/delete.svg'
 import SaveTrip from './SaveTrip.js';
@@ -89,6 +89,7 @@ export default class Trip extends Component {
           <Row className="float-left w-50">
             <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
             <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
+            {this.renderRoundTripSwitch()}
           </Row>
           <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
         </Col>
@@ -161,6 +162,14 @@ export default class Trip extends Component {
           <Button onClick={() => {this.setState({loadModal: false})}}>Close</Button>
         </ModalFooter>
       </Modal>
+    )
+  }
+
+  renderRoundTripSwitch() {
+    return(
+      <FormGroup>
+        <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.props.flipRoundTrip()}/>
+      </FormGroup>
     )
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CustomInput,FormGroup,Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
+import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -56,6 +56,7 @@ export default class Atlas extends Component {
     this.setTripLocations = this.setTripLocations.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
+    this.flipRoundTrip = this.flipRoundTrip.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -101,7 +102,6 @@ export default class Atlas extends Component {
                 <Collapse isOpen={this.state.isDistanceOpen}>
                   {this.renderDistanceBtn()}
                   <DistanceForm setLocation={this.setLocation}/>
-                  {this.renderRoundTripSwitch()}
                   <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
                 </Collapse>
               </TabPane>
@@ -111,7 +111,8 @@ export default class Atlas extends Component {
                       serverSettings={this.state.serverSettings}
                       setTripLocations={this.setTripLocations}
                       tripNewLocation={this.state.tripNewLocation}
-                      isRoundTrip={this.state.isRoundTrip}/>
+                      isRoundTrip={this.state.isRoundTrip}
+                      flipRoundTrip={this.flipRoundTrip}/>
               </TabPane>
             </TabContent>
           </Col>
@@ -373,15 +374,8 @@ export default class Atlas extends Component {
 
   }
 
-
-  renderRoundTripSwitch()
-  {
-       return(
-        <FormGroup>
-            <div>
-              <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.setState({isRoundTrip: !this.state.isRoundTrip})}/>
-            </div>
-        </FormGroup>
-        )
+  flipRoundTrip() {
+    this.setState({isRoundTrip: !this.state.isRoundTrip})
   }
+
 }
