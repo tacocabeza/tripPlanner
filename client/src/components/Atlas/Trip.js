@@ -195,9 +195,11 @@ export default class Trip extends Component {
   }
 
   addDestination(name, lat, lng) {
-    let placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
-    if (name !== '') {
+    let placeName
+    if (name && name !== '') {
       placeName = name;
+    } else {
+      placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
     }
     this.setState({
       newItem: {
@@ -221,7 +223,7 @@ export default class Trip extends Component {
   }
 
   submitDestination() {
-    if (this.state.newItem.latitude !== "") {
+    if (this.state.newItem.latitude && this.state.newItem.latitude !== "") {
       this.setState({
           destinationModal: false,
           showNewItem: false,
