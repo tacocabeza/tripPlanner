@@ -138,7 +138,7 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation1, AGGIE_MARKER_ICON, this.state.showDistanceMarkers)}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
@@ -184,12 +184,10 @@ export default class Atlas extends Component {
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
       lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],i));
     }
-
     if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
       lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
-
     return (<div>{lines}</div>);
   }
 
@@ -237,13 +235,10 @@ export default class Atlas extends Component {
   }
 
   renderTripMarkers() {
-
     let markers = []
-
     for(let i = 0; i<this.state.tripLocations.length; i++){
         markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
-
     return (<div> {markers} </div>);
   }
 
