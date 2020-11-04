@@ -29,7 +29,7 @@ public class TestRequestTrip {
     }
 
     @Test
-    @DisplayName("Version number is equal to 3")
+    @DisplayName("Version number is equal to 4")
     public void testVersion() {
         int version = requestTrip.getRequestVersion();
         assertEquals(4, version);
