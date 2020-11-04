@@ -1,5 +1,6 @@
 package com.tco.requests;
 
+import com.tco.functionality.Narrow;
 import com.tco.misc.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ public class RequestFind extends RequestHeader{
     private Integer found;
     String match;
     Integer limit;
+    Narrow narrow;
     private ArrayList<Place> places;
 
 
@@ -22,6 +24,7 @@ public class RequestFind extends RequestHeader{
 
     public RequestFind(){
         this.requestType = "find";
+        narrow = new Narrow();
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
@@ -30,6 +33,7 @@ public class RequestFind extends RequestHeader{
         Find f = new Find(this.match, this.limit);
         this.found = f.getFound();
         this.places = f.getPlaces();
+
         log.trace("buildResponse -> {}", this);
     }
 
