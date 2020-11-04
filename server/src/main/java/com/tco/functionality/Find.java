@@ -18,6 +18,7 @@ public class Find {
     private ArrayList<Place> places;
     private boolean lucky = false;
     final int maxMatch = 256;
+    private final int luckyLimit = 1;
 
     public Find(String match, Integer limit){
         this.match = formatMatch(match);
@@ -27,7 +28,7 @@ public class Find {
 
         if(limit == null){
             if(lucky) {
-                this.limit = 1;
+                this.limit = luckyLimit;
             } else {
                 this.limit = MAX_LIMIT;
             }

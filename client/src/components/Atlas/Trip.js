@@ -92,6 +92,9 @@ export default class Trip extends Component {
           </Row>
           <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
         </Col>
+        <Col>
+          <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
+        </Col>
       </Row>
     );
   }
@@ -233,6 +236,16 @@ export default class Trip extends Component {
         this.sendTripRequest,
       );
     }
+  }
+
+  reverseTrip() {
+    let tempArr = this.state.destinations;
+    tempArr = tempArr.reverse();
+    this.setState({
+        destinations: tempArr,
+      },
+      this.sendTripRequest,
+    );
   }
 
   sendTripRequest() {
