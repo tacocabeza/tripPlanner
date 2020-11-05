@@ -16,6 +16,7 @@ public class RequestTrip extends RequestHeader{
     public RequestTrip(){
         this.requestType = "trip";
         this.places = new ArrayList<>();
+        options = new Options();
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
