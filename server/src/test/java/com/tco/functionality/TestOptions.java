@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestOptions {
 
-    Options options = new Options("Feather Friends: One Last Flight", "3959");
+    Options options = new Options("Feather Friends: One Last Flight", "3959", "7.0");
 
     @Test
     public void testGetTripTitle()
@@ -33,5 +33,9 @@ public class TestOptions {
         assertEquals("1", options.getEarthRadius());
     }
 
+    @Test
+    public void testGetOptions(){
+        assertEquals("7.0", options.getResponse());
+    }
 
 }
