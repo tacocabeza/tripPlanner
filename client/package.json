@@ -23,6 +23,7 @@
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
     "react-leaflet-control": "^2.1.2",
+    "react-smooth-dnd": "^0.11.1",
     "reactstrap": "^8.6.0",
     "ulog": "^1.1.0"
   },
