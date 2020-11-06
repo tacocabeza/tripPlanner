@@ -5,17 +5,22 @@ public class Options {
 
     private String title;
     private String earthRadius;
+    private String response;
 
-    public Options(String title, String earthRadius)
+    public Options(){
+
+    }
+    public Options(String title, String earthRadius, String response)
     {
         this.title = title;
+        this.response = response;
         this.earthRadius = earthRadius;
     }
 
 
     public Options(String earthRadius)
     {
-        this("", earthRadius);
+        this("", earthRadius, "5.0");
     }
 
     public void setEarthRadius(String earthRadius) {
@@ -33,4 +38,6 @@ public class Options {
     public String getTripTitle() {
         return title;
     }
+
+    public String getResponse(){return response;}
 }
