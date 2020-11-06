@@ -8,7 +8,7 @@ import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
-import {TRIP} from "../../utils/constants";
+import {EMPTY_TRIP} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
 import {Container, Draggable} from "react-smooth-dnd";
 import Destination from "./Destination";
@@ -28,16 +28,15 @@ export default class Trip extends Component {
     this.submitDestination = this.submitDestination.bind(this);
 
     this.state = {
-      loadedTrip: TRIP,
+      loadedTrip: EMPTY_TRIP,
       tripName: '',
       destinations: [],
       destinationModal: false,
-      dragging: false,
       loadModal: false,
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
-      loadedFile: TRIP,
+      loadedFile: EMPTY_TRIP,
       oneWayDistance: 0,
       roundTripDistance:0
     }
@@ -109,15 +108,13 @@ export default class Trip extends Component {
     return (
       <div>
         <Container lockAxis="y" dragHandleSelector=".drag-handle"
-                   onDragStart={() => {this.setState({dragging: true})}}
-                   onDragEnd={() => {this.setState({dragging: false})}}
                    onDrop={this.onDrop}>
           {this.state.loadedTrip.places.map((item, index) => {
             return (
-              <Draggable key={item.id}>
+              <Draggable key={index}>
                 <Destination index={index} removeDestination={this.removeDestination}
                              distance={this.state.loadedTrip.distances[index-1]}
-                             name={item.name} dragging={this.state.dragging}/>
+                             name={item.name}/>
               </Draggable>
             );
           })}
@@ -129,7 +126,7 @@ export default class Trip extends Component {
   onDrop(dropResult) {
     const { removedIndex, addedIndex, payload, element } = dropResult;
 
-    let tempArr = this.state.destinations;
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
     let movedDestination = tempArr.splice(removedIndex, 1)[0];
     tempArr.splice(addedIndex, 0, movedDestination);
 
@@ -242,7 +239,7 @@ export default class Trip extends Component {
   }
 
   removeDestination(index) {
-    let tempArr = this.state.destinations;
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
     tempArr.splice(index, 1);
     this.setState({
         destinations: tempArr,
@@ -265,7 +262,7 @@ export default class Trip extends Component {
   }
 
   reverseTrip() {
-    let tempArr = this.state.destinations;
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
     tempArr = tempArr.reverse();
     this.setState({
         destinations: tempArr,
@@ -313,6 +310,8 @@ export default class Trip extends Component {
   }
 
   processFile(files) {
+    console.log(files);
+
     let self = this;
     let fr = new FileReader();
     fr.readAsText(files[0]);
