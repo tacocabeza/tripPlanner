@@ -22,7 +22,7 @@ export const CLIENT_TEAM_NAME = "T01 Feather Friends";
 
 export const EARTH_RADIUS_UNITS_DEFAULT = {"miles": 3959};
 export const PROTOCOL_VERSION = 4;
-export const TRIP = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
+export const EMPTY_TRIP = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 
 export const HTTP_OK = 200;
 export const HTTP_BAD_REQUEST = 400;

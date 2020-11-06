@@ -1,14 +1,44 @@
 import './jestConfig/enzyme.config.js';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {shallow, mount} from 'enzyme';
 
 import Trip from '../src/components/Atlas/Trip';
 import Atlas from '../src/components/Atlas/Atlas';
+import {jest, test} from "@jest/globals";
 
 const startProperties = {
   createSnackBar: jest.fn()
+};
+
+const sampleTrip = {
+  "options": {
+    "title": "Shopping Loop",
+    "earthRadius": "3959.0"
+  },
+  "places": [
+    {
+      "notes": "The big city",
+      "latitude": "39.7",
+      "name": "Denver",
+      "longitude": "-105.0"
+    },
+    {
+      "notes": "Home of CU",
+      "latitude": "40.0",
+      "name": "Boulder",
+      "longitude": "-105.4"
+    },
+    {
+      "notes": "Home of CSU",
+      "latitude": "40.6",
+      "name": "Fort Collins",
+      "longitude": "-105.1"
+    }
+  ],
+  "distances": [30, 44, 62],
+  "requestType": "trip",
+  "requestVersion": 4
 };
 
 function testTripName() {
@@ -66,24 +96,57 @@ function testAddButtonOnMap() {
 test("Add to trip from map adds to trip", testAddButtonOnMap)
 
 
-function testRenderRoundTrip()
-{
+function testProcessTripResponse() {
+  let trip = shallow(<Trip/>);
+  trip.instance().processTripResponse(sampleTrip);
 
-    let shoppingTrip = {
-                   "requestType"    : "trip",
-                   "requestVersion" : 3,
-                   "options"        : { "title":"Shopping Loop",
-                                        "earthRadius":"3959.0"
-                                      },
-                   "places"         : [{"name":"Denver",       "latitude": "39.7", "longitude": "-105.0", "notes":"The big city"},
-                                       {"name":"Boulder",      "latitude": "40.0", "longitude": "-105.4", "notes":"Home of CU"},
-                                       {"name":"Fort Collins", "latitude": "40.6", "longitude": "-105.1", "notes":"Home of CSU"}],
-                   "distances"      : [20, 40, 50]
-                 };
-    let trip = shallow(<Trip/>);
-    trip.instance().processTripResponse(shoppingTrip);
-    let actual = trip.state().roundTripDistance;
-    expect(actual).toEqual(110);
+  let actualLoadedTrip = trip.state().loadedTrip;
+  expect(actualLoadedTrip).toEqual(sampleTrip);
+
+  let actualTripName = trip.state().tripName;
+  expect(actualTripName).toEqual("Shopping Loop");
+
+  let actualOneWayDistance = trip.state().oneWayDistance;
+  expect(actualOneWayDistance).toEqual(74);
+
+  let actualRoundTripDistance = trip.state().roundTripDistance;
+  expect(actualRoundTripDistance).toEqual(136);
+
+  let actualDestinations = trip.state().destinations;
+  expect(actualDestinations).toEqual(sampleTrip.places);
 }
 
-test("test round trip distance", testRenderRoundTrip)
+test("test processTripResponse", testProcessTripResponse)
+
+function testOnDrop() {
+  const trip = shallow(<Trip/>);
+  trip.instance().sendTripRequest = jest.fn();
+  trip.setState({destinations: sampleTrip.places});
+  const before = sampleTrip.places;
+
+  trip.instance().onDrop({removedIndex: 0, addedIndex: 2})
+
+  expect(trip.state().destinations[0].name).toEqual("Boulder");
+  expect(trip.state().destinations[1].name).toEqual("Fort Collins");
+  expect(trip.state().destinations[2].name).toEqual("Denver");
+
+  // Make sure original array is unchanged
+  expect(sampleTrip.places).toEqual(before);
+}
+
+test("test destinations onDrop", testOnDrop)
+
+function testRemoveLocation() {
+  const trip = shallow(<Trip/>);
+  trip.instance().sendTripRequest = jest.fn();
+  trip.instance().processTripResponse(sampleTrip);
+
+  trip.instance().removeDestination(1);
+
+  expect(trip.state().destinations.length).toEqual(2);
+  expect(trip.state().destinations[0].name).toEqual("Denver");
+  expect(trip.state().destinations[1].name).toEqual("Fort Collins");
+
+}
+
+test("test remove location", testRemoveLocation)
