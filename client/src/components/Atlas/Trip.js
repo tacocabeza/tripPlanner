@@ -221,7 +221,7 @@ export default class Trip extends Component {
   }
 
   addDestination(name, lat, lng) {
-    let placeName
+    let placeName;
     if (name && name !== '') {
       placeName = name;
     } else {
@@ -231,8 +231,8 @@ export default class Trip extends Component {
       newItem: {
         "notes": "",
         "name": placeName,
-        "latitude": ''+lat,
-        "longitude": ''+lng
+        "latitude": String(lat),
+        "longitude": String(lng)
       },
       showNewItem: true,
     });
