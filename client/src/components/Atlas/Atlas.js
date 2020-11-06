@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
+import {Button, Col, Container, Row, TabContent, TabPane, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
-import * as distanceSchema from "../../../schemas/ResponseDistance";
-import {PROTOCOL_VERSION} from "../../utils/constants";
-import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
-
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
 import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
@@ -23,7 +18,6 @@ import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
 import Navigation from './Navigation.js';
 import Distance from './Distance.js';
-import DistanceForm from './DistanceForm.js';
 import Trip from './Trip.js';
 import {latLngBounds} from "leaflet";
 import {IconButton} from "@material-ui/core";
@@ -39,7 +33,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 const MAP_DEFAULT_ZOOM = 15;
-const CANYON = "#CC5430";
+const CANYON = "#cc5430";
 
 export default class Atlas extends Component {
 
@@ -57,7 +51,6 @@ export default class Atlas extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
     this.flipRoundTrip = this.flipRoundTrip.bind(this);
-
     this.state = {
       currentMapBounds: null,
       currentMapCenter: MAP_CENTER_DEFAULT,
@@ -208,8 +201,8 @@ export default class Atlas extends Component {
   getLine(location1, location2, key) {
     if(location1 && location2) {
       return (
-          <Polyline color={CANYON} positions={[location1, location2]} key={key}>
-            {this.state.isDistanceOpen? this.renderDistance(): null}
+          <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false}>
+            {this.state.isDistanceOpen? this.renderDistance(this.polyRef): null}
           </Polyline>
       );
     }

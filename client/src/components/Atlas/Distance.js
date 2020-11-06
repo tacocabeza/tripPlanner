@@ -3,7 +3,8 @@ import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants";
-import {Popup, Tooltip} from 'react-leaflet';
+import {Popup} from 'react-leaflet';
+import {latLngBounds} from "leaflet";
 
 
 export default class Distance extends Component {
@@ -26,10 +27,21 @@ export default class Distance extends Component {
 
   render() {
     return (
-      <Popup open={false}>
+      <Popup onOpen={this.prepareServerRequest} position={this.getMidPoint()}>
         Distance: {this.state.distance} Miles<br/>
       </Popup>
     )
+  }
+
+  getMidPoint() {
+    let bounds = new latLngBounds()
+    bounds.extend(this.props.distanceLocation1)
+    this.props.distanceLocation2? bounds.extend(this.props.distanceLocation2): bounds.extend(this.props.originalMapCenter)
+    if(bounds.isValid()) {
+      if(this.props.distanceLocation1){
+        return bounds.getCenter()
+      }
+    }
   }
 
   prepareServerRequest() {
@@ -78,3 +90,4 @@ export default class Distance extends Component {
   }
 
 }
+
