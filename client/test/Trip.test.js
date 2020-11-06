@@ -121,10 +121,10 @@ test("test processTripResponse", testProcessTripResponse)
 function testOnDrop() {
   const trip = shallow(<Trip/>);
   trip.instance().sendTripRequest = jest.fn();
-  trip.setState({destinations: sampleTrip.places});
+  trip.instance().processTripResponse(sampleTrip);
   const before = sampleTrip.places;
 
-  trip.instance().onDrop({removedIndex: 0, addedIndex: 2})
+  trip.instance().onDrop({removedIndex: 0, addedIndex: 2});
 
   expect(trip.state().destinations[0].name).toEqual("Boulder");
   expect(trip.state().destinations[1].name).toEqual("Fort Collins");
@@ -140,6 +140,7 @@ function testRemoveLocation() {
   const trip = shallow(<Trip/>);
   trip.instance().sendTripRequest = jest.fn();
   trip.instance().processTripResponse(sampleTrip);
+  const before = sampleTrip.places;
 
   trip.instance().removeDestination(1);
 
@@ -147,6 +148,77 @@ function testRemoveLocation() {
   expect(trip.state().destinations[0].name).toEqual("Denver");
   expect(trip.state().destinations[1].name).toEqual("Fort Collins");
 
+  // Make sure original array is unchanged
+  expect(sampleTrip.places).toEqual(before);
 }
 
 test("test remove location", testRemoveLocation)
+
+function testSubmitDestination() {
+  const trip = shallow(<Trip/>);
+  trip.instance().sendTripRequest = jest.fn();
+
+  const newDenver = {
+    "notes": "The big city",
+    "latitude": "39.7",
+    "name": "Denver",
+    "longitude": "-105.0"
+  };
+
+  trip.setState({
+    newItem: newDenver,
+    destinationModal: true,
+    showNewItem: true});
+
+  trip.instance().submitDestination();
+
+  expect(trip.state().destinationModal).toEqual(false);
+  expect(trip.state().showNewItem).toEqual(false);
+  expect(trip.state().destinations).toEqual([newDenver]);
+  expect(trip.state().newItem).toEqual({ "notes": '', "name": '',
+                                                  "latitude": '', "longitude": ''});
+}
+
+test("test submitDestination",testSubmitDestination)
+
+function testReverseTrip() {
+  const trip = shallow(<Trip/>);
+  trip.instance().sendTripRequest = jest.fn();
+  trip.instance().processTripResponse(sampleTrip);
+  const before = sampleTrip.places;
+
+  trip.instance().reverseTrip();
+
+  expect(trip.state().destinations[0].name).toEqual("Fort Collins");
+  expect(trip.state().destinations[1].name).toEqual("Boulder");
+  expect(trip.state().destinations[2].name).toEqual("Denver");
+
+  // Make sure original array is unchanged
+  expect(sampleTrip.places).toEqual(before);
+}
+
+test("test reverseTrip", testReverseTrip)
+
+function testAddDestination() {
+  const trip = shallow(<Trip/>);
+
+  trip.instance().addDestination("Denver",39.7,-105.0);
+
+  expect(trip.state().newItem).toEqual({
+    "notes": "",
+      "name": "Denver",
+      "latitude": "39.7",
+      "longitude": "-105"
+  });
+
+  trip.instance().addDestination(null,39.7,-105.0);
+
+  expect(trip.state().newItem).toEqual({
+    "notes": "",
+    "name": "39.70, -105.00",
+    "latitude": "39.7",
+    "longitude": "-105"
+  });
+}
+
+test("test addDestination", testAddDestination)
