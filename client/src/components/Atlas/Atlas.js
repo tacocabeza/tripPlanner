@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CustomInput,FormGroup,Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, UncontrolledTooltip, Fade} from 'reactstrap';
+import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import * as distanceSchema from "../../../schemas/ResponseDistance";
@@ -56,6 +56,7 @@ export default class Atlas extends Component {
     this.setTripLocations = this.setTripLocations.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
+    this.flipRoundTrip = this.flipRoundTrip.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -98,9 +99,6 @@ export default class Atlas extends Component {
             <TabContent activeTab={this.state.currentTab}>
               <TabPane tabId="1">
                 {this.renderLeafletMap()}
-                <Collapse isOpen={this.state.isDistanceOpen}>
-                  {this.renderRoundTripSwitch()}
-                </Collapse>
               </TabPane>
               <TabPane tabId="2">
                 <Trip toggle={this.toggleTab}
@@ -108,7 +106,8 @@ export default class Atlas extends Component {
                       serverSettings={this.state.serverSettings}
                       setTripLocations={this.setTripLocations}
                       tripNewLocation={this.state.tripNewLocation}
-                      isRoundTrip={this.state.isRoundTrip}/>
+                      isRoundTrip={this.state.isRoundTrip}
+                      flipRoundTrip={this.flipRoundTrip}/>
               </TabPane>
             </TabContent>
           </Col>
@@ -135,7 +134,7 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation1, AGGIE_MARKER_ICON, this.state.showDistanceMarkers)}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
@@ -238,7 +237,7 @@ export default class Atlas extends Component {
     for(let i = 0; i<this.state.tripLocations.length; i++){
         markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
     }
-    return (markers);
+    return (<div> {markers} </div>);
   }
 
   searchListItemClick(name, lat, lng) {
@@ -286,9 +285,15 @@ export default class Atlas extends Component {
   }
 
   setMarkerOnClick(mapClickInfo) {
+    let distanceLocation = mapClickInfo.latlng
+    if(distanceLocation.lng > 180) {
+      distanceLocation.lng = distanceLocation.lng - 360
+    } else if (distanceLocation.lng < -180) {
+      distanceLocation.lng = distanceLocation.lng + 360
+    }
     this.setState({
       distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: mapClickInfo.latlng,
+      distanceLocation1: distanceLocation,
       distanceLocation2Name: this.state.distanceLocation1Name,
       distanceLocation1Name: ''
     });
@@ -367,15 +372,8 @@ export default class Atlas extends Component {
     )
   }
 
-
-  renderRoundTripSwitch()
-  {
-    return(
-      <FormGroup>
-        <div>
-          <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.setState({isRoundTrip: !this.state.isRoundTrip})}/>
-        </div>
-      </FormGroup>
-    );
+  flipRoundTrip() {
+    this.setState({isRoundTrip: !this.state.isRoundTrip})
   }
+
 }

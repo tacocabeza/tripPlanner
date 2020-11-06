@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade} from "reactstrap";
+import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
 
 import DeleteIcon from '../../static/images/delete.svg'
 import SaveTrip from './SaveTrip.js';
@@ -9,14 +9,11 @@ import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
+import {TRIP} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
 
-const deleteBtn = {
-  background: '#fff',
-  color: '#000',
-  padding: '5px',
-  border: 'none',
-}
+const destinationsEnd = React.createRef();
+const destinationsStart = React.createRef()
 
 export default class Trip extends Component {
   constructor(props) {
@@ -27,7 +24,7 @@ export default class Trip extends Component {
     this.processFile = this.processFile.bind(this);
 
     this.state = {
-      loadedTrip: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
+      loadedTrip: TRIP,
       tripName: '',
       destinations: [],
       destinationModal: false,
@@ -35,7 +32,7 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
-      loadedFile: {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}},
+      loadedFile: TRIP,
       oneWayDistance: 0,
       roundTripDistance:0
     }
@@ -49,29 +46,32 @@ export default class Trip extends Component {
           {this.renderBar()}
           <br/>
           {this.renderDestinations()}
-          {this.renderRoundTrip()}
-          <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
-
-          <Button color="primary" id="addbtn" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
-
+          <br/>
+          <Button color="primary" onClick={() => {destinationsStart.current.scrollIntoView({ behavior: 'smooth' })}}>To Top</Button>
         </Col>
+        {this.checkMapUpdate()}
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
       </div>
     );
   }
 
-  renderRoundTrip(){
+  renderTotalDistance(){
     if(this.props.isRoundTrip){
       return(
-        <p className="text-left"> Round Trip Distance: {this.state.roundTripDistance}mi. </p>
-      );
+        <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance}mi.</p>
+      )
+    } else {
+      return (
+        <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
+      )
     }
   }
 
   renderBar() {
     return(
       <Row>
+        <div ref={destinationsStart}/>
         <Col xs={12}>
           <Input
             type="text"
@@ -85,6 +85,16 @@ export default class Trip extends Component {
             <SaveTrip places={this.state.destinations} tripData={this.state.loadedTrip}/>
             <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
+          <br/>
+          <Row className="float-left w-50">
+            <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+            <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
+            {this.renderRoundTripSwitch()}
+          </Row>
+          <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
+        </Col>
+        <Col>
+          <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
         </Col>
       </Row>
     );
@@ -108,12 +118,12 @@ export default class Trip extends Component {
             </ListGroupItem>
           </div>
         ))}
+        <div ref={destinationsEnd}/>
       </ListGroup>
     );
   }
 
   renderDestinationModal() {
-    {this.checkMapUpdate()}
     return (
       <Modal isOpen={this.state.destinationModal}>
         <ModalHeader>Add Destination</ModalHeader>
@@ -155,6 +165,14 @@ export default class Trip extends Component {
     )
   }
 
+  renderRoundTripSwitch() {
+    return(
+      <FormGroup>
+        <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.props.flipRoundTrip()}/>
+      </FormGroup>
+    )
+  }
+
   addFromMap() {
     this.props.toggle('1');
     this.setState({destinationModal: false});
@@ -164,9 +182,11 @@ export default class Trip extends Component {
     if(this.props.tripNewLocation){
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
-        let placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
-        if (newPlace.locationName != '' && newPlace.locationName != null) {
+        let placeName;
+        if (newPlace.locationName !== '' && newPlace.locationName !== null) {
           placeName = newPlace.locationName;
+        } else {
+          placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
         }
         this.setState({
           newItem: {
@@ -176,10 +196,10 @@ export default class Trip extends Component {
             "longitude": ''+newPlace.location[1],
           },
           showNewItem: true,
+          destinationModal: true,
         });
       }
     }
-    this.submitDestination();
     if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
       this.props.tripNewLocation.location = null;
       this.props.tripNewLocation.locationName = '';
@@ -187,9 +207,11 @@ export default class Trip extends Component {
   }
 
   addDestination(name, lat, lng) {
-    let placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
-    if (name != '') {
+    let placeName
+    if (name && name !== '') {
       placeName = name;
+    } else {
+      placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
     }
     this.setState({
       newItem: {
@@ -208,12 +230,12 @@ export default class Trip extends Component {
     this.setState({
         destinations: tempArr,
       },
-      this.sendTripRequest(),
+      this.sendTripRequest,
     );
   }
 
   submitDestination() {
-    if (this.state.newItem.latitude !== "") {
+    if (this.state.newItem.latitude && this.state.newItem.latitude !== "") {
       this.setState({
           destinationModal: false,
           showNewItem: false,
@@ -225,9 +247,19 @@ export default class Trip extends Component {
     }
   }
 
+  reverseTrip() {
+    let tempArr = this.state.destinations;
+    tempArr = tempArr.reverse();
+    this.setState({
+        destinations: tempArr,
+      },
+      this.sendTripRequest,
+    );
+  }
+
   sendTripRequest() {
     this.props.setTripLocations(this.state.destinations);
-    if(this.state.destinations !== []) {
+    if(this.state.destinations.length > 0) {
       sendServerRequest({
           "places": this.state.destinations,
           "options": {
@@ -250,28 +282,17 @@ export default class Trip extends Component {
 
   processTripResponse(response) {
     let count = 0;
-    this.calculateRoundTrip(response);
     for (let i = 0; i < response.distances.length - 1; i++) {
       count = count + response.distances[i];
     }
+    let roundTripCount = count + response.distances[response.distances.length - 1];
     this.setState({
       loadedTrip: response,
       tripName: response.options.title,
       oneWayDistance: count,
+      roundTripDistance: roundTripCount,
       destinations:response.places
     });
-
-
-  }
-
-  calculateRoundTrip(response){
-
-    let sum = 0
-
-    for(var i = 0; i<response.distances.length; i++){
-        sum +=response.distances[i];
-    }
-    this.setState({roundTripDistance: sum})
   }
 
   processFile(files) {
