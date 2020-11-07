@@ -310,8 +310,6 @@ export default class Trip extends Component {
   }
 
   processFile(files) {
-    console.log(files);
-
     let self = this;
     let fr = new FileReader();
     fr.readAsText(files[0]);
