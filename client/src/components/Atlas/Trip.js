@@ -26,6 +26,7 @@ export default class Trip extends Component {
     this.processFile = this.processFile.bind(this);
     this.removeDestination = this.removeDestination.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
+    this.updateDestination = this.updateDestination.bind(this);
 
     this.state = {
       loadedTrip: EMPTY_TRIP,
@@ -108,18 +109,29 @@ export default class Trip extends Component {
     return (
       <div>
         <Container lockAxis="y" dragHandleSelector=".drag-handle"
-                   onDrop={this.onDrop}>
+                   onDrop={this.onDrop} behaviour="contain">
           {this.state.loadedTrip.places.map((item, index) => {
             return (
               <Draggable key={index}>
                 <Destination index={index} removeDestination={this.removeDestination}
                              distance={this.state.loadedTrip.distances[index-1]}
-                             name={item.name}/>
+                             destination={item} updateDestination={this.updateDestination}
+                             />
               </Draggable>
             );
           })}
         </Container>
       </div>
+    );
+  }
+
+  updateDestination(index, property, value) {
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+    Object.defineProperty(tempArr[index],property,{value: value});
+    this.setState({
+        destinations: tempArr,
+      },
+      this.sendTripRequest,
     );
   }
 
