@@ -10,6 +10,7 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
+| nd0905 | 20 |
 |  |  |
 
 
@@ -17,6 +18,13 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  |  |  |  |  |
+| Search.js:18 | That function does not need to be bound to this | low | nd0905 |  |
+| Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 |  |
+| Search.js:78 | style hard coded instead of in css class | low | nd0905 |  |
+| Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
+| Search.js:93 | style hard coded instead of in css class | low | nd0905 |  |
+| Search.js:94 | Listgroup.item should have unique key element | low | nd0905 |  |
+| Search.js:103 | request version is hardcoded and out of date | low | nd0905 |  |
+| Search.js:111 | if statement should have !== "" not != "" | low | nd0905 |  |
 |  |  |  |  |  |
 |  |  |  |  |  |
