@@ -6,21 +6,23 @@ public class Options {
     private String title;
     private String earthRadius;
     private String response;
+    private String units;
 
     public Options(){
 
     }
-    public Options(String title, String earthRadius, String response)
+    public Options(String title, String earthRadius, String response, String units)
     {
         this.title = title;
         this.response = response;
         this.earthRadius = earthRadius;
+        this.units = units;
     }
 
 
     public Options(String earthRadius)
     {
-        this("", earthRadius, "5.0");
+        this("", earthRadius, "5.0", "miles");
     }
 
     public void setEarthRadius(String earthRadius) {
@@ -40,4 +42,6 @@ public class Options {
     }
 
     public String getResponse(){return response;}
+
+    public String getUnits(){return units;}
 }
