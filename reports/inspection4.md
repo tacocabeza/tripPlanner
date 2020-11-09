@@ -14,6 +14,7 @@
 | pdunton | 30 |
 | jgarc110 |25 |
 | suyashh | 20 |
+| ah00t13 | 20 |
 
 
 ### Problems found
@@ -23,8 +24,10 @@
 | Search.js:3 | `InputGroup` and `ListGroup` should be imported from `reactstrap` on line 2 | low | pdunton |  |
 | Search.js:18 | That function does not need to be bound to this | low | nd0905 |  |
 | Search.js:29 | Do we want to put the empty find request in the `constants.js` file like we have for `EMPTY_TRIP`? | low | pdunton |  |
+| Search.js:29 | Make results json a constant like in trip | low | ah00t13 |  |
 | Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 |  |
 | Search.js:78 | style hard coded instead of in css class | low | nd0905 |  |
+| Search.js:78,93 | Inline CSS should be put in student styles | low | ah00t13 |  |
 | Search.js:78 | consider having our css be dynamic rather than being hard coded in | low| jgarc110| |
 | Search.js:91 | input text is always just an empty string, null check possibly redundant| low| jgarc110| |
 | Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
@@ -39,4 +42,3 @@
 | Search.js:112 | limit is not constant | low | suyashh |  |
 | Search.js:121 | An empty `inputText` should clear the previous `this.state.results` | med | pdunton |  |
 | UI | Clicking on the scrollbar closes the searchbar | med | pdunton |  |
-|  |  |  |  |  |
