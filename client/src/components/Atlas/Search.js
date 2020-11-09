@@ -13,14 +13,10 @@ export default class Search extends Component {
 
     this.renderBar = this.renderBar.bind(this);
     this.renderResults = this.renderResults.bind(this);
-
     this.updateInputText = this.updateInputText.bind(this);
-    this.formatInputText = this.formatInputText.bind(this);
-
     this.sendFindRequest = this.sendFindRequest.bind(this);
     this.processFindResponse = this.processFindResponse.bind(this);
     this.sendLuckyRequest = this.sendLuckyRequest.bind(this);
-
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
