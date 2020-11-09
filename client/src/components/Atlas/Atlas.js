@@ -199,10 +199,15 @@ export default class Atlas extends Component {
   }
 
   getLine(location1, location2, key) {
+    const initPolyLine = ref => {
+      if (ref && this.state.isDistanceOpen) {
+        ref.leafletElement.openPopup()
+      }
+    };
     if(location1 && location2) {
       return (
-          <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false}>
-            {this.state.isDistanceOpen? this.renderDistance(this.polyRef): null}
+          <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
+            {this.state.isDistanceOpen? this.renderDistance(): null}
           </Polyline>
       );
     }

@@ -27,7 +27,7 @@ export default class Distance extends Component {
 
   render() {
     return (
-      <Popup onOpen={this.prepareServerRequest} position={this.getMidPoint()}>
+      <Popup onOpen={this.prepareServerRequest} position={this.getMidPoint()} autopan={false}>
         Distance: {this.state.distance} Miles<br/>
       </Popup>
     )
