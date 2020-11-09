@@ -24,6 +24,7 @@ export const EARTH_RADIUS_UNITS_DEFAULT = {"miles": 3959};
 export const PROTOCOL_VERSION = 4;
 export const EMPTY_TRIP = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const TRIP = {"options": {"title": "", "earthRadius": "", "units": "", "response": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
+export const EMPTY_SEARCH = {"found": 0, "match": "", "places": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 
 export const HTTP_OK = 200;
 export const HTTP_BAD_REQUEST = 400;

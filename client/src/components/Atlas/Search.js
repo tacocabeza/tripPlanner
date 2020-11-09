@@ -6,6 +6,7 @@ import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
 import {isValidPosition} from "../../utils/misc";
 import * as findSchema from "../../../schemas/ResponseFind.json";
+import {EMPTY_SEARCH} from "../../utils/constants";
 
 export default class Search extends Component {
   constructor(props) {
@@ -26,13 +27,7 @@ export default class Search extends Component {
 
     this.state={
       inputText: "",
-      results: {
-        "found": 0,
-        "match": "",
-        "places": [],
-        "requestType": "find",
-        "requestVersion": {PROTOCOL_VERSION}
-      },
+      results: EMPTY_SEARCH,
       serverSettings: this.props.serverSettings,
       searchHasFocus: false,
     }
@@ -118,6 +113,8 @@ export default class Search extends Component {
               this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
             }
           });
+    } else if (this.state.inputText || this.state.inputText === "") {
+      this.setState({response: EMPTY_SEARCH}, )
     }
   }
 
