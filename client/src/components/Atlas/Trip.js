@@ -34,7 +34,9 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       loadedFile: TRIP,
       oneWayDistance: 0,
-      roundTripDistance:0
+      roundTripDistance:0,
+      units: "",
+      response: ""
     }
   }
 
@@ -264,7 +266,9 @@ export default class Trip extends Component {
           "places": this.state.destinations,
           "options": {
             "title": this.state.tripName,
-            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString()
+            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString(),
+            "response": this.state.response,
+            "units": this.state.units
           },
           "requestType": "trip",
           "requestVersion": PROTOCOL_VERSION
@@ -312,7 +316,9 @@ export default class Trip extends Component {
       this.setState({
           loadModal: false,
           destinations: this.state.loadedFile.places,
-          tripName: this.state.loadedFile.options.title
+          tripName: this.state.loadedFile.options.title,
+          response: this.state.loadedFile.options.response,
+          units: this.state.loadedFile.options.units
         },
         this.sendTripRequest,
       );
