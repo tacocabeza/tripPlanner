@@ -17,6 +17,13 @@
   padding: 0!important;
   border: none!important;
 }
+.drag-handle {
+  cursor: move;
+  cursor: grab;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
 .w-60 {
   max-width: 60%;
 }

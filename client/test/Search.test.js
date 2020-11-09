@@ -6,7 +6,6 @@ import React from "react";
 
 import Atlas from '../src/components/Atlas/Atlas';
 import Search from "../src/components/Atlas/Search";
-import {getOriginalServerPort} from "../src/utils/restfulAPI";
 
 const startProperties = {
     createSnackBar: jest.fn(),

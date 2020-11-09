@@ -126,9 +126,9 @@ export default class Atlas extends Component {
             scrollWheelZoom={!this.state.isSearchOpen}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers)}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
+          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -233,7 +233,7 @@ export default class Atlas extends Component {
   renderTripMarkers() {
     let markers = []
     for(let i = 0; i<this.state.tripLocations.length; i++){
-        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers))
+        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers, i))
     }
     return (<div> {markers} </div>);
   }
@@ -297,12 +297,12 @@ export default class Atlas extends Component {
     });
   }
 
-  placeMarker(location, icon, showBoolean = true) {
+  placeMarker(location, icon, showBoolean = true, key= 0) {
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
       return (
-        <Marker position={location} icon={icon}>
+        <Marker position={location} icon={icon} key={key}>
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>

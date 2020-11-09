@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
+import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
 
-import DeleteIcon from '../../static/images/delete.svg'
 import SaveTrip from './SaveTrip.js';
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 
@@ -9,8 +8,11 @@ import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
-import {TRIP} from "../../utils/constants";
+import {EMPTY_TRIP} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
+import {Container, Draggable} from "react-smooth-dnd";
+import Destination from "./Destination";
+
 
 const destinationsEnd = React.createRef();
 const destinationsStart = React.createRef()
@@ -20,11 +22,13 @@ export default class Trip extends Component {
     super(props);
 
     this.addDestination = this.addDestination.bind(this);
-    this.submitDestination = this.submitDestination.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.processFile = this.processFile.bind(this);
+    this.removeDestination = this.removeDestination.bind(this);
+    this.submitDestination = this.submitDestination.bind(this);
 
     this.state = {
-      loadedTrip: TRIP,
+      loadedTrip: EMPTY_TRIP,
       tripName: '',
       destinations: [],
       destinationModal: false,
@@ -32,9 +36,11 @@ export default class Trip extends Component {
       newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
       showNewItem: false,
       serverSettings: this.props.serverSettings,
-      loadedFile: TRIP,
+      loadedFile: EMPTY_TRIP,
       oneWayDistance: 0,
-      roundTripDistance:0
+      roundTripDistance:0,
+      units: "",
+      response: "0"
     }
   }
 
@@ -102,24 +108,34 @@ export default class Trip extends Component {
 
   renderDestinations() {
     return (
-      <ListGroup>
-        {this.state.loadedTrip.places.map((result, index) => (
-          <div key={result.id}>
-            <Fade in={index > 0} className="text-right">Distance: {this.state.loadedTrip.distances[index-1]}mi.</Fade>
-            <ListGroupItem key={index}>
-              <Row>
-                <Col className="text-left">{result.name}</Col>
-                <Col>
-                  <Button className="float-right deleteBtn" onClick={() => this.removeDestination(index)}>
-                    <img className="h-25px" src={DeleteIcon}/>
-                  </Button>
-                </Col>
-              </Row>
-            </ListGroupItem>
-          </div>
-        ))}
-        <div ref={destinationsEnd}/>
-      </ListGroup>
+      <div>
+        <Container lockAxis="y" dragHandleSelector=".drag-handle"
+                   onDrop={this.onDrop}>
+          {this.state.loadedTrip.places.map((item, index) => {
+            return (
+              <Draggable key={index}>
+                <Destination index={index} removeDestination={this.removeDestination}
+                             distance={this.state.loadedTrip.distances[index-1]}
+                             name={item.name}/>
+              </Draggable>
+            );
+          })}
+        </Container>
+      </div>
+    );
+  }
+
+  onDrop(dropResult) {
+    const { removedIndex, addedIndex, payload, element } = dropResult;
+
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+    let movedDestination = tempArr.splice(removedIndex, 1)[0];
+    tempArr.splice(addedIndex, 0, movedDestination);
+
+    this.setState({
+        destinations: tempArr,
+      },
+      this.sendTripRequest,
     );
   }
 
@@ -183,7 +199,7 @@ export default class Trip extends Component {
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
         let placeName;
-        if (newPlace.locationName !== '' && newPlace.locationName !== null) {
+        if (newPlace.locationName !== '' && newPlace.locationName) {
           placeName = newPlace.locationName;
         } else {
           placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
@@ -207,7 +223,7 @@ export default class Trip extends Component {
   }
 
   addDestination(name, lat, lng) {
-    let placeName
+    let placeName;
     if (name && name !== '') {
       placeName = name;
     } else {
@@ -217,15 +233,15 @@ export default class Trip extends Component {
       newItem: {
         "notes": "",
         "name": placeName,
-        "latitude": ''+lat,
-        "longitude": ''+lng
+        "latitude": String(lat),
+        "longitude": String(lng)
       },
       showNewItem: true,
     });
   }
 
   removeDestination(index) {
-    let tempArr = this.state.destinations;
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
     tempArr.splice(index, 1);
     this.setState({
         destinations: tempArr,
@@ -248,7 +264,7 @@ export default class Trip extends Component {
   }
 
   reverseTrip() {
-    let tempArr = this.state.destinations;
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
     tempArr = tempArr.reverse();
     this.setState({
         destinations: tempArr,
@@ -264,7 +280,9 @@ export default class Trip extends Component {
           "places": this.state.destinations,
           "options": {
             "title": this.state.tripName,
-            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString()
+            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString(),
+            "response": this.state.response,
+            "units": this.state.units
           },
           "requestType": "trip",
           "requestVersion": PROTOCOL_VERSION
@@ -312,7 +330,9 @@ export default class Trip extends Component {
       this.setState({
           loadModal: false,
           destinations: this.state.loadedFile.places,
-          tripName: this.state.loadedFile.options.title
+          tripName: this.state.loadedFile.options.title,
+          response: this.state.loadedFile.options.response,
+          units: this.state.loadedFile.options.units
         },
         this.sendTripRequest,
       );
