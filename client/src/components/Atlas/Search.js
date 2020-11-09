@@ -48,14 +48,14 @@ export default class Search extends Component {
   }
 
   renderBar() {
-    return <div>
+    return (<div>
       <InputGroup>
         <Input placeholder="Search TripCo" value={this.state.inputText} onChange={this.updateInputText}
                onFocus={this.onFocus}
                onBlur={this.onBlur}
         />
       </InputGroup>
-    </div>;
+    </div>);
   }
 
   updateInputText(event) {
