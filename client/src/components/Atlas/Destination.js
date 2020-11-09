@@ -33,6 +33,12 @@ export default class Destination extends Component {
         latitude: true,
         longitude: true,
         notes: true
+      },
+      maxLength: {
+        name: 100,
+        latitude: 22,
+        longitude: 22,
+        notes: 1000
       }
     }
   }
@@ -48,7 +54,7 @@ export default class Destination extends Component {
               <Col className="col-1" style={{padding: "0px 0px 0px 10px"}}>
                 <DragIndicatorIcon className="drag-handle"/>
               </Col>
-              <Col className="text-left">
+              <Col className="text-left col-10">
                 {this.props.destination.name}
                 {this.renderArrow()}
               </Col>
@@ -93,11 +99,13 @@ export default class Destination extends Component {
     return (
       <InputGroup>
         <InputGroupAddon addonType="prepend">
-          <InputGroupText>{displayText}</InputGroupText>
+          <InputGroupText style={{width: "82px", fontSize: 13}}>{displayText}</InputGroupText>
         </InputGroupAddon>
         <Input onChange={e => this.propertyOnChange(property, e.target.value)}
                invalid={!this.state.isValidProperty[property]}
-               defaultValue={this.props.destination[property]}/>
+               defaultValue={this.props.destination[property]}
+               maxLength={this.state.maxLength[property]}
+               style={{fontSize: 13}}/>
       </InputGroup>
     );
   }
