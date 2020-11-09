@@ -13,14 +13,10 @@ export default class Search extends Component {
 
     this.renderBar = this.renderBar.bind(this);
     this.renderResults = this.renderResults.bind(this);
-
     this.updateInputText = this.updateInputText.bind(this);
-    this.formatInputText = this.formatInputText.bind(this);
-
     this.sendFindRequest = this.sendFindRequest.bind(this);
     this.processFindResponse = this.processFindResponse.bind(this);
     this.sendLuckyRequest = this.sendLuckyRequest.bind(this);
-
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
@@ -48,14 +44,14 @@ export default class Search extends Component {
   }
 
   renderBar() {
-    return <div>
+    return (<div>
       <InputGroup>
         <Input placeholder="Search TripCo" value={this.state.inputText} onChange={this.updateInputText}
                onFocus={this.onFocus}
                onBlur={this.onBlur}
         />
       </InputGroup>
-    </div>;
+    </div>);
   }
 
   updateInputText(event) {
@@ -88,7 +84,7 @@ export default class Search extends Component {
   }
 
   showFeelingLucky(){
-    if(this.state.inputText == null || this.state.inputText == "") {
+    if(!this.state.inputText || this.state.inputText === "") {
       return(
           <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
             Feeling Lucky?
@@ -108,7 +104,7 @@ export default class Search extends Component {
         }]
       };
       this.processFindResponse(response);
-    } else if (this.state.inputText != null && this.state.inputText != "") {
+    } else if (this.state.inputText && this.state.inputText !== "") {
       sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
           this.state.serverSettings.serverPort)
           .then(find => {
