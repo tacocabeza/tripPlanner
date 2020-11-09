@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
+import {Button, Col, Container, Row, TabContent, TabPane, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
-import * as distanceSchema from "../../../schemas/ResponseDistance";
-import {PROTOCOL_VERSION} from "../../utils/constants";
-import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
-
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
 import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
@@ -23,7 +18,6 @@ import 'leaflet/dist/leaflet.css';
 import Search from './Search.js';
 import Navigation from './Navigation.js';
 import Distance from './Distance.js';
-import DistanceForm from './DistanceForm.js';
 import Trip from './Trip.js';
 import {latLngBounds} from "leaflet";
 import {IconButton} from "@material-ui/core";
@@ -39,7 +33,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
 const MAP_MAX_ZOOM = 19;
 const MAP_DEFAULT_ZOOM = 15;
-const CANYON = "#CC5430";
+const CANYON = "#cc5430";
 
 export default class Atlas extends Component {
 
@@ -57,7 +51,6 @@ export default class Atlas extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
     this.flipRoundTrip = this.flipRoundTrip.bind(this);
-
     this.state = {
       currentMapBounds: null,
       currentMapCenter: MAP_CENTER_DEFAULT,
@@ -99,11 +92,6 @@ export default class Atlas extends Component {
             <TabContent activeTab={this.state.currentTab}>
               <TabPane tabId="1">
                 {this.renderLeafletMap()}
-                <Collapse isOpen={this.state.isDistanceOpen}>
-                  {this.renderDistanceBtn()}
-                  <DistanceForm setLocation={this.setLocation}/>
-                  <Col sm={12} md={{size:5, offset:2}}> {this.renderDistance()} </Col>
-                </Collapse>
               </TabPane>
               <TabPane tabId="2">
                 <Trip toggle={this.toggleTab}
@@ -195,17 +183,32 @@ export default class Atlas extends Component {
   renderDistanceLine(){
     if(this.state.showDistanceMarkers) {
       if (this.state.distanceLocation2) {
-        return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
+        return (
+          <div>
+            {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null)}
+          </div>
+        );
       } else if (this.state.distanceLocation1) {
-        return this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null);
+        return (
+          <div>
+            {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null)}
+          </div>
+        );
       }
     }
   }
 
   getLine(location1, location2, key) {
+    const initPolyLine = ref => {
+      if (ref && this.state.isDistanceOpen) {
+        ref.leafletElement.openPopup()
+      }
+    };
     if(location1 && location2) {
       return (
-          <Polyline color={CANYON} positions={[location1, location2]} key={key}/>
+          <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
+            {this.state.isDistanceOpen? this.renderDistance(): null}
+          </Polyline>
       );
     }
   }
@@ -216,14 +219,6 @@ export default class Atlas extends Component {
       newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
     }
     this.setState({tripLocations: newLocations});
-  }
-
-  renderDistance() {
-    return(
-      <InputGroup>
-        <Input type="text" value={"Distance: " + this.state.distance + "MI"} disabled/>
-      </InputGroup>
-    )
   }
 
   setLocation(location1, location2) {
@@ -348,8 +343,9 @@ export default class Atlas extends Component {
 
   showAllMarkers(){
     let bound = latLngBounds()
-    this.state.distanceLocation2? bound.extend(this.state.distanceLocation2): bound.extend(this.state.originalMapCenter)
-    this.state.distanceLocation1? bound.extend(this.state.distanceLocation1): bound.extend(this.state.originalMapCenter)
+    bound.extend(this.state.distanceLocation2)
+    bound.extend(this.state.originalMapCenter)
+    bound.extend(this.state.distanceLocation1)
     for (let i = 0; i < this.state.tripLocations.length; i++ ){
       bound.extend(this.state.tripLocations[i])
     }
@@ -357,21 +353,21 @@ export default class Atlas extends Component {
       this.setState({currentMapBounds: bound})
     }
   }
-    setDistance(dist){
-      this.setState({distance:dist})
-    }
 
-  renderDistanceBtn()
-  {
+  setDistance(dist){
+      this.setState({distance:dist})
+  }
+
+  renderDistance() {
     return(
       <Distance distanceLocation1={this.state.distanceLocation1}
                 distanceLocation2={this.state.distanceLocation2}
                 originalMapCenter={this.state.originalMapCenter}
                 serverSettings={this.state.serverSettings}
                 onDistanceChange={this.setDistance}
-                createSnackBar={this.props.createSnackBar}/>
+                createSnackBar={this.props.createSnackBar}
+                isDistanceOpen={this.state.isDistanceOpen}/>
     )
-
   }
 
   flipRoundTrip() {
