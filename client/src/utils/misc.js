@@ -1,5 +1,4 @@
-import axios from 'axios';
-import Ajv from 'ajv';
+import {LATITUDE_REGEX, LONGITUDE_REGEX} from "./constants";
 let Coordinates = require('coordinate-parser');
 
 export function downloadFile(fileText, fileName, fileType) {
@@ -27,6 +26,34 @@ export function isValidPosition(position) {
   } catch (error) {
     isValid = false;
     return isValid;
+  }
+}
+
+export function isValidLatitude(latitude) {
+  let error;
+  try {
+    let coords = new Coordinates(latitude + ", 0.0");
+    let lat = String(coords.getLatitude());
+
+    let isValid = lat.match(LATITUDE_REGEX);
+
+    return isValid;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function isValidLongitude(longitude) {
+  let error;
+  try {
+    let coords = new Coordinates("0.0, " + longitude);
+    let lng = String(coords.getLongitude());
+
+    let isValid = lng.match(LONGITUDE_REGEX);
+
+    return isValid;
+  } catch (error) {
+    return false;
   }
 }
 

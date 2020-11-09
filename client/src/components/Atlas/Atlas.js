@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
-import * as distanceSchema from "../../../schemas/ResponseDistance";
-import {PROTOCOL_VERSION} from "../../utils/constants";
-import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
