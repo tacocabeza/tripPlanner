@@ -138,9 +138,9 @@ export default class Atlas extends Component {
             scrollWheelZoom={!this.state.isSearchOpen}
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON)}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers)}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers)}
+          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -302,7 +302,7 @@ export default class Atlas extends Component {
     });
   }
 
-  placeMarker(location, icon, showBoolean = true, key = 0) {
+  placeMarker(location, icon, showBoolean = true, key= 0) {
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
