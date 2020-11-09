@@ -13,6 +13,7 @@
 | nd0905 | 20 |
 | pdunton | 30 |
 | jgarc110 |25 |
+| suyashh | 20 |
 
 
 ### Problems found
@@ -29,10 +30,13 @@
 | Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
 | Search.js:93 | style hard coded instead of in css class | low | nd0905 |  |
 | Search.js:94 | Listgroup.item should have unique key element | low | nd0905 |  |
+| Search.js:102 | do we need error checking on the coords | low | suyashh |  |
 | Search.js:103 | requestVersion can replaced with the PROTOCOLVERSION import| low| jgarc110
 | Search.js:103 | request version is hardcoded and out of date | low | nd0905 |  |
+| Search.js:103 | request version is not constant | low | suyashh |  |
 | Search.js:103 | Is request version correct? | low | pdunton |  |
 | Search.js:111 | if statement should have !== "" not != "" | low | nd0905 |  |
+| Search.js:112 | limit is not constant | low | suyashh |  |
 | Search.js:121 | An empty `inputText` should clear the previous `this.state.results` | med | pdunton |  |
 | UI | Clicking on the scrollbar closes the searchbar | med | pdunton |  |
 |  |  |  |  |  |
