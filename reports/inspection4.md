@@ -12,7 +12,7 @@
 | ---- | ---- |
 | nd0905 | 20 |
 | pdunton | 30 |
-|  |  |
+| jgarc110 |25 |
 
 
 ### Problems found
@@ -24,9 +24,12 @@
 | Search.js:29 | Do we want to put the empty find request in the `constants.js` file like we have for `EMPTY_TRIP`? | low | pdunton |  |
 | Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 |  |
 | Search.js:78 | style hard coded instead of in css class | low | nd0905 |  |
+| Search.js:78 | consider having our css be dynamic rather than being hard coded in | low| jgarc110| |
+| Search.js:91 | input text is always just an empty string, null check possibly redundant| low| jgarc110| |
 | Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
 | Search.js:93 | style hard coded instead of in css class | low | nd0905 |  |
 | Search.js:94 | Listgroup.item should have unique key element | low | nd0905 |  |
+| Search.js:103 | requestVersion can replaced with the PROTOCOLVERSION import| low| jgarc110
 | Search.js:103 | request version is hardcoded and out of date | low | nd0905 |  |
 | Search.js:103 | Is request version correct? | low | pdunton |  |
 | Search.js:111 | if statement should have !== "" not != "" | low | nd0905 |  |
