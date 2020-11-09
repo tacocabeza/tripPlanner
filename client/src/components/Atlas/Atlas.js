@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import {CustomInput, FormGroup, Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
+import {Button, Col, Container, InputGroup, Input, Row, TabContent, TabPane, Collapse, Fade} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
-import * as distanceSchema from "../../../schemas/ResponseDistance";
-import {PROTOCOL_VERSION} from "../../utils/constants";
-import { isJsonResponseValid, sendServerRequest } from "../../utils/restfulAPI";
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
 
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
@@ -57,6 +53,7 @@ export default class Atlas extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
     this.flipRoundTrip = this.flipRoundTrip.bind(this);
+    this.toggleMarkers = this.toggleMarkers.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -73,7 +70,8 @@ export default class Atlas extends Component {
       mapZoom: MAP_DEFAULT_ZOOM,
       originalMapCenter: MAP_CENTER_DEFAULT,
       serverSettings: this.props.serverSettings,
-      showDistanceMarkers: true,
+      showMarkers: true,
+      showLines: true,
       tripLocations: [],
       tripNewLocation: {location: null, locationName: ''},
     };
@@ -85,7 +83,7 @@ export default class Atlas extends Component {
 
   toggleTab(tab) {
     this.setState({isDistanceOpen: false})
-    if (this.state.currentTab != tab) {
+    if (this.state.currentTab !== tab) {
       this.setState({currentTab: tab})
     }
   }
@@ -139,8 +137,8 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showDistanceMarkers, "loc1")}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showDistanceMarkers, "loc2")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showMarkers, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showMarkers, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -154,7 +152,7 @@ export default class Atlas extends Component {
       <div>
         {this.renderMapButton('recenter', recenterIcon, this.recenterMap, "Recenter Map")}
         {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}), "Open Distance")}
-        {this.renderMapButton('toggleMarkers', hideMarkerIcon, () => this.setState({showDistanceMarkers: !this.state.showDistanceMarkers}),"Toggle Markers")}
+        {this.renderMapButton('toggleMarkers', hideMarkerIcon, this.toggleMarkers,"Toggle Markers")}
         {this.renderMapButton('showAllMarkers', showMarkerIcon, this.showAllMarkers, "Show All Markers")}
         <Control position="topright">
           <Fade in={this.state.isSearchOpen} className="float-left">
@@ -163,7 +161,7 @@ export default class Atlas extends Component {
                     onClickListItem={this.searchListItemClick}/>
           </Fade>
           <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
-            <img className="h-22px" src={searchIcon}/>
+            <img className="h-22px" alt="search icon" src={searchIcon}/>
           </Button>
         </Control>
       </div>
@@ -174,7 +172,7 @@ export default class Atlas extends Component {
     return (
       <Control position="topleft">
         <Button id={id} className="mapButton" onClick={onClick} title={hoverText}>
-          <img className="h-23px" src={icon}/>
+          <img className="h-23px" alt={hoverText} src={icon}/>
         </Button>
       </Control>
     );
@@ -189,11 +187,13 @@ export default class Atlas extends Component {
       let lastIndex = this.state.tripLocations.length -1;
       lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],lastIndex));
     }
-    return (<div>{lines}</div>);
+    if (this.state.showLines) {
+      return (<div>{lines}</div>);
+    }
   }
 
   renderDistanceLine(){
-    if(this.state.showDistanceMarkers) {
+    if(this.state.showLines) {
       if (this.state.distanceLocation2) {
         return this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null);
       } else if (this.state.distanceLocation1) {
@@ -238,7 +238,7 @@ export default class Atlas extends Component {
   renderTripMarkers() {
     let markers = []
     for(let i = 0; i<this.state.tripLocations.length; i++){
-        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showDistanceMarkers, i))
+        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showMarkers, i))
     }
     return (<div> {markers} </div>);
   }
@@ -320,6 +320,19 @@ export default class Atlas extends Component {
     }
   }
 
+  toggleMarkers() {
+    if (this.state.showMarkers && this.state.showLines) {
+      this.setState({showMarkers: false});
+    } else if (!this.state.showMarkers && this.state.showLines) {
+      this.setState({showLines: false});
+    } else {
+      this.setState({
+        showMarkers: true,
+        showLines: true
+      });
+    }
+  }
+
   prepareNewTripAdd (newLocation, name){
     let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
     if(!this.state.tripNewLocation.location) {
@@ -330,11 +343,11 @@ export default class Atlas extends Component {
 
   getMarkerLocationName(location) {
     let index = this.state.tripLocations.indexOf(location)
-    if(index != -1) {
+    if(index !== -1) {
       return this.state.tripLocations[index].name;
     }
     else if(location.lat) {
-      if(this.state.distanceLocation1 && this.state.distanceLocation1.lat == location.lat){
+      if(this.state.distanceLocation1 && this.state.distanceLocation1.lat === location.lat){
         return this.state.distanceLocation1.name
       }
       else{
