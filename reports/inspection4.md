@@ -12,6 +12,7 @@
 | ---- | ---- |
 | nd0905 | 20 |
 | pdunton | 30 |
+| jgarc110 |25 |
 | suyashh | 20 |
 | ah00t13 | 20 |
 
@@ -27,10 +28,13 @@
 | Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 |  |
 | Search.js:78 | style hard coded instead of in css class | low | nd0905 |  |
 | Search.js:78,93 | Inline CSS should be put in student styles | low | ah00t13 |  |
+| Search.js:78 | consider having our css be dynamic rather than being hard coded in | low| jgarc110| |
+| Search.js:91 | input text is always just an empty string, null check possibly redundant| low| jgarc110| |
 | Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
 | Search.js:93 | style hard coded instead of in css class | low | nd0905 |  |
 | Search.js:94 | Listgroup.item should have unique key element | low | nd0905 |  |
 | Search.js:102 | do we need error checking on the coords | low | suyashh |  |
+| Search.js:103 | requestVersion can replaced with the PROTOCOLVERSION import| low| jgarc110
 | Search.js:103 | request version is hardcoded and out of date | low | nd0905 |  |
 | Search.js:103 | request version is not constant | low | suyashh |  |
 | Search.js:103 | Is request version correct? | low | pdunton |  |
