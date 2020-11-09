@@ -72,14 +72,20 @@ export default class Search extends Component {
         <Collapse isOpen={this.state.searchHasFocus}>
           <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
             {this.showFeelingLucky()}
-            {this.state.results.places.map(result => (
-                <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
-                  {result.name}
-                </ListGroup.Item>
-            ))}
+            {this.renderLists()}
           </ListGroup>
         </Collapse>
     );
+  }
+
+  renderLists() {
+    if(this.state.inputText !== ""){
+      return(this.state.results.places.map(result => (
+        <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
+          {result.name}
+        </ListGroup.Item>
+      )));
+    }
   }
 
   showFeelingLucky(){
@@ -113,8 +119,6 @@ export default class Search extends Component {
               this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
             }
           });
-    } else if (this.state.inputText || this.state.inputText === "") {
-      this.setState({response: EMPTY_SEARCH}, )
     }
   }
 
