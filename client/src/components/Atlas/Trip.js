@@ -40,7 +40,7 @@ export default class Trip extends Component {
       oneWayDistance: 0,
       roundTripDistance:0,
       units: "",
-      response: ""
+      response: "0"
     }
   }
 
@@ -199,7 +199,7 @@ export default class Trip extends Component {
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
         let placeName;
-        if (newPlace.locationName !== '' && newPlace.locationName !== null) {
+        if (newPlace.locationName !== '' && newPlace.locationName) {
           placeName = newPlace.locationName;
         } else {
           placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
