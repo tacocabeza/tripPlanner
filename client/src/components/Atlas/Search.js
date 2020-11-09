@@ -88,7 +88,7 @@ export default class Search extends Component {
   }
 
   showFeelingLucky(){
-    if(this.state.inputText == null || this.state.inputText == "") {
+    if(!this.state.inputText || this.state.inputText === "") {
       return(
           <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
             Feeling Lucky?
@@ -108,7 +108,7 @@ export default class Search extends Component {
         }]
       };
       this.processFindResponse(response);
-    } else if (this.state.inputText != null && this.state.inputText != "") {
+    } else if (this.state.inputText && this.state.inputText !== "") {
       sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
           this.state.serverSettings.serverPort)
           .then(find => {
