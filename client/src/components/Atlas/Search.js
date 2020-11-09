@@ -66,7 +66,7 @@ export default class Search extends Component {
   renderResults() {
     return (
         <Collapse isOpen={this.state.searchHasFocus}>
-          <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
+          <ListGroup variant="flush" className="searchResults">
             {this.showFeelingLucky()}
             {this.renderLists()}
           </ListGroup>
@@ -87,7 +87,7 @@ export default class Search extends Component {
   showFeelingLucky(){
     if(!this.state.inputText || this.state.inputText === "") {
       return(
-          <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
+          <ListGroup.Item className="fontBold" action onClick={this.sendLuckyRequest}>
             Feeling Lucky?
           </ListGroup.Item>
       )
