@@ -6,6 +6,7 @@ import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
 import {isValidPosition} from "../../utils/misc";
 import * as findSchema from "../../../schemas/ResponseFind.json";
+import {EMPTY_SEARCH} from "../../utils/constants";
 
 export default class Search extends Component {
   constructor(props) {
@@ -22,13 +23,7 @@ export default class Search extends Component {
 
     this.state={
       inputText: "",
-      results: {
-        "found": 0,
-        "match": "",
-        "places": [],
-        "requestType": "find",
-        "requestVersion": {PROTOCOL_VERSION}
-      },
+      results: EMPTY_SEARCH,
       serverSettings: this.props.serverSettings,
       searchHasFocus: false,
     }
@@ -73,14 +68,20 @@ export default class Search extends Component {
         <Collapse isOpen={this.state.searchHasFocus}>
           <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
             {this.showFeelingLucky()}
-            {this.state.results.places.map(result => (
-                <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
-                  {result.name}
-                </ListGroup.Item>
-            ))}
+            {this.renderLists()}
           </ListGroup>
         </Collapse>
     );
+  }
+
+  renderLists() {
+    if(this.state.inputText !== ""){
+      return(this.state.results.places.map(result => (
+        <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
+          {result.name}
+        </ListGroup.Item>
+      )));
+    }
   }
 
   showFeelingLucky(){
