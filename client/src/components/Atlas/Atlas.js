@@ -45,7 +45,6 @@ export default class Atlas extends Component {
     this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
     this.recenterMap = this.recenterMap.bind(this);
     this.searchListItemClick = this.searchListItemClick.bind(this);
-    this.setLocation = this.setLocation.bind(this);
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setTripLocations = this.setTripLocations.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
@@ -77,13 +76,6 @@ export default class Atlas extends Component {
 
   componentDidMount() {
     {this.getGeolocation()}
-  }
-
-  toggleTab(tab) {
-    this.setState({isDistanceOpen: false})
-    if (this.state.currentTab !== tab) {
-      this.setState({currentTab: tab})
-    }
   }
 
   render() {
@@ -171,6 +163,14 @@ export default class Atlas extends Component {
     );
   }
 
+  renderTripMarkers() {
+    let markers = []
+    for(let i = 0; i<this.state.tripLocations.length; i++){
+      markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showMarkers, i))
+    }
+    return (<div> {markers} </div>);
+  }
+
   renderTripLines() {
     let lines = []
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
@@ -203,103 +203,16 @@ export default class Atlas extends Component {
     }
   }
 
-  getLine(location1, location2, key) {
-    const initPolyLine = ref => {
-      if (ref && this.state.isDistanceOpen) {
-        ref.leafletElement.openPopup()
-      }
-    };
-    if(location1 && location2) {
-      return (
-          <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
-            {this.state.isDistanceOpen? this.renderDistance(): null}
-          </Polyline>
-      );
-    }
-  }
-
-  setTripLocations(destinations) {
-    let newLocations = [];
-    for(let i = 0; i < destinations.length; i++){
-      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
-    }
-    this.setState({tripLocations: newLocations});
-  }
-
-  setLocation(location1, location2) {
-    this.setState({
-      distanceLocation1: location1,
-      distanceLocation1Name: '',
-      distanceLocation2: location2,
-      distanceLocation2Name: '',
-    });
-  }
-
-  renderTripMarkers() {
-    let markers = []
-    for(let i = 0; i<this.state.tripLocations.length; i++){
-        markers.push(this.placeMarker(this.state.tripLocations[i], AGGIE_MARKER_ICON, this.state.showMarkers, i))
-    }
-    return (<div> {markers} </div>);
-  }
-
-  searchListItemClick(name, lat, lng) {
-    this.setState({
-      isSearchOpen: false,
-      distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: {"lat":lat, "lng":lng ,"name":name},
-      currentMapCenter: [lat, lng],
-      distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: ''
-    });
-  }
-
-  getGeolocation() {
-    let self = this;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
-          self.setState({
-            originalMapCenter: ORIGINAL_COORDS,
-            currentMapCenter: ORIGINAL_COORDS
-          });
-        }
-      );
-    }
-  }
-
-  mapMovement(mapMovementInfo){
-    this.setState({
-      currentMapCenter: mapMovementInfo.target.getCenter(),
-      mapZoom: mapMovementInfo.target.getZoom(),
-      currentMapBounds: mapMovementInfo.target.getBounds()
-    });
-  }
-
-  recenterMap(){
-    this.setState({
-      currentMapCenter: this.state.originalMapCenter,
-      mapZoom: MAP_DEFAULT_ZOOM,
-      currentMapBounds: null,
-      distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]},
-      distanceLocation1Name: "Home"
-    });
-  }
-
-  setMarkerOnClick(mapClickInfo) {
-    let distanceLocation = mapClickInfo.latlng
-    if(distanceLocation.lng > 180) {
-      distanceLocation.lng = distanceLocation.lng - 360
-    } else if (distanceLocation.lng < -180) {
-      distanceLocation.lng = distanceLocation.lng + 360
-    }
-    this.setState({
-      distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: distanceLocation,
-      distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: ''
-    });
+  renderDistance() {
+    return(
+      <Distance distanceLocation1={this.state.distanceLocation1}
+                distanceLocation2={this.state.distanceLocation2}
+                originalMapCenter={this.state.originalMapCenter}
+                serverSettings={this.state.serverSettings}
+                onDistanceChange={this.setDistance}
+                createSnackBar={this.props.createSnackBar}
+                isDistanceOpen={this.state.isDistanceOpen}/>
+    )
   }
 
   placeMarker(location, icon, showBoolean = true, key= 0) {
@@ -320,6 +233,37 @@ export default class Atlas extends Component {
     }
   }
 
+  setMarkerOnClick(mapClickInfo) {
+    let distanceLocation = mapClickInfo.latlng
+    if(distanceLocation.lng > 180) {
+      distanceLocation.lng = distanceLocation.lng - 360
+    } else if (distanceLocation.lng < -180) {
+      distanceLocation.lng = distanceLocation.lng + 360
+    }
+    this.setState({
+      distanceLocation2: this.state.distanceLocation1,
+      distanceLocation1: distanceLocation,
+      distanceLocation2Name: this.state.distanceLocation1Name,
+      distanceLocation1Name: ''
+    });
+  }
+
+  setTripLocations(destinations) {
+    let newLocations = [];
+    for(let i = 0; i < destinations.length; i++){
+      newLocations = newLocations.concat({"lat": destinations[i].latitude, "lng":destinations[i].longitude, "name":destinations[i].name});
+    }
+    this.setState({tripLocations: newLocations});
+  }
+
+  prepareNewTripAdd (newLocation, name){
+    let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
+    if(!this.state.tripNewLocation.location) {
+      this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
+    }
+    this.toggleTab('2')
+  }
+
   toggleMarkers() {
     if (this.state.showMarkers && this.state.showLines) {
       this.setState({showMarkers: false});
@@ -333,12 +277,30 @@ export default class Atlas extends Component {
     }
   }
 
-  prepareNewTripAdd (newLocation, name){
-    let formattedLocation = newLocation[0]? [newLocation[0], newLocation[1]]: [newLocation.lat,newLocation.lng]
-    if(!this.state.tripNewLocation.location) {
-      this.setState({tripNewLocation: {location: formattedLocation, locationName: name}})
+  getLine(location1, location2, key) {
+    const initPolyLine = ref => {
+      if (ref && this.state.isDistanceOpen) {
+        ref.leafletElement.openPopup()
+      }
+    };
+    if(location1 && location2) {
+      return (
+        <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
+          {this.state.isDistanceOpen? this.renderDistance(): null}
+        </Polyline>
+      );
     }
-    this.toggleTab('2')
+  }
+
+  searchListItemClick(name, lat, lng) {
+    this.setState({
+      isSearchOpen: false,
+      distanceLocation2: this.state.distanceLocation1,
+      distanceLocation1: {"lat":lat, "lng":lng ,"name":name},
+      currentMapCenter: [lat, lng],
+      distanceLocation2Name: this.state.distanceLocation1Name,
+      distanceLocation1Name: ''
+    });
   }
 
   getMarkerLocationName(location) {
@@ -373,23 +335,48 @@ export default class Atlas extends Component {
   }
 
   setDistance(dist){
-      this.setState({distance:dist})
-  }
-
-  renderDistance() {
-    return(
-      <Distance distanceLocation1={this.state.distanceLocation1}
-                distanceLocation2={this.state.distanceLocation2}
-                originalMapCenter={this.state.originalMapCenter}
-                serverSettings={this.state.serverSettings}
-                onDistanceChange={this.setDistance}
-                createSnackBar={this.props.createSnackBar}
-                isDistanceOpen={this.state.isDistanceOpen}/>
-    )
+    this.setState({distance:dist})
   }
 
   flipRoundTrip() {
     this.setState({isRoundTrip: !this.state.isRoundTrip})
   }
 
+  recenterMap(){
+    this.setState({
+      currentMapCenter: this.state.originalMapCenter,
+      mapZoom: MAP_DEFAULT_ZOOM,
+      currentMapBounds: null,
+    });
+  }
+
+  mapMovement(mapMovementInfo){
+    this.setState({
+      currentMapCenter: mapMovementInfo.target.getCenter(),
+      mapZoom: mapMovementInfo.target.getZoom(),
+      currentMapBounds: mapMovementInfo.target.getBounds()
+    });
+  }
+
+  getGeolocation() {
+    let self = this;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
+          self.setState({
+            originalMapCenter: ORIGINAL_COORDS,
+            currentMapCenter: ORIGINAL_COORDS
+          });
+        }
+      );
+    }
+  }
+
+  toggleTab(tab) {
+    this.setState({isDistanceOpen: false})
+    if (this.state.currentTab !== tab) {
+      this.setState({currentTab: tab})
+    }
+  }
 }
