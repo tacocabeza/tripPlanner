@@ -120,6 +120,7 @@ export default class Trip extends Component {
                 <Destination index={index} removeDestination={this.removeDestination}
                              distance={this.state.loadedTrip.distances[index-1]}
                              destination={item} updateDestination={this.updateDestination}
+                             rotateTrip={this.rotateTrip}
                              />
               </Draggable>
             );
