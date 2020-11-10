@@ -91,6 +91,8 @@ export default class Destination extends Component {
         {this.renderProperty("Latitude:","latitude")}
         {this.renderProperty("Longitude:","longitude")}
         {this.renderProperty("Notes:","notes")}
+        <Button color="primary"
+                onClick={() => this.props.rotateTrip(this.props.index)}>Make Start of Trip</Button>
       </Collapse>
     );
   }

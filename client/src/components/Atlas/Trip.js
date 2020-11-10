@@ -27,6 +27,7 @@ export default class Trip extends Component {
     this.removeDestination = this.removeDestination.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
+    this.rotateTrip = this.rotateTrip.bind(this);
 
     this.state = {
       loadedTrip: EMPTY_TRIP,
@@ -41,7 +42,7 @@ export default class Trip extends Component {
       oneWayDistance: 0,
       roundTripDistance:0,
       units: "",
-      response: ""
+      response: "0"
     }
   }
 
@@ -102,6 +103,7 @@ export default class Trip extends Component {
         </Col>
         <Col>
           <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
+          <Button color="primary" onClick={() => {this.rotateTrip(3)}}>TEST ROTATE INDEX 3</Button>
         </Col>
       </Row>
     );
@@ -282,6 +284,19 @@ export default class Trip extends Component {
         destinations: tempArr,
       },
       this.sendTripRequest,
+    );
+  }
+
+  rotateTrip(index) {
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+
+    while (index--) {
+      tempArr.unshift(tempArr.pop());
+    }
+    this.setState({
+          destinations: tempArr,
+        },
+        this.sendTripRequest,
     );
   }
 
