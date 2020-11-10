@@ -87,7 +87,7 @@ export default class Search extends Component {
   showFeelingLucky(){
     if(!this.state.inputText || this.state.inputText === "") {
       return(
-          <ListGroup.Item className="fontBold" action onClick={this.sendLuckyRequest}>
+          <ListGroup.Item className="fontBold" action onClick={this.sendLuckyRequest} key={"FeelingLuckyItem"}>
             Feeling Lucky?
           </ListGroup.Item>
       )
