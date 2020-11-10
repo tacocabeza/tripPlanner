@@ -20,6 +20,27 @@ const ColoredLine = ({ color }) => (
   />
 );
 
+const MAX_CHAR_LENGTH = {
+    name: 100,
+    latitude: 22,
+    longitude: 22,
+    notes: 750
+  };
+
+const INPUT_TYPE = {
+  name: "text",
+  latitude: "text",
+  longitude: "text",
+  notes: "textarea"
+};
+
+const INPUT_ROWS = {
+  name: 1,
+  latitude: 1,
+  longitude: 1,
+  notes: 3
+};
+
 export default class Destination extends Component {
   constructor(props) {
     super(props);
@@ -33,12 +54,6 @@ export default class Destination extends Component {
         latitude: true,
         longitude: true,
         notes: true
-      },
-      maxLength: {
-        name: 100,
-        latitude: 22,
-        longitude: 22,
-        notes: 1000
       }
     }
   }
@@ -49,26 +64,35 @@ export default class Destination extends Component {
         <Fade in={this.props.index > 0} className="text-right">
           Distance: {this.props.distance}mi.
         </Fade>
-          <Card style={{ width: '100%', "padding": '10px'}}>
-            <Row>
-              <Col className="col-1" style={{padding: "0px 0px 0px 10px"}}>
-                <DragIndicatorIcon className="drag-handle"/>
-              </Col>
-              <Col className="text-left col-10">
-                {this.props.destination.name}
-                {this.renderArrow()}
-              </Col>
-              <Col className="col-1">
-                <Button className="float-right deleteBtn"
+        <Card className="destination">
+          <Row>
+            <Col className="text-left">
+              <DragIndicatorIcon className="drag-handle"/>
+              {this.renderName()}
+              {this.renderArrow()}
+              <Button className="float-right deleteBtn"
                       onClick={() => this.props.removeDestination(this.props.index)}>
-                  <img className="h-25px" src={DeleteIcon}/>
-                </Button>
+                <img className="h-25px" src={DeleteIcon}/>
+              </Button>
             </Col>
           </Row>
-            {this.renderCollapse()}
+          {this.renderCollapse()}
         </Card>
-    </div>
+      </div>
     );
+  }
+
+  renderName() {
+    if(this.state.isValidProperty.name){
+      return this.props.destination.name;
+    } else {
+      return this.getCoordsName();
+    }
+  }
+
+  getCoordsName() {
+    return parseFloat(this.props.destination.latitude).toFixed(2) + ", " +
+      parseFloat(this.props.destination.longitude).toFixed(2);
   }
 
   renderArrow() {
@@ -104,24 +128,29 @@ export default class Destination extends Component {
         <Input onChange={e => this.propertyOnChange(property, e.target.value)}
                invalid={!this.state.isValidProperty[property]}
                defaultValue={this.props.destination[property]}
-               maxLength={this.state.maxLength[property]}
+               maxLength={MAX_CHAR_LENGTH[property]}
+               type={INPUT_TYPE[property]}
+               rows={INPUT_ROWS[property]}
                style={{fontSize: 13}}/>
       </InputGroup>
     );
   }
 
   propertyOnChange(property, value) {
-    if(this.isValidProperty(property, value)) {
+    if(this.isValidProperty(property, value) || property == "name") {
+
       if(property == "latitude" || property == "longitude"){
         value = this.convertCoordinate(property, value);
       }
+
       this.props.updateDestination(this.props.index, property, value);
     }
   }
 
   isValidProperty(property, value) {
     if((property == "latitude" && !isValidLatitude(value)) ||
-      (property == "longitude" && !isValidLongitude(value))) {
+      (property == "longitude" && !isValidLongitude(value)) ||
+      (property == "name" && value === "")) {
       this.setIsValidProperty(property, false);
       return false;
     } else {
