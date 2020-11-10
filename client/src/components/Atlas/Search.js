@@ -97,7 +97,7 @@ export default class Search extends Component {
   sendFindRequest() {
     if (isValidPosition(this.state.inputText)) {
       let coords = new Coordinates(this.state.inputText);
-      let response = { "requestVersion": 2, "requestType": "find", "found": 1,
+      let response = { "requestVersion": PROTOCOL_VERSION, "requestType": "find", "found": 1,
         "places": [{
             "name": coords.getLatitude() + ', ' + coords.getLongitude(),
             "latitude": String(coords.getLatitude()),
