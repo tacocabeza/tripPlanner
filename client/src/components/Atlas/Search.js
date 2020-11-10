@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Input, Collapse} from "reactstrap";
 import {InputGroup, ListGroup} from "react-bootstrap";
-import {PROTOCOL_VERSION} from "../../utils/constants";
+import {PROTOCOL_VERSION, SEARCH_CLIENT_LIMIT} from "../../utils/constants";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
 import {isValidPosition} from "../../utils/misc";
@@ -106,7 +106,7 @@ export default class Search extends Component {
       };
       this.processFindResponse(response);
     } else if (this.state.inputText && this.state.inputText !== "") {
-      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
+      sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: SEARCH_CLIENT_LIMIT},
           this.state.serverSettings.serverPort)
           .then(find => {
             if (find) {
