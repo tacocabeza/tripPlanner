@@ -21,6 +21,7 @@ export const LOG = ulog("App");
 export const CLIENT_TEAM_NAME = "T01 Feather Friends";
 
 export const EARTH_RADIUS_UNITS_DEFAULT = {"miles": 3959};
+export const SEARCH_CLIENT_LIMIT = 100;
 export const PROTOCOL_VERSION = 4;
 export const EMPTY_TRIP = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const TRIP = {"options": {"title": "", "earthRadius": "", "units": "", "response": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
