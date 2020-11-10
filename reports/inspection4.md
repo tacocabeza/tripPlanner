@@ -21,24 +21,24 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-| Search.js:3 | `InputGroup` and `ListGroup` should be imported from `reactstrap` on line 2 | low | pdunton |  |
-| Search.js:18 | That function does not need to be bound to this | low | nd0905 |  |
-| Search.js:29 | Do we want to put the empty find request in the `constants.js` file like we have for `EMPTY_TRIP`? | low | pdunton |  |
+| Search.js:3 | `InputGroup` and `ListGroup` should be imported from `reactstrap` on line 2 | low | pdunton | 542 |
+| Search.js:18 | That function does not need to be bound to this | low | nd0905 | 543 |
+| Search.js:29 | Do we want to put the empty find request in the `constants.js` file like we have for `EMPTY_TRIP`? | low | pdunton | 553 |
 | Search.js:29 | Make results json a constant like in trip | low | ah00t13 |  |
-| Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 |  |
-| Search.js:78 | style hard coded instead of in css class | low | nd0905 |  |
-| Search.js:78,93 | Inline CSS should be put in student styles | low | ah00t13 |  |
-| Search.js:78 | consider having our css be dynamic rather than being hard coded in | low| jgarc110| |
+| Search.js:51-58 | multi-line return should be contained in parenthesis | low | nd0905 | 545 |
+| Search.js:78 | style hard coded instead of in css class | low | nd0905 | 546 |
+| Search.js:78,93 | Inline CSS should be put in student styles | low | ah00t13 | 546 |
+| Search.js:78 | consider having our css be dynamic rather than being hard coded in | low| jgarc110| 546 |
 | Search.js:91 | input text is always just an empty string, null check possibly redundant| low| jgarc110| |
-| Search.js:91 | if statement should have === "" not == "" | low | nd0905 |  |
-| Search.js:93 | style hard coded instead of in css class | low | nd0905 |  |
-| Search.js:94 | Listgroup.item should have unique key element | low | nd0905 |  |
-| Search.js:102 | do we need error checking on the coords | low | suyashh |  |
-| Search.js:103 | requestVersion can replaced with the PROTOCOLVERSION import| low| jgarc110
-| Search.js:103 | request version is hardcoded and out of date | low | nd0905 |  |
-| Search.js:103 | request version is not constant | low | suyashh |  |
-| Search.js:103 | Is request version correct? | low | pdunton |  |
-| Search.js:111 | if statement should have !== "" not != "" | low | nd0905 |  |
-| Search.js:112 | limit is not constant | low | suyashh |  |
-| Search.js:121 | An empty `inputText` should clear the previous `this.state.results` | med | pdunton |  |
+| Search.js:91 | if statement should have === "" not == "" | low | nd0905 | 547 |
+| Search.js:93 | style hard coded instead of in css class | low | nd0905 | 546 |
+| Search.js:94 | Listgroup.item should have unique key element | low | nd0905 | 548 |
+| Search.js:102 | do we need error checking on the coords | low | suyashh | 549 |
+| Search.js:103 | requestVersion can replaced with the PROTOCOLVERSION import| low| jgarc110 | 550 |
+| Search.js:103 | request version is hardcoded and out of date | low | nd0905 | 550 |
+| Search.js:103 | request version is not constant | low | suyashh | 550 |
+| Search.js:103 | Is request version correct? | low | pdunton | 550 |
+| Search.js:111 | if statement should have !== "" not != "" | low | nd0905 | 551 |
+| Search.js:112 | limit is not constant | low | suyashh | 552 |
+| Search.js:121 | An empty `inputText` should clear the previous `this.state.results` | med | pdunton | 553 |
 | UI | Clicking on the scrollbar closes the searchbar | med | pdunton |  |

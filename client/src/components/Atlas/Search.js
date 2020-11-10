@@ -6,6 +6,7 @@ import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
 import {isValidPosition} from "../../utils/misc";
 import * as findSchema from "../../../schemas/ResponseFind.json";
+import {EMPTY_SEARCH} from "../../utils/constants";
 
 export default class Search extends Component {
   constructor(props) {
@@ -13,26 +14,16 @@ export default class Search extends Component {
 
     this.renderBar = this.renderBar.bind(this);
     this.renderResults = this.renderResults.bind(this);
-
     this.updateInputText = this.updateInputText.bind(this);
-    this.formatInputText = this.formatInputText.bind(this);
-
     this.sendFindRequest = this.sendFindRequest.bind(this);
     this.processFindResponse = this.processFindResponse.bind(this);
     this.sendLuckyRequest = this.sendLuckyRequest.bind(this);
-
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
     this.state={
       inputText: "",
-      results: {
-        "found": 0,
-        "match": "",
-        "places": [],
-        "requestType": "find",
-        "requestVersion": {PROTOCOL_VERSION}
-      },
+      results: EMPTY_SEARCH,
       serverSettings: this.props.serverSettings,
       searchHasFocus: false,
     }
@@ -48,14 +39,14 @@ export default class Search extends Component {
   }
 
   renderBar() {
-    return <div>
+    return (<div>
       <InputGroup>
         <Input placeholder="Search TripCo" value={this.state.inputText} onChange={this.updateInputText}
                onFocus={this.onFocus}
                onBlur={this.onBlur}
         />
       </InputGroup>
-    </div>;
+    </div>);
   }
 
   updateInputText(event) {
@@ -75,22 +66,28 @@ export default class Search extends Component {
   renderResults() {
     return (
         <Collapse isOpen={this.state.searchHasFocus}>
-          <ListGroup variant="flush" style={{maxHeight: '300px', overflow: 'scroll'}}>
+          <ListGroup variant="flush" className="searchResults">
             {this.showFeelingLucky()}
-            {this.state.results.places.map(result => (
-                <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
-                  {result.name}
-                </ListGroup.Item>
-            ))}
+            {this.renderLists()}
           </ListGroup>
         </Collapse>
     );
   }
 
+  renderLists() {
+    if(this.state.inputText !== ""){
+      return(this.state.results.places.map(result => (
+        <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
+          {result.name}
+        </ListGroup.Item>
+      )));
+    }
+  }
+
   showFeelingLucky(){
-    if(this.state.inputText == null || this.state.inputText == "") {
+    if(!this.state.inputText || this.state.inputText === "") {
       return(
-          <ListGroup.Item style={{fontWeight: '600'}} action onClick={this.sendLuckyRequest}>
+          <ListGroup.Item className="fontBold" action onClick={this.sendLuckyRequest}>
             Feeling Lucky?
           </ListGroup.Item>
       )
@@ -108,7 +105,7 @@ export default class Search extends Component {
         }]
       };
       this.processFindResponse(response);
-    } else if (this.state.inputText != null && this.state.inputText != "") {
+    } else if (this.state.inputText && this.state.inputText !== "") {
       sendServerRequest({requestType: "find", requestVersion: PROTOCOL_VERSION, match: this.formatInputText(this.state.inputText), limit: 100},
           this.state.serverSettings.serverPort)
           .then(find => {
