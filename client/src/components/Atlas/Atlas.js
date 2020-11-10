@@ -347,8 +347,6 @@ export default class Atlas extends Component {
       currentMapCenter: this.state.originalMapCenter,
       mapZoom: MAP_DEFAULT_ZOOM,
       currentMapBounds: null,
-      distanceLocation1:{"lat": this.state.originalMapCenter[0], "lng":this.state.originalMapCenter[1]},
-      distanceLocation1Name: "Home"
     });
   }
 
