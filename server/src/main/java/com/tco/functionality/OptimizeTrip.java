@@ -42,7 +42,7 @@ public class OptimizeTrip {
 
             tempTour[0] = startingCity;
 
-            for (int unvisitedCitiesCount = places.size() - 1; unvisitedCitiesCount > 0; unvisitedCitiesCount--) {
+            for (int unvisited = places.size() - 1; unvisited > 0; unvisited--) {
 
                 int nearest = nearestUnvisted(distanceMatrix[previous], unvisitedCities);
 
