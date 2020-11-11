@@ -313,7 +313,6 @@ export default class Trip extends Component {
   }
 
   sendTripRequest() {
-    this.props.setTripLocations(this.state.destinations);
     if(this.state.destinations.length > 0) {
       sendServerRequest({
           "places": this.state.destinations,
@@ -345,12 +344,18 @@ export default class Trip extends Component {
     }
     let roundTripCount = count + response.distances[response.distances.length - 1];
     this.setState({
-      loadedTrip: response,
-      tripName: response.options.title,
-      oneWayDistance: count,
-      roundTripDistance: roundTripCount,
-      destinations:response.places
-    });
+        loadedTrip: response,
+        tripName: response.options.title,
+        oneWayDistance: count,
+        roundTripDistance: roundTripCount,
+        destinations:response.places
+      },
+      this.setLocations,
+    );
+  }
+
+  setLocations() {
+    this.props.setTripLocations(this.state.destinations);
   }
 
   processFile(files) {
