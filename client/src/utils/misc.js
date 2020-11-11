@@ -18,14 +18,13 @@ export function downloadFile(fileText, fileName, fileType) {
 
 export function isValidPosition(position) {
   let error;
-  let isValid;
   try {
-    isValid = true;
-    new Coordinates(position);
-    return isValid;
+    let coords = new Coordinates(position);
+
+    return (isValidLatitude(coords.getLatitude())) &&
+      (isValidLongitude(coords.getLongitude()));
   } catch (error) {
-    isValid = false;
-    return isValid;
+    return false;
   }
 }
 
