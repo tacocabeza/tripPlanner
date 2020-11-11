@@ -363,10 +363,12 @@ export default class Atlas extends Component {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           const ORIGINAL_COORDS = [position.coords.latitude, position.coords.longitude];
-          self.setState({
-            originalMapCenter: ORIGINAL_COORDS,
-            currentMapCenter: ORIGINAL_COORDS
-          });
+          if (Math.abs(ORIGINAL_COORDS[0]) <= 90 && Math.abs(ORIGINAL_COORDS[1]) <= 180) {
+            self.setState({
+              originalMapCenter: ORIGINAL_COORDS,
+              currentMapCenter: ORIGINAL_COORDS
+            });
+          }
         }
       );
     }
