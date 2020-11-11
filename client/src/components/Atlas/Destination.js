@@ -44,18 +44,6 @@ const INPUT_ROWS = {
 export default class Destination extends Component {
   constructor(props) {
     super(props);
-
-    this.toggleCollapse = this.toggleCollapse.bind(this);
-
-    this.state = {
-      collapseOpen: false,
-      isValidProperty: {
-        name: true,
-        latitude: true,
-        longitude: true,
-        notes: true
-      }
-    }
   }
 
   render() {
@@ -83,7 +71,7 @@ export default class Destination extends Component {
   }
 
   renderName() {
-    if(this.state.isValidProperty.name){
+    if(this.props.destinationState.isValidProperty.name){
       return this.props.destination.name;
     } else {
       return this.getCoordsName();
@@ -96,20 +84,16 @@ export default class Destination extends Component {
   }
 
   renderArrow() {
-    if(this.state.collapseOpen){
-      return (<ExpandMoreIcon onClick={this.toggleCollapse}/>);
+    if(this.props.destinationState.collapseOpen){
+      return (<ExpandMoreIcon onClick={this.props.toggleCollapse}/>);
     } else {
-      return (<NavigateNextIcon onClick={this.toggleCollapse}/>);
+      return (<NavigateNextIcon onClick={this.props.toggleCollapse}/>);
     }
-  }
-
-  toggleCollapse() {
-    this.setState({collapseOpen: !this.state.collapseOpen});
   }
 
   renderCollapse() {
     return (
-      <Collapse isOpen={this.state.collapseOpen}>
+      <Collapse isOpen={this.props.destinationState.collapseOpen}>
         <ColoredLine color="primary"/>
         {this.renderProperty("Name:","name")}
         {this.renderProperty("Latitude:","latitude")}
@@ -126,12 +110,12 @@ export default class Destination extends Component {
           <InputGroupText style={{width: "82px", fontSize: 13}}>{displayText}</InputGroupText>
         </InputGroupAddon>
         <Input onChange={e => this.propertyOnChange(property, e.target.value)}
-               invalid={!this.state.isValidProperty[property]}
-               defaultValue={this.props.destination[property]}
+               invalid={!this.props.destinationState.isValidProperty[property]}
                maxLength={MAX_CHAR_LENGTH[property]}
                type={INPUT_TYPE[property]}
                rows={INPUT_ROWS[property]}
-               style={{fontSize: 13}}/>
+               value={this.props.destinationState.inputTexts[property]}
+               style={{fontSize: 13}} />
       </InputGroup>
     );
   }
@@ -151,18 +135,12 @@ export default class Destination extends Component {
     if((property == "latitude" && !isValidLatitude(value)) ||
       (property == "longitude" && !isValidLongitude(value)) ||
       (property == "name" && value === "")) {
-      this.setIsValidProperty(property, false);
+      this.props.setIsValidProperty(property, value, false);
       return false;
     } else {
-      this.setIsValidProperty(property, true);
+      this.props.setIsValidProperty(property, value, true);
       return true;
     }
-  }
-
-  setIsValidProperty(property, value) {
-    let newIsValidProperty = JSON.parse(JSON.stringify(this.state.isValidProperty));
-    Object.defineProperty(newIsValidProperty,property,{value: value});
-    this.setState({isValidProperty: newIsValidProperty});
   }
 
   convertCoordinate(property, value) {
