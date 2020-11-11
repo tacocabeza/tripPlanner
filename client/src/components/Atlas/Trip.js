@@ -137,6 +137,7 @@ export default class Trip extends Component {
               );
             })}
           </Container>
+          <div ref={destinationsEnd}></div>
         </div>
       );
     }
@@ -369,7 +370,7 @@ export default class Trip extends Component {
 
   optimizeTrip() {
     this.setState({
-        response: "1.0"
+        response: "0.001"
       },
       this.sendTripRequest,
     );

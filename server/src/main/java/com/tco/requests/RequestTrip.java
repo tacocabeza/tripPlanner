@@ -26,10 +26,6 @@ public class RequestTrip extends RequestHeader{
     public void buildResponse(){
         DistanceCalculator distanceCalculator = new DistanceCalculator();
         OptimizeTrip optimizeTrip = new OptimizeTrip();
-        System.out.println(options.getTripTitle());
-        System.out.println(options.getEarthRadius());
-        System.out.println(options.getUnits());
-        System.out.println(options.getResponse());
 
         if(options.isOptimized()){
             places = optimizeTrip.nearestNeighbor(places, options);
