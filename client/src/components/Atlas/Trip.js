@@ -390,10 +390,10 @@ export default class Trip extends Component {
         },
         this.state.serverSettings.serverPort)
       .then(trip => {
-        this.setState({response: "0.0"});
         if (trip) {
           this.processTripResponse(trip.data);
         } else {
+          this.setState({response: "0.0"});
           this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
         }
       });
@@ -406,12 +406,20 @@ export default class Trip extends Component {
       count = count + response.distances[i];
     }
     let roundTripCount = count + response.distances[response.distances.length - 1];
+    let newDestinationStates;
+    if(this.state.response === "0.0"){
+      newDestinationStates = this.state.destinationStates;
+    } else {
+      newDestinationStates = this.getInitDestinationStateArray(response.places);
+    }
     this.setState({
         loadedTrip: response,
         tripName: response.options.title,
         oneWayDistance: count,
         roundTripDistance: roundTripCount,
-        destinations: response.places
+        response: "0.0",
+        destinations: response.places,
+        destinationStates: newDestinationStates
       },
       this.setLocations,
     );
