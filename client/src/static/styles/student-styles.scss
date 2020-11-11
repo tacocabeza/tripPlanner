@@ -18,15 +18,21 @@
   padding: 0!important;
   border: none!important;
 }
+.destination {
+  width: 100%;
+  padding: 10px;
+}
 .fontBold {
   font-weight: 600;
 }
 .drag-handle {
   cursor: move;
   cursor: grab;
+  padding-right: 7px;
 }
 .drag-handle:active {
   cursor: grabbing;
+  padding-right: 7px;
 }
 .w-60 {
   max-width: 60%;
