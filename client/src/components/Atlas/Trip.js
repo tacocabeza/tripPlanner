@@ -370,7 +370,7 @@ export default class Trip extends Component {
 
   optimizeTrip() {
     this.setState({
-        response: "0.001"
+        response: "1.0"
       },
       this.sendTripRequest,
     );
