@@ -103,7 +103,6 @@ export default class Trip extends Component {
         </Col>
         <Col>
           <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
-          <Button color="primary" onClick={() => {this.rotateTrip(3)}}>TEST ROTATE INDEX 3</Button>
         </Col>
       </Row>
     );
