@@ -60,7 +60,7 @@ export default class Destination extends Component {
               {this.renderArrow()}
               <Button className="float-right deleteBtn"
                       onClick={() => this.props.removeDestination(this.props.index)}>
-                <img className="h-25px" src={DeleteIcon}/>
+                <img className="h-25px" src={DeleteIcon} id={"deleteButton" + this.props.index}/>
               </Button>
             </Col>
           </Row>
@@ -117,7 +117,7 @@ export default class Destination extends Component {
                type={INPUT_TYPE[property]}
                rows={INPUT_ROWS[property]}
                value={this.props.destinationState.inputTexts[property]}
-               style={{fontSize: 13}} />
+               style={{fontSize: 13}} id={property + this.props.index}/>
       </InputGroup>
     );
   }

@@ -41,6 +41,24 @@ const sampleTrip = {
   "requestVersion": 4
 };
 
+const sampleTripStates = [
+  {
+    collapseOpen: false,
+    isValidProperty: {name: true, latitude: true, longitude: true, notes: true},
+    inputTexts: {notes: "The big city", latitude: "39.7", name: "Denver", longitude: "-105.0"}
+  },
+  {
+    collapseOpen: false,
+    isValidProperty: {name: true, latitude: true, longitude: true, notes: true},
+    inputTexts: {notes: "Home of CU", latitude: "40.0", name: "Boulder", longitude: "-105.4"}
+  },
+  {
+    collapseOpen: false,
+    isValidProperty: {name: true, latitude: true, longitude: true, notes: true},
+    inputTexts: {notes: "Home of CSU", latitude: "40.6", name: "Fort Collins", longitude: "-105.1"}
+  }
+];
+
 function testTripName() {
   const trip = mount(<Trip/>);
   let expectedName = 'Test';
@@ -222,3 +240,50 @@ function testAddDestination() {
 }
 
 test("test addDestination", testAddDestination)
+
+function testToggleDestinationCollapse() {
+  let trip = mount(<Trip/>);
+  trip.setState({
+    loadedTrip: sampleTrip,
+    destinations: sampleTrip.places,
+    destinationStates: sampleTripStates
+  });
+  trip.instance().sendTripRequest = jest.fn();
+
+  expect(trip.state().destinationStates[1].collapseOpen).toEqual(false);
+  trip.instance().toggleDestinationCollapse(1);
+  expect(trip.state().destinationStates[1].collapseOpen).toEqual(true);
+  trip.instance().toggleDestinationCollapse(1);
+  expect(trip.state().destinationStates[1].collapseOpen).toEqual(false);
+}
+
+test("test toggleDestinationCollapse", testToggleDestinationCollapse);
+
+function testRotateTrip() {
+    let trip = mount(<Trip/>);
+    trip.setState({
+      loadedTrip: sampleTrip,
+      destinations: sampleTrip.places,
+      destinationStates: sampleTripStates
+    });
+    trip.instance().sendTripRequest = jest.fn();
+
+    trip.instance().rotateTrip(1);
+
+    expect(trip.state().destinations[0].name).toEqual("Boulder");
+    expect(trip.state().destinations[1].name).toEqual("Fort Collins");
+    expect(trip.state().destinations[2].name).toEqual("Denver");
+
+    expect(trip.state().destinationStates[0].inputTexts.name).toEqual("Boulder");
+    expect(trip.state().destinationStates[1].inputTexts.name).toEqual("Fort Collins");
+    expect(trip.state().destinationStates[2].inputTexts.name).toEqual("Denver");
+}
+
+test("test rotateTrip", testRotateTrip);
+
+function testGetInitDestinationStateArray() {
+  let trip = shallow(<Trip/>);
+  expect(trip.instance().getInitDestinationStateArray(sampleTrip.places)).toEqual(sampleTripStates);
+}
+
+test("test getInitDestinationStateArray",testGetInitDestinationStateArray);

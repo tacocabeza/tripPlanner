@@ -348,14 +348,17 @@ export default class Trip extends Component {
   }
 
   rotateTrip(index) {
-    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
 
-    while (index !== tempArr.length) {
-      tempArr.unshift(tempArr.pop());
+    while (index !== tempDestinations.length) {
+      tempDestinations.unshift(tempDestinations.pop());
+      tempDestinationStates.unshift(tempDestinationStates.pop());
       index++;
     }
     this.setState({
-          destinations: tempArr,
+          destinations: tempDestinations,
+          destinationStates: tempDestinationStates
         },
         this.sendTripRequest,
     );
@@ -397,7 +400,7 @@ export default class Trip extends Component {
       tripName: response.options.title,
       oneWayDistance: count,
       roundTripDistance: roundTripCount,
-      destinations:response.places
+      destinations: response.places
     });
   }
 
@@ -429,7 +432,6 @@ export default class Trip extends Component {
   }
 
   getInitDestinationStateArray(placesArr) {
-
     let initDestinationStates = [];
     for(let i = 0; i < placesArr.length; i++){
       initDestinationStates = initDestinationStates.concat(this.getInitDestinationState(placesArr[i]));

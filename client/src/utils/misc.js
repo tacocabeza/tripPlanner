@@ -34,7 +34,7 @@ export function isValidLatitude(latitude) {
     let coords = new Coordinates(latitude + ", 0.0");
     let lat = String(coords.getLatitude());
 
-    let isValid = lat.match(LATITUDE_REGEX);
+    let isValid = LATITUDE_REGEX.test(lat);
 
     return isValid;
   } catch (error) {
@@ -48,7 +48,7 @@ export function isValidLongitude(longitude) {
     let coords = new Coordinates("0.0, " + longitude);
     let lng = String(coords.getLongitude());
 
-    let isValid = lng.match(LONGITUDE_REGEX);
+    let isValid = LONGITUDE_REGEX.test(lng);
 
     return isValid;
   } catch (error) {
