@@ -42,7 +42,7 @@ export default class Trip extends Component {
       oneWayDistance: 0,
       roundTripDistance:0,
       units: "",
-      response: "0"
+      response: "0.0"
     }
   }
 
@@ -94,15 +94,18 @@ export default class Trip extends Component {
             <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
           </Row>
           <br/>
-          <Row className="float-left w-50">
-            <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
-            <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
-            {this.renderRoundTripSwitch()}
+          <Row>
+            <Col xs={12} sm={6}>
+              <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
+              <Button color="primary" className="saveLoad" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
+              <Button color="primary" className="saveLoad" onClick={() => {this.optimizeTrip()}}>Optimize</Button>
+              <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
+            </Col>
+            <Col xs={12} sm={6}>
+              {this.renderTotalDistance()}
+              {this.renderRoundTripSwitch()}
+            </Col>
           </Row>
-          <Row className="float-right w-auto">{this.renderTotalDistance()}</Row>
-        </Col>
-        <Col>
-          <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
         </Col>
       </Row>
     );
@@ -197,8 +200,8 @@ export default class Trip extends Component {
 
   renderRoundTripSwitch() {
     return(
-      <FormGroup>
-        <CustomInput type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.props.flipRoundTrip()}/>
+      <FormGroup className="text-right">
+        <CustomInput className="text-right" type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.props.flipRoundTrip()}/>
       </FormGroup>
     )
   }
@@ -301,6 +304,14 @@ export default class Trip extends Component {
     );
   }
 
+  optimizeTrip() {
+    this.setState({
+        response: "1.0"
+      },
+      this.sendTripRequest,
+    );
+  }
+
   sendTripRequest() {
     this.props.setTripLocations(this.state.destinations);
     if(this.state.destinations.length > 0) {
@@ -317,6 +328,7 @@ export default class Trip extends Component {
         },
         this.state.serverSettings.serverPort)
       .then(trip => {
+        this.setState({response: "0.0"});
         if (trip) {
           this.processTripResponse(trip.data);
         } else {
