@@ -291,8 +291,9 @@ export default class Trip extends Component {
   rotateTrip(index) {
     let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
 
-    while (index--) {
+    while (index !== tempArr.length) {
       tempArr.unshift(tempArr.pop());
+      index++;
     }
     this.setState({
           destinations: tempArr,
