@@ -43,4 +43,16 @@ public class TestOptions {
         assertEquals("miles", options.getUnits());
     }
 
+    @Test
+    public void testSetResponse(){
+        options.setResponse("10.0");
+        assertEquals("10.0", options.getResponse());
+    }
+
+    @Test
+    public void testIsOptimized(){
+        options.setResponse("0.0");
+        assertEquals(false, options.isOptimized());
+    }
+
 }
