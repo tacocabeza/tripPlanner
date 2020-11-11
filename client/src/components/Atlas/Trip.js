@@ -108,23 +108,25 @@ export default class Trip extends Component {
   }
 
   renderDestinations() {
-    return (
-      <div>
-        <Container lockAxis="y" dragHandleSelector=".drag-handle"
-                   onDrop={this.onDrop} behaviour="contain">
-          {this.state.loadedTrip.places.map((item, index) => {
-            return (
-              <Draggable key={index}>
-                <Destination index={index} removeDestination={this.removeDestination}
-                             distance={this.state.loadedTrip.distances[index-1]}
-                             destination={item} updateDestination={this.updateDestination}
-                             />
-              </Draggable>
-            );
-          })}
-        </Container>
-      </div>
-    );
+    if(this.state.destinations.length > 0) {
+      return (
+        <div>
+          <Container lockAxis="y" dragHandleSelector=".drag-handle"
+                     onDrop={this.onDrop} behaviour="contain">
+            {this.state.loadedTrip.places.map((item, index) => {
+              return (
+                <Draggable key={index}>
+                  <Destination index={index} removeDestination={this.removeDestination}
+                               distance={this.state.loadedTrip.distances[index - 1]}
+                               destination={item} updateDestination={this.updateDestination}
+                  />
+                </Draggable>
+              );
+            })}
+          </Container>
+        </div>
+      );
+    }
   }
 
   updateDestination(index, property, value) {
@@ -158,7 +160,9 @@ export default class Trip extends Component {
         <ModalBody>
           <Row>
             <Col xs={8}>
-              <Search createSnackBar={this.props.createSnackBar} serverSettings={this.state.serverSettings} onClickListItem={this.addDestination}/>
+              <Search createSnackBar={this.props.createSnackBar}
+                      serverSettings={this.state.serverSettings}
+                      onClickListItem={this.addDestination}/>
             </Col>
             <Col xs={4}><Button color="primary" id="mapbtn" onClick={() => this.addFromMap()}>Add From Map</Button></Col>
           </Row>
@@ -220,8 +224,8 @@ export default class Trip extends Component {
           newItem: {
             "notes": "",
             "name": placeName,
-            "latitude": ''+newPlace.location[0],
-            "longitude": ''+newPlace.location[1],
+            "latitude": String(newPlace.location[0]),
+            "longitude": String(newPlace.location[1]),
           },
           showNewItem: true,
           destinationModal: true,
