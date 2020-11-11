@@ -53,6 +53,7 @@ public class TestRequestTrip {
         requestTrip.places.add(roswell);
         DistanceCalculator distanceCalculator = new DistanceCalculator();
         requestTrip.options = new Options("3959.0");
+        requestTrip.options.setResponse("0.0");
 
         requestTrip.buildResponse();
 

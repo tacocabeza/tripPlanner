@@ -33,6 +33,8 @@ public class Options {
         this.title = title;
     }
 
+    public void setResponse(String response){this.response = response;}
+
     public String getEarthRadius() {
         return earthRadius;
     }
@@ -44,4 +46,12 @@ public class Options {
     public String getResponse(){return response;}
 
     public String getUnits(){return units;}
+
+    public boolean isOptimized(){
+        if(response == "0.0" || response == null) {
+            return false;
+        }
+
+        else return true;
+    }
 }

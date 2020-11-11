@@ -30,6 +30,7 @@ export default class Trip extends Component {
     this.submitDestination = this.submitDestination.bind(this);
     this.toggleDestinationCollapse = this.toggleDestinationCollapse.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
+    this.rotateTrip = this.rotateTrip.bind(this);
 
     this.state = {
       loadedTrip: EMPTY_TRIP,
@@ -106,6 +107,7 @@ export default class Trip extends Component {
         </Col>
         <Col>
           <Button color="primary" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
+          <Button color="primary" onClick={() => {this.rotateTrip(3)}}>TEST ROTATE INDEX 3</Button>
         </Col>
       </Row>
     );
@@ -122,11 +124,12 @@ export default class Trip extends Component {
                 <Draggable key={index}>
                   <Destination index={index} removeDestination={this.removeDestination}
                                distance={this.state.loadedTrip.distances[index - 1]}
-                               destination={item} updateDestination={this.updateDestination} 
+                               destination={item} updateDestination={this.updateDestination}
                                destinationState={this.state.destinationStates[index]}
                                toggleCollapse={() => this.toggleDestinationCollapse(index)}
                                  setIsValidProperty = {(property, value, isValid) =>
                                  this.setDestinationIsValidProperty(index, property, value, isValid)}
+                               rotateTrip={this.rotateTrip}
                   />
                 </Draggable>
               );
@@ -306,7 +309,7 @@ export default class Trip extends Component {
 
     let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
     tempDestinationStates.splice(index, 1);
-    
+
     this.setState({
         destinations: tempDestinations,
         destinationStates: tempDestinationStates
@@ -336,12 +339,26 @@ export default class Trip extends Component {
 
     let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
     tempDestinationStates = tempDestinationStates.reverse();
-    
+
     this.setState({
         destinations: tempDestinations,
         destinationStates: tempDestinationStates
       },
       this.sendTripRequest,
+    );
+  }
+
+  rotateTrip(index) {
+    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+
+    while (index !== tempArr.length) {
+      tempArr.unshift(tempArr.pop());
+      index++;
+    }
+    this.setState({
+          destinations: tempArr,
+        },
+        this.sendTripRequest,
     );
   }
 
@@ -411,7 +428,7 @@ export default class Trip extends Component {
       );
     }
   }
-  
+
   getInitDestinationStateArray(placesArr) {
 
     let initDestinationStates = [];
