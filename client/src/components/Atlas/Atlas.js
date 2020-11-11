@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, Row, TabContent, TabPane, Fade} from 'reactstrap';
+import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
@@ -122,8 +122,8 @@ export default class Atlas extends Component {
         >
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.showMarkers, "loc1")}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.showMarkers, "loc2")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, true, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, true, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -140,11 +140,11 @@ export default class Atlas extends Component {
         {this.renderMapButton('toggleMarkers', hideMarkerIcon, this.toggleMarkers,"Toggle Markers")}
         {this.renderMapButton('showAllMarkers', showMarkerIcon, this.showAllMarkers, "Show All Markers")}
         <Control position="topright">
-          <Fade in={this.state.isSearchOpen} className="float-left">
+          <Collapse isOpen={this.state.isSearchOpen} className="float-left">
             <Search createSnackBar={this.props.createSnackBar}
                     serverSettings={this.state.serverSettings}
                     onClickListItem={this.searchListItemClick}/>
-          </Fade>
+          </Collapse>
           <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
             <img className="h-22px" alt="search icon" src={searchIcon}/>
           </Button>
@@ -186,20 +186,18 @@ export default class Atlas extends Component {
   }
 
   renderDistanceLine(){
-    if(this.state.showLines) {
-      if (this.state.distanceLocation2) {
-        return (
-          <div>
-            {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null)}
-          </div>
-        );
-      } else if (this.state.distanceLocation1) {
-        return (
-          <div>
-            {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null)}
-          </div>
-        );
-      }
+    if (this.state.distanceLocation2) {
+      return (
+        <div>
+          {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, null)}
+        </div>
+      );
+    } else if (this.state.distanceLocation1) {
+      return (
+        <div>
+          {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, null)}
+        </div>
+      );
     }
   }
 
@@ -278,15 +276,16 @@ export default class Atlas extends Component {
   }
 
   getLine(location1, location2, key) {
+    let isDistance = this.state.isDistanceOpen && ((location1 === this.state.distanceLocation2 && location2 === this.state.distanceLocation1) || (location1 === this.state.distanceLocation1 && location2 === this.state.originalMapCenter))
     const initPolyLine = ref => {
-      if (ref && this.state.isDistanceOpen) {
+      if (ref && isDistance) {
         ref.leafletElement.openPopup()
       }
     };
     if(location1 && location2) {
       return (
         <Polyline color={CANYON} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
-          {this.state.isDistanceOpen? this.renderDistance(): null}
+          {isDistance? this.renderDistance(): null}
         </Polyline>
       );
     }

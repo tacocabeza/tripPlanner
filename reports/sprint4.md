@@ -91,6 +91,8 @@ confident that we will be able to complete our planned epics, story points and t
 | *11/02/2020* | *16*| *6*| none|
 | *11/04/2020* | *8* | *4* | none|
 | *11/06/2020* | *6* | *3* | none|
+| *11/09/2020* | *12*| *5* | none|
+| *11/11/2020* | *8* | *8* | none|
 
 
 ## Review

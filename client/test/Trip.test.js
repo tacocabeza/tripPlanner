@@ -115,7 +115,7 @@ test("Add to trip from map adds to trip", testAddButtonOnMap)
 
 
 function testProcessTripResponse() {
-  let trip = shallow(<Trip/>);
+  let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().processTripResponse(sampleTrip);
 
   let actualLoadedTrip = trip.state().loadedTrip;
@@ -137,7 +137,7 @@ function testProcessTripResponse() {
 test("test processTripResponse", testProcessTripResponse)
 
 function testOnDrop() {
-  const trip = shallow(<Trip/>);
+  let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
   trip.instance().processTripResponse(sampleTrip);
   const before = sampleTrip.places;
@@ -155,7 +155,7 @@ function testOnDrop() {
 test("test destinations onDrop", testOnDrop)
 
 function testRemoveLocation() {
-  const trip = shallow(<Trip/>);
+  let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
   trip.instance().processTripResponse(sampleTrip);
   const before = sampleTrip.places;
@@ -200,7 +200,7 @@ function testSubmitDestination() {
 test("test submitDestination",testSubmitDestination)
 
 function testReverseTrip() {
-  const trip = shallow(<Trip/>);
+  let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
   trip.instance().processTripResponse(sampleTrip);
   const before = sampleTrip.places;
