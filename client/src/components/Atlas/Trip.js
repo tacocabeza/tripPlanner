@@ -435,7 +435,13 @@ export default class Trip extends Component {
     let fr = new FileReader();
     fr.readAsText(files[0]);
     fr.onload = function(event) {
-      self.setState({loadedFile: JSON.parse(fr.result)});
+      let parsedFile
+      try {
+        parsedFile = JSON.parse(fr.result)
+      } catch (e) {
+        self.props.createSnackBar("This file is not valid (cannot be parsed as a JSON)")
+      }
+      self.setState({loadedFile: parsedFile});
     };
   }
 
