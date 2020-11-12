@@ -137,6 +137,7 @@ export default class Trip extends Component {
               );
             })}
           </Container>
+          <div ref={destinationsEnd}></div>
         </div>
       );
     }

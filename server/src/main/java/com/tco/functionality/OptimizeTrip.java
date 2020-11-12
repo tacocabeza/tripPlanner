@@ -12,60 +12,47 @@ public class OptimizeTrip {
     public ArrayList<HashMap<String,String>> nearestNeighbor(ArrayList<HashMap<String,String>> places, Options options){
         // init the data structures we will be using
         Long shortest = Long.MAX_VALUE;
-
         int[] solutionTour = new int[places.size()];
-
         Long[][] distanceMatrix = buildDistanceMatrix(places);
-
         Long begin = System.currentTimeMillis();
+        boolean builtTrip = false;
 
         for (int startingCity = 0; startingCity < places.size(); startingCity++) {
-            if(System.currentTimeMillis() - begin >= (long) Double.parseDouble(options.getResponse()) * 1000){
-                System.out.println("Nearest neighbor taking too long -> no optimization!");
-                return places;
-            }
 
             boolean[] unvisitedCities = new boolean[places.size()];
-
             Arrays.fill(unvisitedCities, true);
-
             unvisitedCities[startingCity] = false;
-
             int k = 1;
-
             int previous = startingCity;
-
-
             long tourDistance = 0;
-
             int[] tempTour = new int[places.size()];
-
             tempTour[0] = startingCity;
 
             for (int unvisited = places.size() - 1; unvisited > 0; unvisited--) {
-
+                if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
+                    break;
+                }
                 int nearest = nearestUnvisted(distanceMatrix[previous], unvisitedCities);
-
-
                 tourDistance += distanceMatrix[previous][nearest];
-
-
                 tempTour[k] = nearest;
                 k++;
                 previous = nearest;
                 unvisitedCities[nearest] = false;
             }
-
+            if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
+                break;
+            }
             if (tourDistance < shortest) {
                 solutionTour = tempTour;
                 shortest = tourDistance;
+                builtTrip = true;
             }
         }
-
-        Long finishTime = System.currentTimeMillis() - begin;
-        System.out.println(finishTime);
-        return buildTrip(solutionTour,places);
-
+        if (builtTrip) {
+            return buildTrip(solutionTour,places);
+        } else {
+            return places;
+        }
     }
 
     private ArrayList<HashMap<String,String>> buildTrip(int[] tour, ArrayList<HashMap<String,String>> places){
