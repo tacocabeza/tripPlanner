@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Input, Collapse} from "reactstrap";
-import {InputGroup, ListGroup} from "react-bootstrap";
+import {Input, Collapse, InputGroup, ListGroup, ListGroupItem} from "reactstrap";
 import {PROTOCOL_VERSION, SEARCH_CLIENT_LIMIT} from "../../utils/constants";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 let Coordinates = require('coordinate-parser');
@@ -77,9 +76,9 @@ export default class Search extends Component {
   renderLists() {
     if(this.state.inputText !== ""){
       return(this.state.results.places.map(result => (
-        <ListGroup.Item key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
+        <ListGroupItem key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
           {result.name}
-        </ListGroup.Item>
+        </ListGroupItem>
       )));
     }
   }
@@ -87,9 +86,9 @@ export default class Search extends Component {
   showFeelingLucky(){
     if(!this.state.inputText || this.state.inputText === "") {
       return(
-          <ListGroup.Item className="fontBold" action onClick={this.sendLuckyRequest} key={"FeelingLuckyItem"}>
+          <ListGroupItem className="fontBold" action onClick={this.sendLuckyRequest} key={"FeelingLuckyItem"}>
             Feeling Lucky?
-          </ListGroup.Item>
+          </ListGroupItem>
       )
     }
   }
