@@ -13,7 +13,7 @@ public class OptimizeTrip {
         // init the data structures we will be using
         Long shortest = Long.MAX_VALUE;
         int[] solutionTour = new int[places.size()];
-        Long[][] distanceMatrix = buildDistanceMatrix(places);
+        Long[][] distanceMatrix = buildDistanceMatrix(places, options);
         Long begin = System.currentTimeMillis();
         boolean builtTrip = false;
 
@@ -81,7 +81,7 @@ public class OptimizeTrip {
         return bestIndex;
     }
 
-    private Long[][] buildDistanceMatrix(ArrayList<HashMap<String,String>> places) {
+    private Long[][] buildDistanceMatrix(ArrayList<HashMap<String,String>> places, Options options) {
         DistanceCalculator distanceCalculator = new DistanceCalculator();
         Long[][] matrix = new Long[places.size()][places.size()];
 
@@ -90,7 +90,7 @@ public class OptimizeTrip {
             matrix[i][i] = 0L;
 
             for (int j = i + 1; j < places.size(); j++) {
-                matrix[i][j] = distanceCalculator.calculateGreatCircleDistance(places.get(i), places.get(j), 3959.0D);
+                matrix[i][j] = distanceCalculator.calculateGreatCircleDistance(places.get(i), places.get(j), Double.parseDouble(options.getEarthRadius()));
                 matrix[j][i] = matrix[i][j];
             }
         }
