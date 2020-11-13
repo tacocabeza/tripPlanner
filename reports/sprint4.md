@@ -78,9 +78,9 @@ confident that we will be able to complete our planned epics, story points and t
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *4* | *count* |
-| Tasks |  *46*   | *count* | 
-| Story Points |  *74*  | *sum* | 
+| Epics | *4* | *4* |
+| Tasks |  *46*   | *76* | 
+| Story Points |  *74*  | *115* | 
 
 
 ## Scrums
@@ -98,20 +98,51 @@ confident that we will be able to complete our planned epics, story points and t
 ## Review
 
 ### Epics done  
+- V4 Protocol
+- Shorter
+- Modify Trip
+- User Experience
 
 ### Epics not done 
-
+All epics that were planned, were finished.
 ### What went well
-
+Our team really went into resolving defects that we found from our code inspections this sprint.
+Additionally, we were able to complete all the epics we planned in a timely manner and not working 
+against a time crunch. We were able to implement the nearest neighbor algorithm that gives the user a
+more refined/shorter trip. Additionally, we had people use our application and they were able to provide
+us good feedback and insights to our application usability. As a result, we gave the user the option to click
+a button that will take them to the top of their itinerary, as opposed to scrolling for a long time! Similarly,
+also added a button that will take them to the end of their itinerary. We also moved our round trip switch to 
+a more appropriate position that makes more sense for the user. We added functionality for the user to be able to 
+add and modify notes to their destinations. The user also has the new ability to drag and move destinations
+in their itinerary not only that, the user has the ability of "reversing" their trip.
 ### Problems encountered and resolutions
-
+Some problems we ran into was the complexity of the nearest neighbor algorithm. We 
+underestimated the development time that would go into it and thus we were only able to
+implement nearest neighbor and not 2-opt or 3-opt. Additionally, our board was *bursting at the seams* with
+defects from our code inspections, what we did was dedicate about a day or two to work on them and get them out
+of the way before the *real* development would commence. 
 
 ## Retrospective
 
 ### What we changed this sprint
+Something we changed this sprint was instead of leaving dangling defects from our code reviews,
+made it a priority to get those out of the way before any *real* development would start. Turns out this
+was the right thing to do as we did not end the sprint off with defects in our icebox. 
 
 ### What went well
 
+Our planning has become very good now compared to the planning we did in say, sprints 1,2. So we did not have
+to create or break up any tasks during the sprint, this was already done in our planning phase. Also, our team has nailed 
+writing descriptions on our tasks so there is less confusion now. Our team communication has also peaked, we always check
+on how we are doing in slack and in our scrum meetings. Additionally, we offer help to each other when we really need it via
+talking through tasks and implementation details. 
+
 ### Potential improvements
+Some potential improvements we have identified is having more people test our application. We've realized that
+we have been designing our application without the user being in mind. Sometimes our application could feel a little too
+engineered, if that makes sense. So we could have more people who possibly don't share our field test out our application
+so we can improve our applications usability and fluidity. 
 
 ### What we will change next time
+We try to improve our test coverage and maintainablilitiy as it has stagnated and remained at a B and %70 respectively.
