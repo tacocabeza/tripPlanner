@@ -484,7 +484,7 @@ export default class Trip extends Component {
         name: destination.name,
         latitude: destination.latitude,
         longitude: destination.longitude,
-        notes: destination.notes
+        notes: (destination.notes) ? destination.notes : ""
       }
     };
   }
