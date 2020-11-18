@@ -283,7 +283,7 @@ Often there are several related classes but we've listed only one to simplify th
 ### User Interface
 
 This user interface draws upon and builds from the last sprint.  
-We now have a settings tab for changing settings on the map such as marker style, line style, and distance unit type. All of these attributes are in a dropdown menu.
+We now have a settings tab at the top of our page for changing settings on the map such as marker style, line style, and distance unit type. All of these attributes are in a dropdown menu.
 
 ![base](images/settings_button.png)
 ![base](images/settings.png)
