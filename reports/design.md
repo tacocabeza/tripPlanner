@@ -279,3 +279,56 @@ Often there are several related classes but we've listed only one to simplify th
 * Logger provides a centralized logging facility used in all of the application classes.
 
 # Sprint 5
+
+### User Interface
+
+This user interface draws upon and builds from the last sprint.  
+We now have a settings tab for changing settings on the map such as marker style, line style, and distance unit type. All of these attributes are in a dropdown menu.
+![base](images/settings_button.png)
+![base](images/settings.png)
+
+Our serach will now also be able to open an advanced search module that allows for the user to input more information than just a name for searching. This will include city, country, and region.
+![base](images/advanced_search.png)
+
+Save on our Trip tab now will open a module that allows the user to input the file name as well as a dropdown for different file formats.
+![base](images/advanced_save.png)
+
+#### Component Diagram
+
+![base](images/ComponentHeirarchyV4.png)
+
+Just as in sprint 4, our component heirarchy for the application shows a top level App component with 4 children.
+* Header: renders an icon and a team name in the top banner.
+* Footer: renders the current server connection in the bottom footer.
+* Atlas: renders a map and has four children that extend the function of that map.
+* About: renders information about the team.
+
+Functionality for distance will now be hidden in existing UI, deprecating the collapse
+we build in the previous sprints.  However, we will still keep the code in a separate
+component so that we can separate distance logic out of our `Atlas.js`.
+
+Atlas Children
+* Navigation: renders a tab system that allows the user to switch between different tabs to keep the UI clean.
+* Search: renders a search bar that allows users to find places and then click on one to go to that location on the map.
+* Create Trip: renders the trip management UI explained and shown in the above User Interface section.
+
+#### Class Diagram (same as Sprint 4)
+
+![base](images/ClassDiagramV3.png)
+
+The classes in purple represent the classes specific to this application.  
+* WebApplication processes command line parameters and creates MicroServer.
+* MicroServer start a web server on the given port, configures the server for security, static files, and APIs for different types of requests, and processes the requests as they arrive.
+* JSONValidator verifies a request is properly formatted before attempting to process it using JSON Schemas.
+* RequestConfig is a specific request that allows the server to respond with its configuration to allow interoperability between clients and servers. 
+* RequestHeader defines the basic components of all requests.
+* RequestDistance responds to the clients request with a calculated distance
+* RequestFind handles find requests
+* RequestTrip responds to the client's request with a JSON trip.
+
+The classes in green represent the external libraries used by the application.
+Often there are several related classes but we've listed only one to simplify the diagram.
+* GSON converts a JSON string into a Java object instance.
+* Spark provides the necessary web support for our MicroServer.
+* JSON provides libraries to manipulate JSON objects using the JSON Schema libraries.
+* Logger provides a centralized logging facility used in all of the application classes.
