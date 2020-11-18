@@ -284,13 +284,16 @@ Often there are several related classes but we've listed only one to simplify th
 
 This user interface draws upon and builds from the last sprint.  
 We now have a settings tab for changing settings on the map such as marker style, line style, and distance unit type. All of these attributes are in a dropdown menu.
+
 ![base](images/settings_button.png)
 ![base](images/settings.png)
 
 Our serach will now also be able to open an advanced search module that allows for the user to input more information than just a name for searching. This will include city, country, and region.
+
 ![base](images/advanced_search.png)
 
 Save on our Trip tab now will open a module that allows the user to input the file name as well as a dropdown for different file formats.
+
 ![base](images/advanced_save.png)
 
 #### Component Diagram
