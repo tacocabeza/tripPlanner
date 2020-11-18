@@ -298,7 +298,7 @@ Save on our Trip tab now will open a module that allows the user to input the fi
 
 #### Component Diagram
 
-![base](images/ComponentHeirarchyV4.png)
+![base](images/ComponentHeirarchyV5.png)
 
 Just as in sprint 4, our component heirarchy for the application shows a top level App component with 4 children.
 * Header: renders an icon and a team name in the top banner.
@@ -314,6 +314,8 @@ Atlas Children
 * Navigation: renders a tab system that allows the user to switch between different tabs to keep the UI clean.
 * Search: renders a search bar that allows users to find places and then click on one to go to that location on the map.
 * Create Trip: renders the trip management UI explained and shown in the above User Interface section.
+* Settings: renders a tab with options for different customization options for the user.
+* Destination: contains information and functionality for location/destination cards in trips.
 
 #### Class Diagram (same as Sprint 4)
 
