@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | nd0905 | 40 |
-| pdunton |  |
+| pdunton | 60 min |
 | jgarc110 |  |
 | suyashh |  |
 | ah00t13 |  |
@@ -21,6 +21,17 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
+| Trip.js:18,19 | Should constant names be in all caps? | low | pdunton |  |
+| Trip.js:42,332 | Empty `newItem` should be a constant | med | pdunton |  |
+| Trip.js:148,311,354 | Check if `index` is in range  | low | pdunton |  |
+| Trip.js:268,269,287 | Should we rename property `.locationName` to `name`? | low | pdunton |  |
+| Trip.js:271,296 | Duplicate logic for default `name`.  Let's make a function in `misc.js` like `defaultName(lat, lng)` | med | pdunton |  |
+| Trip.js:274,299 | Duplicate logic for `newItem`. | med | pdunton |  |
+| Trip.js:358 | Would a `for` loop be easier to read? | low | pdunton |  |
+| Trip.js:406 | What happens if a response doesn't have a `.distances` property defined? | high | pdunton |  |
+| Trip.js:484-486 | Lines should also be ternary statements like 487 | high | pdunton |  |
+| Trip.js | Any file logic should be put into it's own file | high | pdunton |  |
+| Trip.js | Destination states should be isolated somehow out of the file | high | pdunton |  |
 | Trip.js:103-106 | 4 buttons in a row should make render button function | low | nd0905 |  |
 | Trip.js:157 | Unused Const | low | nd0905 |  |
 | Trip.js:227 | Multiple buttons should be made in function | low | nd0905 |  |
