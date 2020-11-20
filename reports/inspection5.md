@@ -13,7 +13,7 @@
 | nd0905 | 40 |
 | pdunton | 60 min |
 | jgarc110 |  |
-| suyashh |  |
+| suyashh | 30 |
 | ah00t13 | 35 |
 
 
@@ -36,10 +36,12 @@
 | Trip.js | Destination states should be isolated somehow out of the file | high | pdunton |  |
 | Trip.js:103-106 | 4 buttons in a row should make render button function | low | nd0905 |  |
 | Trip.js:156,309 | onDrop and removeDestination are extremely similar | low | ah00t13 |  |
+| Trip.js:157 | dropResult is not used | low | suyashh |  |
 | Trip.js:157 | Unused Const | low | nd0905 |  |
 | Trip.js:157 | Payload and element are unused | low | ah00t13 |  |
 | Trip.js:227 | Multiple buttons should be made in function | low | nd0905 |  |
 | Trip.js:235,240 | Move const callback function into onChange directly to save a line | low | ah00t13 |  |
+| Trip.js:264-268 | Logic here is messy | low | suyashh |  |
 | Trip.js:268,292 | Repeated Logic should be pulled out | low | nd0905 |  |
 | Trip.js:373 | Does response ever get changed back to 0.0 | med | nd0905 |  |
 | Trip.js:429 | Can the statement within this function be substituted directly where it is called | low | ah00t13 |  |
