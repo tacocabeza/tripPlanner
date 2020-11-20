@@ -23,11 +23,13 @@
 | --- | --- | :---: | :---: | --- |
 | Trip.js:18,19 | Should constant names be in all caps? | low | pdunton |  |
 | Trip.js:42,332 | Empty `newItem` should be a constant | med | pdunton |  |
+| Trip.js:56| let react take care of col widths maybe 🤷‍ | low | jgarc110 | |
 | Trip.js:148,311,354 | Check if `index` is in range  | low | pdunton |  |
 | Trip.js:268,269,287 | Should we rename property `.locationName` to `name`? | low | pdunton |  |
 | Trip.js:271,296 | Duplicate logic for default `name`.  Let's make a function in `misc.js` like `defaultName(lat, lng)` | med | pdunton |  |
 | Trip.js:274,299 | Duplicate logic for `newItem`. | med | pdunton |  |
 | Trip.js:358 | Would a `for` loop be easier to read? | low | pdunton |  |
+| Trip.js:386-387| what if the user did not specify response or units? We would respond with both of these. Must be a better way| med | jgarc110 | |
 | Trip.js:406 | What happens if a response doesn't have a `.distances` property defined? | high | pdunton |  |
 | Trip.js:484-486 | Lines should also be ternary statements like 487 | high | pdunton |  |
 | Trip.js | Any file logic should be put into it's own file | high | pdunton |  |
