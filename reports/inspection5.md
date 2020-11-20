@@ -10,7 +10,7 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-| nd0905 |  |
+| nd0905 | 40 |
 | pdunton | 60 min |
 | jgarc110 |  |
 | suyashh |  |
@@ -32,5 +32,14 @@
 | Trip.js:484-486 | Lines should also be ternary statements like 487 | high | pdunton |  |
 | Trip.js | Any file logic should be put into it's own file | high | pdunton |  |
 | Trip.js | Destination states should be isolated somehow out of the file | high | pdunton |  |
+| Trip.js:103-106 | 4 buttons in a row should make render button function | low | nd0905 |  |
+| Trip.js:157 | Unused Const | low | nd0905 |  |
+| Trip.js:227 | Multiple buttons should be made in function | low | nd0905 |  |
+| Trip.js:268,292 | Repeated Logic should be pulled out | low | nd0905 |  |
+| Trip.js:373 | Does response ever get changed back to 0.0 | med | nd0905 |  |
+| Trip.js:450 | Can the error message be more helpful to user | low | nd0905 |  |
+| Trip.js:477-487 | Could any of these values be null? | med | nd0905 |  |
+| Trip.js:147,159,163,etc. | JSON.parse has no error catching | low | nd0905 |  |
+| Trip.js | Move all destinations to new component | low | nd0905 |  |
 |  |  |  |  |  |
 
