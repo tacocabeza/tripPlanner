@@ -1,12 +1,12 @@
 package com.tco.requests;
 
+import com.tco.functionality.Find;
 import com.tco.functionality.Narrow;
-import com.tco.misc.BadRequestException;
+import com.tco.functionality.Place;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.tco.functionality.Place;
-import com.tco.functionality.Find;
-import java.util.*;
+
+import java.util.ArrayList;
 
 public class RequestFind extends RequestHeader{
 
@@ -24,8 +24,8 @@ public class RequestFind extends RequestHeader{
 
     public RequestFind(){
         this.requestType = "find";
-        narrow = new Narrow();
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
+
     }
 
     @Override
