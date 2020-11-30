@@ -30,7 +30,10 @@ public class RequestFind extends RequestHeader{
 
     @Override
     public void buildResponse() {
-        Find f = new Find(this.match, this.limit);
+
+        System.out.println(narrow);
+
+        Find f = new Find(this.match, this.limit, this.narrow);
         this.found = f.getFound();
         this.places = f.getPlaces();
 

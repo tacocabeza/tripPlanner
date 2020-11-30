@@ -23,19 +23,75 @@ public class TestFind {
     private Find findNoMatchZeroLimit;
     private Find findNoMatchNoLimit;
 
+    private Find findNoTypeNoWhere;
+    private Find findNoTypeEmptyWhere;
+    private Find findNoType1Where;
+    private Find findNoTypeMultipleWhere;
+
+    private Find findEmptyTypeNoWhere;
+    private Find findEmptyTypeEmptyWhere;
+    private Find findEmptyType1Where;
+    private Find findEmptyTypeMultipleWhere;
+
+    private Find find1TypeNoWhere;
+    private Find find1TypeEmptyWhere;
+    private Find find1Type1Where;
+    private Find find1TypeMultipleWhere;
+
+    private Find findMultipleTypeNoWhere;
+    private Find findMultipleTypeEmptyWhere;
+    private Find findMultipleType1Where;
+    private Find findMultipleTypeMultipleWhere;
+
     @BeforeEach
     public void initFinds(){
-        findMatchLimit = new Find("Heli@#",4);
-        findMatchZeroLimit = new Find("Heli@#",0);
-        findMatchNoLimit = new Find("Heli@#",null);
+        findMatchLimit = new Find("Heli@#",4, null);
+        findMatchZeroLimit = new Find("Heli@#",0, null);
+        findMatchNoLimit = new Find("Heli@#",null, null);
 
-        findEmptyMatchLimit = new Find("",4);
-        findEmptyMatchZeroLimit = new Find("",0);
-        findEmptyMatchNoLimit = new Find("", null);
+        findEmptyMatchLimit = new Find("",4, null);
+        findEmptyMatchZeroLimit = new Find("",0, null);
+        findEmptyMatchNoLimit = new Find("", null, null);
 
-        findNoMatchLimit = new Find(null,4);
-        findNoMatchZeroLimit = new Find(null,0);
-        findNoMatchNoLimit = new Find(null,null);
+        findNoMatchLimit = new Find(null,4, null);
+        findNoMatchZeroLimit = new Find(null,0, null);
+        findNoMatchNoLimit = new Find(null,null, null);
+
+        findNoTypeNoWhere = new Find("Heli@#",0,
+                new Narrow(null, null));
+        findNoTypeEmptyWhere = new Find("Heli@#",0,
+                new Narrow(null, new String[] {}));
+        findNoType1Where = new Find("Heli@#",0,
+                new Narrow(null, new String[] {"California"}));
+        findNoTypeMultipleWhere = new Find("Heli@#",0,
+                new Narrow(null, new String[] {"California", "Connecticut"}));
+
+        findEmptyTypeNoWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {}, null));
+        findEmptyTypeEmptyWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {}, new String[] {}));
+        findEmptyType1Where = new Find("Heli@#",0,
+                new Narrow(new String[] {}, new String[] {"California"}));
+        findEmptyTypeMultipleWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {}, new String[] {"California", "Connecticut"}));
+
+        find1TypeNoWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport"}, null));
+        find1TypeEmptyWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport"}, new String[] {}));
+        find1Type1Where = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport"}, new String[] {"California"}));
+        find1TypeMultipleWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport"}, new String[] {"California", "Connecticut"}));
+
+        findMultipleTypeNoWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport", "closed"}, null));
+        findMultipleTypeEmptyWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport", "closed"}, new String[] {}));
+        findMultipleType1Where = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport", "closed"}, new String[] {"California"}));
+        findMultipleTypeMultipleWhere = new Find("Heli@#",0,
+                new Narrow(new String[] {"heliport", "closed"}, new String[] {"California", "Connecticut"}));
     }
 
     @Test
@@ -122,7 +178,7 @@ public class TestFind {
     @Test
     @DisplayName("Test No Records")
     public void testNoRecords(){
-        Find f = new Find("YOU WERE MY BROTHER ANAKIN",6);
+        Find f = new Find("YOU WERE MY BROTHER ANAKIN",6, null);
         assertEquals(0,f.getFound());
         assertEquals(0,f.getPlaces().size());
     }
@@ -136,5 +192,21 @@ public class TestFind {
         Find f_wiki_link = new Find("Vatican City Heliport",0);
         assertEquals("http://en.wikipedia.org/wiki/Vatican_City_Heliport",
                 f_wiki_link.getPlaces().get(0).url);
+    }
+
+    @Test
+    @DisplayName("Test No Type, No Where")
+    public void testNoTypeNoWhere(){
+        assertEquals(9403, findNoTypeNoWhere.getFound());
+    }
+
+    @Test
+    @DisplayName("Test No Type, 1 Where")
+    public void testNoType1Where(){
+        ArrayList<Place> places = findNoType1Where.getPlaces();
+        assertEquals(9403, findNoType1Where.getFound());
+        for(Place p : places){
+            assert
+        }
     }
 }
