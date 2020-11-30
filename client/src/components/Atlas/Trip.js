@@ -154,7 +154,7 @@ export default class Trip extends Component {
   }
 
   onDrop(dropResult) {
-    const { removedIndex, addedIndex, payload, element } = dropResult;
+    const { removedIndex, addedIndex} = dropResult;
 
     let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
     let movedDestination = tempDestinations.splice(removedIndex, 1)[0];
