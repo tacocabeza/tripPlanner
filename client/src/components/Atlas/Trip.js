@@ -422,12 +422,8 @@ export default class Trip extends Component {
         destinations: response.places,
         destinationStates: newDestinationStates
       },
-      this.setLocations,
+        this.props.setTripLocations(this.state.destinations),
     );
-  }
-
-  setLocations() {
-    this.props.setTripLocations(this.state.destinations);
   }
 
   processFile(files) {
