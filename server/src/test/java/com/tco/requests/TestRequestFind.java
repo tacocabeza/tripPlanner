@@ -1,15 +1,12 @@
 package com.tco.requests;
 
+import com.tco.functionality.Narrow;
 import com.tco.functionality.Place;
-import com.tco.requests.RequestConfig;
-import com.tco.requests.RequestFind;
-
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
 
 import static com.tco.requests.RequestFind.MAX_LIMIT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +19,7 @@ public class TestRequestFind {
     @BeforeEach
     public void createConfigurationForTestCases(){
         findRequest = new RequestFind();
+        findRequest.narrow = new Narrow();
         findRequest.match = "Heli@#";
         findRequest.buildResponse();
     }
