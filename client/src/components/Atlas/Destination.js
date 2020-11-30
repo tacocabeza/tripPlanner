@@ -50,7 +50,7 @@ export default class Destination extends Component {
     return (
       <div>
         <Fade in={this.props.index > 0} className="text-right">
-          Distance: {this.props.distance}mi.
+          Leg Distance: {this.props.distance}mi.
         </Fade>
         <Card className="destination">
           <Row>
