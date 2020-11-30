@@ -71,6 +71,7 @@ export default class Atlas extends Component {
       showLines: true,
       tripLocations: [],
       tripNewLocation: {location: null, locationName: ''},
+      justClicked: false
     };
   }
 
@@ -217,8 +218,14 @@ export default class Atlas extends Component {
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
+      const initMarker = ref => {
+        if (ref && location === this.state.distanceLocation1 && this.state.justClicked) {
+          ref.leafletElement.openPopup()
+          this.setState({justClicked: false})
+        }
+      };
       return (
-        <Marker position={location} icon={icon} key={key}>
+        <Marker position={location} icon={icon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
@@ -242,7 +249,8 @@ export default class Atlas extends Component {
       distanceLocation2: this.state.distanceLocation1,
       distanceLocation1: distanceLocation,
       distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: ''
+      distanceLocation1Name: '',
+      justClicked: true
     });
   }
 
