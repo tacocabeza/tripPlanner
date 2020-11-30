@@ -355,10 +355,9 @@ export default class Trip extends Component {
     let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
     let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
 
-    while (index !== tempDestinations.length) {
+    for (index; index !== tempDestinations.length; index++) {
       tempDestinations.unshift(tempDestinations.pop());
       tempDestinationStates.unshift(tempDestinationStates.pop());
-      index++;
     }
     this.setState({
           destinations: tempDestinations,
