@@ -232,12 +232,11 @@ export default class Trip extends Component {
   }
 
   renderLoadModal() {
-    const callback = (event) => {this.processFile(event.target.files)};
     return (
       <Modal isOpen={this.state.loadModal}>
         <ModalHeader>Load Trip</ModalHeader>
         <ModalBody>
-          <Input type='file' onChange={callback} />
+          <Input type='file' onChange={(event) => {this.processFile(event.target.files)}} />
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={() => this.loadFile()}>Load</Button>
