@@ -74,23 +74,22 @@ export default class Search extends Component {
   }
 
   renderLists() {
-    if(this.state.inputText !== ""){
       return(this.state.results.places.map(result => (
         <ListGroupItem key={result.id} action={true} onClick={() => {this.props.onClickListItem(result.name, result.latitude, result.longitude)}}>
           {result.name}
         </ListGroupItem>
       )));
-    }
+
   }
 
   showFeelingLucky(){
-    if(!this.state.inputText || this.state.inputText === "") {
+
       return(
           <ListGroupItem className="fontBold" action onClick={this.sendLuckyRequest} key={"FeelingLuckyItem"}>
             Feeling Lucky?
           </ListGroupItem>
       )
-    }
+
   }
 
   sendFindRequest() {
