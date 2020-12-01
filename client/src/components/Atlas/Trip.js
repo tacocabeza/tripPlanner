@@ -9,6 +9,7 @@ import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {EMPTY_TRIP} from "../../utils/constants";
+import {EMPTY_NEW_ITEM} from "../../utils/constants";
 import * as tripFile from "../../../schemas/TripFile";
 import {Container, Draggable} from "react-smooth-dnd";
 import Destination from "./Destination";
@@ -39,7 +40,7 @@ export default class Trip extends Component {
       destinationModal: false,
       destinationStates: [],
       loadModal: false,
-      newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
+      newItem: EMPTY_NEW_ITEM,
       showNewItem: false,
       serverSettings: this.props.serverSettings,
       loadedFile: EMPTY_TRIP,
@@ -328,7 +329,7 @@ export default class Trip extends Component {
           destinations: this.state.destinations.concat(this.state.newItem),
           destinationStates: this.state.destinationStates.concat(
             this.getInitDestinationState(this.state.newItem)),
-          newItem: { "notes": '', "name": '', "latitude": '', "longitude": ''},
+          newItem: EMPTY_NEW_ITEM,
         },
         this.sendTripRequest,
       );
