@@ -54,7 +54,7 @@ export default class Trip extends Component {
   render() {
     return(
       <div className="text-center">
-        <Col xs={12}>
+        <Col>
           <br/>
           {this.renderBar()}
           <br/>
