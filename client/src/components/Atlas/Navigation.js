@@ -11,6 +11,7 @@ export default class Navigation extends Component {
       <Nav tabs>
         {this.renderLink('1', 'Map')}
         {this.renderLink('2', 'Create Trip')}
+        {this.renderLink('3', 'Settings')}
       </Nav>
     )
   }
