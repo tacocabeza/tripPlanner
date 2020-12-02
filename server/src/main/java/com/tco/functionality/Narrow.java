@@ -18,7 +18,6 @@ public class Narrow {
 
     }
 
-
     public String[] getType(){
         return type;
     }

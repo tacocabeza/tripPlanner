@@ -18,20 +18,15 @@ public class RequestFind extends RequestHeader{
     Narrow narrow;
     private ArrayList<Place> places;
 
-
     private final transient Logger log = LoggerFactory.getLogger(RequestFind.class);
-
 
     public RequestFind(){
         this.requestType = "find";
         this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
-
     }
 
     @Override
     public void buildResponse() {
-
-        System.out.println(narrow);
 
         Find f = new Find(this.match, this.limit, this.narrow);
         this.found = f.getFound();
