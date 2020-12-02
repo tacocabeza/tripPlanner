@@ -265,11 +265,7 @@ export default class Trip extends Component {
       let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
       if (newPlace) {
         let placeName;
-        if (newPlace.locationName !== '' && newPlace.locationName) {
-          placeName = newPlace.locationName;
-        } else {
-          placeName = newPlace.location[0].toFixed(2) + ', ' + newPlace.location[1].toFixed(2);
-        }
+        placeName = this.checkName(newPlace.locationName, newPlace.location[0], newPlace.location[1]);
         this.setState({
           newItem: {
             "notes": "",
@@ -290,11 +286,7 @@ export default class Trip extends Component {
 
   addDestination(name, lat, lng) {
     let placeName;
-    if (name && name !== '') {
-      placeName = name;
-    } else {
-      placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
-    }
+    placeName = this.checkName(name, lat, lng)
     this.setState({
       newItem: {
         "notes": "",
@@ -304,6 +296,16 @@ export default class Trip extends Component {
       },
       showNewItem: true,
     });
+  }
+
+  checkName(name, lat, lng) {
+    let placeName;
+    if (name && name !== '') {
+      placeName = name;
+    } else {
+      placeName = lat.toFixed(2) + ', ' + lng.toFixed(2);
+    }
+    return placeName;
   }
 
   removeDestination(index) {
