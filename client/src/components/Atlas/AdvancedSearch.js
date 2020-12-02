@@ -10,8 +10,6 @@ export default class AdvancedSearch extends Component {
     this.updateCountryText = this.updateCountryText.bind(this);
     this.updateTypeText = this.updateTypeText.bind(this);
     this.updateMuniText = this.updateMuniText.bind(this);
-    this.showTypes = this.showTypes.bind(this);
-    this.showWhere = this.showWhere.bind(this);
     this.addCountry = this.addCountry.bind(this);
     this.addType = this.addType.bind(this);
     this.addMuni = this.addMuni.bind(this);
@@ -21,7 +19,6 @@ export default class AdvancedSearch extends Component {
       countryText: "",
       typeText: "",
       muniText: "",
-      advancedModal: false,
     }
   }
 
@@ -45,11 +42,11 @@ export default class AdvancedSearch extends Component {
           </InputGroup>
           <p className="w-100 pt-2 mb-0">Selected Types</p>
           <ListGroup>
-            {this.showTypes()}
+            {this.showFilters(this.props.types, this.props.removeType)}
           </ListGroup>
           <p className="w-100 pt-2 mb-0">Selected Locations</p>
           <ListGroup>
-            {this.showWhere()}
+            {this.showFilters(this.props.where, this.props.removeWhere)}
           </ListGroup>
         </ModalBody>
         <ModalFooter>
@@ -77,22 +74,11 @@ export default class AdvancedSearch extends Component {
     this.setState({muniText: event.target.value});
   }
 
-  showWhere() {
-    return (this.props.where.map((result, index) => (
+  showFilters(option, remove) {
+    return (option.map((result, index) => (
       <ListGroupItem key={index}>
         {result}
-        <Button className="float-right deleteBtn" onClick={() => this.props.removeWhere(index)}>
-          <img className="h-25px" src={DeleteIcon}/>
-        </Button>
-      </ListGroupItem>
-    )));
-  }
-
-  showTypes() {
-    return (this.props.types.map((result, index) => (
-      <ListGroupItem key={index}>
-        {result}
-        <Button className="float-right deleteBtn" onClick={() => this.props.removeType(index)}>
+        <Button className="float-right deleteBtn" onClick={() => remove(index)}>
           <img className="h-25px" src={DeleteIcon}/>
         </Button>
       </ListGroupItem>
