@@ -138,7 +138,7 @@ export default class Atlas extends Component {
       <div>
         {this.renderMapButton('recenter', recenterIcon, this.recenterMap, "Recenter Map")}
         {this.renderMapButton('distancebtn', distanceIcon, () => this.setState({isDistanceOpen: !this.state.isDistanceOpen}), "Open Distance")}
-        {this.renderMapButton('toggleMarkers', hideMarkerIcon, this.toggleMarkers,"Toggle Markers")}
+        {this.renderMapButton('toggleMarkers', hideMarkerIcon, this.toggleMarkers,"Show / Hide Markers and Lines")}
         {this.renderMapButton('showAllMarkers', showMarkerIcon, this.showAllMarkers, "Show All Markers")}
         <Control position="topright">
           <Collapse isOpen={this.state.isSearchOpen} className="float-left">
@@ -229,7 +229,7 @@ export default class Atlas extends Component {
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
-            <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
+            <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))} size={'small'}>
               Add to trip
             </IconButton>
           </Popup>

@@ -68,7 +68,8 @@ public class Find {
     }
 
     private void queryPlaces(){
-        String columns = "world.name, latitude, longitude, world.id, altitude, municipality, type";
+        String columns = "world.name, latitude, longitude, world.id, altitude, municipality, " +
+                "type, country.name, region.name, world.wikipedia_link, world.home_link";
         String joins = "inner join country on world.iso_country = country.id " +
                         "inner join region on world.iso_region = region.id";
         String where = "world.name like \"%" + match + "%\" or " +
@@ -115,6 +116,12 @@ public class Find {
                 p.id = results.getString("world.id");
                 p.municipality = results.getString("municipality");
                 p.type = results.getString("type");
+                p.country = results.getString("country.name");
+                p.region = results.getString("region.name");
+                p.url = results.getString("world.wikipedia_link");
+                if(p.url == null){
+                    p.url = results.getString("world.home_link");
+                }
 
                 newPlaces.add(p);
             }
