@@ -7,11 +7,14 @@ import Trip from '../src/components/Atlas/Trip';
 import Atlas from '../src/components/Atlas/Atlas';
 import {jest, test} from "@jest/globals";
 
-const startProperties = {
+const EMPTY_DESTINATION = { "notes": '', "name": '',
+  "latitude": '', "longitude": ''};
+
+const START_PROPERTIES = {
   createSnackBar: jest.fn()
 };
 
-const sampleTrip = {
+const SAMPLE_TRIP = {
   "options": {
     "title": "Shopping Loop",
     "earthRadius": "3959.0"
@@ -41,7 +44,7 @@ const sampleTrip = {
   "requestVersion": 4
 };
 
-const sampleTripStates = [
+const SAMPLE_TRIP_STATES = [
   {
     collapseOpen: false,
     isValidProperty: {name: true, latitude: true, longitude: true, notes: true},
@@ -94,7 +97,7 @@ function testLoadModal() {
 test("Load modal opened by Load button", testLoadModal);
 
 function testGoToMap() {
-  const atlas = mount(<Atlas createSnackBar={startProperties.createSnackBar}/>);
+  const atlas = mount(<Atlas createSnackBar={START_PROPERTIES.createSnackBar}/>);
   let expectedTab = '1';
   atlas.find('#addbtn').at(0).simulate('click');
   atlas.find('#mapbtn').at(0).simulate('click');
@@ -105,10 +108,23 @@ function testGoToMap() {
 test("Add from map button navigates to map tab", testGoToMap);
 
 function testAddButtonOnMap() {
-  let newLocationToAdd = {location: [0,0], locationName: "Zero Location"};
-  const trip = shallow(<Trip createSnackBar={startProperties.createSnackBar} tripNewLocation={newLocationToAdd}/>);
-  expect({location: null, locationName: ""}).toEqual(newLocationToAdd);
-  expect(trip.state().newItem).toEqual({ "notes": '', "name": '', "latitude": '', "longitude": ''});
+  let namedNewLocationToAdd = {location: [0.0, 0.0], locationName: "Null Island"};
+  let unnamedNewLocationToAdd = {location: [0.0, 0.0]};
+  const emptyTripLocation = {location: null, locationName: ""};
+
+  let trip = shallow(<Trip createSnackBar={START_PROPERTIES.createSnackBar}
+                             tripNewLocation={namedNewLocationToAdd}/>);
+  trip.instance().checkMapUpdate();
+  trip.update();
+  expect(namedNewLocationToAdd).toEqual(emptyTripLocation);
+  expect(trip.state().newItem).toEqual(EMPTY_DESTINATION);
+
+  trip = shallow(<Trip createSnackBar={START_PROPERTIES.createSnackBar}
+                             tripNewLocation={unnamedNewLocationToAdd}/>);
+  trip.instance().checkMapUpdate();
+  trip.update();
+  expect(unnamedNewLocationToAdd).toEqual(emptyTripLocation);
+  expect(trip.state().newItem).toEqual(EMPTY_DESTINATION);
 }
 
 test("Add to trip from map adds to trip", testAddButtonOnMap)
@@ -116,10 +132,10 @@ test("Add to trip from map adds to trip", testAddButtonOnMap)
 
 function testProcessTripResponse() {
   let trip = shallow(<Trip setTripLocations={jest.fn()} />);
-  trip.instance().processTripResponse(sampleTrip);
+  trip.instance().processTripResponse(SAMPLE_TRIP);
 
   let actualLoadedTrip = trip.state().loadedTrip;
-  expect(actualLoadedTrip).toEqual(sampleTrip);
+  expect(actualLoadedTrip).toEqual(SAMPLE_TRIP);
 
   let actualTripName = trip.state().tripName;
   expect(actualTripName).toEqual("Shopping Loop");
@@ -131,7 +147,7 @@ function testProcessTripResponse() {
   expect(actualRoundTripDistance).toEqual(136);
 
   let actualDestinations = trip.state().destinations;
-  expect(actualDestinations).toEqual(sampleTrip.places);
+  expect(actualDestinations).toEqual(SAMPLE_TRIP.places);
 }
 
 test("test processTripResponse", testProcessTripResponse)
@@ -139,8 +155,8 @@ test("test processTripResponse", testProcessTripResponse)
 function testOnDrop() {
   let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
-  trip.instance().processTripResponse(sampleTrip);
-  const before = sampleTrip.places;
+  trip.instance().processTripResponse(SAMPLE_TRIP);
+  const before = SAMPLE_TRIP.places;
 
   trip.instance().onDrop({removedIndex: 0, addedIndex: 2});
 
@@ -149,7 +165,7 @@ function testOnDrop() {
   expect(trip.state().destinations[2].name).toEqual("Denver");
 
   // Make sure original array is unchanged
-  expect(sampleTrip.places).toEqual(before);
+  expect(SAMPLE_TRIP.places).toEqual(before);
 }
 
 test("test destinations onDrop", testOnDrop)
@@ -157,8 +173,8 @@ test("test destinations onDrop", testOnDrop)
 function testRemoveLocation() {
   let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
-  trip.instance().processTripResponse(sampleTrip);
-  const before = sampleTrip.places;
+  trip.instance().processTripResponse(SAMPLE_TRIP);
+  const before = SAMPLE_TRIP.places;
 
   trip.instance().removeDestination(1);
 
@@ -167,7 +183,7 @@ function testRemoveLocation() {
   expect(trip.state().destinations[1].name).toEqual("Fort Collins");
 
   // Make sure original array is unchanged
-  expect(sampleTrip.places).toEqual(before);
+  expect(SAMPLE_TRIP.places).toEqual(before);
 }
 
 test("test remove location", testRemoveLocation)
@@ -202,8 +218,8 @@ test("test submitDestination",testSubmitDestination)
 function testReverseTrip() {
   let trip = shallow(<Trip setTripLocations={jest.fn()} />);
   trip.instance().sendTripRequest = jest.fn();
-  trip.instance().processTripResponse(sampleTrip);
-  const before = sampleTrip.places;
+  trip.instance().processTripResponse(SAMPLE_TRIP);
+  const before = SAMPLE_TRIP.places;
 
   trip.instance().reverseTrip();
 
@@ -212,7 +228,7 @@ function testReverseTrip() {
   expect(trip.state().destinations[2].name).toEqual("Denver");
 
   // Make sure original array is unchanged
-  expect(sampleTrip.places).toEqual(before);
+  expect(SAMPLE_TRIP.places).toEqual(before);
 }
 
 test("test reverseTrip", testReverseTrip)
@@ -244,9 +260,9 @@ test("test addDestination", testAddDestination)
 function testToggleDestinationCollapse() {
   let trip = mount(<Trip/>);
   trip.setState({
-    loadedTrip: sampleTrip,
-    destinations: sampleTrip.places,
-    destinationStates: sampleTripStates
+    loadedTrip: SAMPLE_TRIP,
+    destinations: SAMPLE_TRIP.places,
+    destinationStates: SAMPLE_TRIP_STATES
   });
   trip.instance().sendTripRequest = jest.fn();
 
@@ -262,9 +278,9 @@ test("test toggleDestinationCollapse", testToggleDestinationCollapse);
 function testRotateTrip() {
     let trip = mount(<Trip/>);
     trip.setState({
-      loadedTrip: sampleTrip,
-      destinations: sampleTrip.places,
-      destinationStates: sampleTripStates
+      loadedTrip: SAMPLE_TRIP,
+      destinations: SAMPLE_TRIP.places,
+      destinationStates: SAMPLE_TRIP_STATES
     });
     trip.instance().sendTripRequest = jest.fn();
 
@@ -283,7 +299,7 @@ test("test rotateTrip", testRotateTrip);
 
 function testGetInitDestinationStateArray() {
   let trip = shallow(<Trip/>);
-  expect(trip.instance().getInitDestinationStateArray(sampleTrip.places)).toEqual(sampleTripStates);
+  expect(trip.instance().getInitDestinationStateArray(SAMPLE_TRIP.places)).toEqual(SAMPLE_TRIP_STATES);
 }
 
 test("test getInitDestinationStateArray",testGetInitDestinationStateArray);
