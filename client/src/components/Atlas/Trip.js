@@ -400,28 +400,34 @@ export default class Trip extends Component {
   }
 
   processTripResponse(response) {
-    let count = 0;
-    for (let i = 0; i < response.distances.length - 1; i++) {
-      count = count + response.distances[i];
-    }
-    let roundTripCount = count + response.distances[response.distances.length - 1];
-    let newDestinationStates;
-    if(this.state.response === "0.0"){
-      newDestinationStates = this.state.destinationStates;
-    } else {
-      newDestinationStates = this.getInitDestinationStateArray(response.places);
-    }
-    this.setState({
-        loadedTrip: response,
-        tripName: response.options.title,
-        oneWayDistance: count,
-        roundTripDistance: roundTripCount,
-        response: "0.0",
-        destinations: response.places,
-        destinationStates: newDestinationStates
-      },
+    if(response.distances) {
+      let count = 0;
+      for (let i = 0; i < response.distances.length - 1; i++) {
+        count = count + response.distances[i];
+      }
+      let roundTripCount = count + response.distances[response.distances.length - 1];
+      let newDestinationStates;
+      if (this.state.response === "0.0") {
+        newDestinationStates = this.state.destinationStates;
+      } else {
+        newDestinationStates = this.getInitDestinationStateArray(response.places);
+      }
+      this.setState({
+          loadedTrip: response,
+          tripName: response.options.title,
+          oneWayDistance: count,
+          roundTripDistance: roundTripCount,
+          response: "0.0",
+          destinations: response.places,
+          destinationStates: newDestinationStates
+        },
         this.props.setTripLocations(this.state.destinations),
-    );
+      );
+    }
+  }
+
+  setLocations() {
+    this.props.setTripLocations(this.state.destinations);
   }
 
   processFile(files) {
