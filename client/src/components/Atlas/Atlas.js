@@ -98,6 +98,9 @@ export default class Atlas extends Component {
                       isRoundTrip={this.state.isRoundTrip}
                       flipRoundTrip={this.flipRoundTrip}/>
               </TabPane>
+              <TabPane tabId="3">
+
+              </TabPane>
             </TabContent>
           </Col>
         </Row>
