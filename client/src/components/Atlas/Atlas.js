@@ -147,7 +147,8 @@ export default class Atlas extends Component {
           <Collapse isOpen={this.state.isSearchOpen} className="float-left">
             <Search createSnackBar={this.props.createSnackBar}
                     serverSettings={this.state.serverSettings}
-                    onClickListItem={this.searchListItemClick}/>
+                    onClickListItem={this.searchListItemClick}
+                    hasAdvanced={true}/>
           </Collapse>
           <Button className="float-right mapButton" onClick={() => this.setState({isSearchOpen: !this.state.isSearchOpen})}>
             <img className="h-22px" alt="search icon" src={searchIcon}/>
