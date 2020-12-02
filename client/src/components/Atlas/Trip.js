@@ -261,24 +261,26 @@ export default class Trip extends Component {
   }
 
   checkMapUpdate() {
-    if(this.props.tripNewLocation){
-      let newPlace = this.props.tripNewLocation.location ? this.props.tripNewLocation : null
-      if (newPlace) {
-        let placeName;
-        placeName = this.checkName(newPlace.locationName, newPlace.location[0], newPlace.location[1]);
-        this.setState({
-          newItem: {
-            "notes": "",
-            "name": placeName,
-            "latitude": String(newPlace.location[0]),
-            "longitude": String(newPlace.location[1]),
-          },
-          showNewItem: true,
-          destinationModal: true,
-        });
+    let newPlaceLocation = this.props.tripNewLocation?.location;
+    let newPlaceLocationName = this.props.tripNewLocation?.locationName;
+
+    if (newPlaceLocation) {
+      if (!newPlaceLocationName || newPlaceLocationName === '') {
+        newPlaceLocationName = newPlaceLocation[0].toFixed(2) + ', ' +
+                               newPlaceLocation[1].toFixed(2);
       }
-    }
-    if(this.props.tripNewLocation && this.props.tripNewLocation.location) {
+
+      this.setState({
+        newItem: {
+          "notes": "",
+          "name": newPlaceLocationName,
+          "latitude": String(newPlaceLocation[0]),
+          "longitude": String(newPlaceLocation[1]),
+        },
+        showNewItem: true,
+        destinationModal: true,
+      });
+
       this.props.tripNewLocation.location = null;
       this.props.tripNewLocation.locationName = '';
     }

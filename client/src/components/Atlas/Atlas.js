@@ -39,7 +39,7 @@ export default class Atlas extends Component {
 
   constructor(props) {
     super(props);
-    this.showAllMarkers = this.showAllMarkers.bind(this);
+    this.flipRoundTrip = this.flipRoundTrip.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.mapMovement = this.mapMovement.bind(this);
     this.prepareNewTripAdd = this.prepareNewTripAdd.bind(this);
@@ -47,10 +47,10 @@ export default class Atlas extends Component {
     this.searchListItemClick = this.searchListItemClick.bind(this);
     this.setMarkerOnClick = this.setMarkerOnClick.bind(this);
     this.setTripLocations = this.setTripLocations.bind(this);
-    this.toggleTab = this.toggleTab.bind(this);
     this.setDistance = this.setDistance.bind(this);
-    this.flipRoundTrip = this.flipRoundTrip.bind(this);
+    this.showAllMarkers = this.showAllMarkers.bind(this);
     this.toggleMarkers = this.toggleMarkers.bind(this);
+    this.toggleTab = this.toggleTab.bind(this);
 
     this.state = {
       currentMapBounds: null,
