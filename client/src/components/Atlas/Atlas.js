@@ -229,7 +229,7 @@ export default class Atlas extends Component {
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
-            <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))}>
+            <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))} size={'small'}>
               Add to trip
             </IconButton>
           </Popup>
