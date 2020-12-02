@@ -9,6 +9,9 @@ public class Place {
     public String municipality;
     public String name;
     public String type;
+    public String region;
+    public String country;
+    public String url;
 
     public Place(String latitude, String longitude, String altitude){
         this.latitude = latitude;

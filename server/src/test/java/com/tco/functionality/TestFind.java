@@ -126,4 +126,15 @@ public class TestFind {
         assertEquals(0,f.getFound());
         assertEquals(0,f.getPlaces().size());
     }
+
+    @Test
+    @DisplayName("Test URL")
+    public void testURL(){
+        Find f_home_link = new Find("Hudson Bay Helicopters Heliport",0);
+        assertEquals("http://hudsonbayheli.com/", f_home_link.getPlaces().get(0).url);
+
+        Find f_wiki_link = new Find("Vatican City Heliport",0);
+        assertEquals("http://en.wikipedia.org/wiki/Vatican_City_Heliport",
+                f_wiki_link.getPlaces().get(0).url);
+    }
 }
