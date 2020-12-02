@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Input, InputGroup, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader, Button} from "reactstrap";
+import DeleteIcon from '../../static/images/delete.svg'
 
 export default class AdvancedSearch extends Component {
   constructor(props) {
@@ -77,17 +78,23 @@ export default class AdvancedSearch extends Component {
   }
 
   showWhere() {
-    return (this.props.where.map(result => (
-      <ListGroupItem key={result.id}>
+    return (this.props.where.map((result, index) => (
+      <ListGroupItem key={index}>
         {result}
+        <Button className="float-right deleteBtn" onClick={() => this.props.removeWhere(index)}>
+          <img className="h-25px" src={DeleteIcon}/>
+        </Button>
       </ListGroupItem>
     )));
   }
 
   showTypes() {
-    return (this.props.types.map(result => (
-      <ListGroupItem key={result.id}>
+    return (this.props.types.map((result, index) => (
+      <ListGroupItem key={index}>
         {result}
+        <Button className="float-right deleteBtn" onClick={() => this.props.removeType(index)}>
+          <img className="h-25px" src={DeleteIcon}/>
+        </Button>
       </ListGroupItem>
     )));
   }

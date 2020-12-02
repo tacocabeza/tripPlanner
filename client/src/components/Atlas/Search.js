@@ -24,6 +24,8 @@ export default class Search extends Component {
     this.closeAdvancedModal = this.closeAdvancedModal.bind(this);
     this.addType = this.addType.bind(this);
     this.addWhere = this.addWhere.bind(this);
+    this.removeType = this.removeType.bind(this);
+    this.removeWhere = this.removeWhere.bind(this);
     this.submitAdvancedSearch = this.submitAdvancedSearch.bind(this);
 
     this.state={
@@ -107,7 +109,9 @@ export default class Search extends Component {
           submit={this.submitAdvancedSearch}
           modal={this.state.advancedModal}
           closeModal={this.closeAdvancedModal}
-          updateAdvancedText={this.updateAdvancedText}/>
+          updateAdvancedText={this.updateAdvancedText}
+          removeType={this.removeType}
+          removeWhere={this.removeWhere}/>
       );
     }
   }
@@ -222,6 +226,18 @@ export default class Search extends Component {
   addWhere(where) {
     let temp = this.state.whereFilter;
     temp.push(where);
+    this.setState({whereFilter: temp});
+  }
+
+  removeType(index) {
+    let temp = this.state.typeFilter;
+    temp.splice(index, 1);
+    this.setState({typeFilter: temp});
+  }
+
+  removeWhere(index) {
+    let temp = this.state.whereFilter;
+    temp.splice(index, 1);
     this.setState({whereFilter: temp});
   }
 
