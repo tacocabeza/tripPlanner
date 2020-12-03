@@ -56,7 +56,7 @@ export default class AdvancedSearch extends Component {
           </InputGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={()=>{if(this.state.advancedText !== "") {this.props.submit()}}}>Search</Button>
+          <Button color="primary" onClick={()=>{if(this.state.advancedText !== "") {this.props.submit(); this.setState({advancedText: ""})}}}>Search</Button>
           <Button onClick={this.props.closeModal}>Close</Button>
         </ModalFooter>
       </Modal>
@@ -65,21 +65,27 @@ export default class AdvancedSearch extends Component {
 
   updateAdvancedText(event) {
     this.setState({advancedText: event.target.value});
-    this.props.updateAdvancedText(event.target.value);
+    if (event.target.value !== "") {
+      this.props.updateAdvancedText(event.target.value);
+    }
   }
 
   setCountries = (selectedOptions) => {
     let temp = []
-    for (let i = 0; i < selectedOptions.length; i++) {
-      temp.push(selectedOptions[i].value);
+    if (selectedOptions) {
+      for (let i = 0; i < selectedOptions.length; i++) {
+        temp.push(selectedOptions[i].value);
+      }
     }
     this.setState({selectedCountries: temp}, this.sendCountries);
   }
 
   setTypes = (selectedOptions) => {
     let temp = []
-    for (let i = 0; i < selectedOptions.length; i++) {
-      temp.push(selectedOptions[i].value);
+    if (selectedOptions) {
+      for (let i = 0; i < selectedOptions.length; i++) {
+        temp.push(selectedOptions[i].value);
+      }
     }
     this.setState({selectedTypes: temp}, this.sendTypes);
   }
