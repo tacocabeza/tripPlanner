@@ -20,6 +20,8 @@ export const LOG = ulog("App");
 
 export const CLIENT_TEAM_NAME = "T01 Feather Friends";
 
+export const fileFormats = [{value: "json", label:"json"},{value: "csv", label:"csv"},{value: "kml", label:"kml"}];
+
 export const EARTH_RADIUS_UNITS_DEFAULT = {"miles": 3959};
 export const SEARCH_CLIENT_LIMIT = 100;
 export const PROTOCOL_VERSION = 4;
