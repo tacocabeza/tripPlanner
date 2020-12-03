@@ -1,5 +1,7 @@
 package com.tco.functionality;
 
+import java.util.Arrays;
+
 public class Narrow {
 
     String[] type;
@@ -16,7 +18,6 @@ public class Narrow {
 
     }
 
-
     public String[] getType(){
         return type;
     }
@@ -24,4 +25,6 @@ public class Narrow {
     public String[] getWhere() {
         return where;
     }
+
+    public String toString() { return Arrays.toString(type) + " " + Arrays.toString(where);}
 }

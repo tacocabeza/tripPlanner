@@ -47,8 +47,6 @@ public class DistanceCalculator {
     {
         Long [] distances = new Long[places.size()];
 
-        System.out.println(places.size());
-
         for(int i = 0; i<=places.size()-1; i++)
         {
 

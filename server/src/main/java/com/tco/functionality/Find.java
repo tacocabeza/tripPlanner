@@ -12,6 +12,7 @@ public class Find {
 
     private final Logger log = LoggerFactory.getLogger(DBConnection.class);
 
+    private final Narrow narrow;
     private final String match;
     private int limit;
     private int found;
@@ -20,7 +21,10 @@ public class Find {
     final int maxMatch = 256;
     private final int luckyLimit = 1;
 
-    public Find(String match, Integer limit){
+    public Find(String match, Integer limit, Narrow narrow){
+
+        this.narrow = narrow;
+
         this.match = formatMatch(match);
         if (this.match.equals("")) {
             lucky = true;
@@ -68,23 +72,56 @@ public class Find {
     }
 
     private void queryPlaces(){
+        String typeFilter;
+        String whereFilter;
+        if(this.narrow == null){
+            typeFilter = "(.*)";
+            whereFilter = "(.*)";
+        } else {
+            typeFilter = createRegexFilter(this.narrow.getType());
+            whereFilter = createRegexFilter(this.narrow.getWhere());
+        }
+
         String columns = "world.name, latitude, longitude, world.id, altitude, municipality, " +
                 "type, country.name, region.name, world.wikipedia_link, world.home_link";
         String joins = "inner join country on world.iso_country = country.id " +
                         "inner join region on world.iso_region = region.id";
-        String where = "world.name like \"%" + match + "%\" or " +
+        String where = "(world.name like \"%" + match + "%\" or " +
                         "world.municipality like \"%" + match + "%\" or " +
                         "region.name like \"%" + match + "%\" or " +
-                        "country.name like \"%" + match + "%\"";
+                        "country.name like \"%" + match + "%\")";
+        String narrow = "(world.municipality regexp \"" + whereFilter + "\" or " +
+                        "region.name regexp \"" + whereFilter + "\" or " +
+                        "country.name regexp \"" + whereFilter + "\") and " +
+                        "(type regexp \"" + typeFilter + "\")";
         String order = lucky ? ("order by rand() limit " + limit) : "order by world.name";
 
         String sql = "select " + columns + " from world " + joins +
-                " where " + where + " " + order + ";";
+                " where " + where + " and " + narrow + " " + order + ";";
 
         DBConnection dbc = new DBConnection();
         ResultSet results = dbc.querySQL(sql);
 
         setResultFields(results);
+    }
+
+    private String createRegexFilter(String[] filterArray) {
+        String filter;
+
+        if(filterArray == null || filterArray.length == 0){
+            filter = ".*";
+        } else {
+            filter = filterArray[0];
+            for(int i = 1; i < filterArray.length; i++){
+                filter += "|" + filterArray[i];
+            }
+        }
+
+        filter = "(" + filter + ")";
+
+        filter = filter.replaceAll("_", ".");
+
+        return filter;
     }
 
     private void setResultFields(ResultSet results){

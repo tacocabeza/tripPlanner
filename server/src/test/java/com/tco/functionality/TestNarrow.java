@@ -22,7 +22,6 @@ public class TestNarrow {
     @Test
     @DisplayName("Test get where")
     public void testGetWhere() {
-        System.out.println(narrow.getWhere().length);
         assertEquals(1,narrow.getWhere().length);
     }
 

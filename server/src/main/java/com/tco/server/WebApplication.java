@@ -1,10 +1,7 @@
 package com.tco.server;
 
-import com.tco.server.MicroServer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.HashMap;
 
 public class WebApplication {
 

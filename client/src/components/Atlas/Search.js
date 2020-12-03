@@ -159,11 +159,21 @@ export default class Search extends Component {
   }
 
   sendAdvancedRequest() {
+    let formattedTypeFilter = JSON.parse(JSON.stringify(this.state.typeFilter));
+    let formattedWhereFilter = JSON.parse(JSON.stringify(this.state.whereFilter));
+
+    for(let i = 0; i < formattedTypeFilter.length; i++){
+      formattedTypeFilter[i] = this.formatInputText(formattedTypeFilter[i]);
+    }
+    for(let i = 0; i < formattedWhereFilter.length; i++){
+      formattedWhereFilter[i] = this.formatInputText(formattedWhereFilter[i]);
+    }
+
     sendServerRequest({
       requestType: "find",
       requestVersion: PROTOCOL_VERSION,
       match: this.formatInputText(this.state.advancedText),
-      narrow: {"type": this.state.typeFilter, "where": this.state.whereFilter},
+      narrow: {"type": formattedTypeFilter, "where": formattedWhereFilter},
       limit: SEARCH_CLIENT_LIMIT},
       this.state.serverSettings.serverPort)
       .then(find => {
