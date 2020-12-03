@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
-import {Map, Marker, Polyline, TileLayer, Popup} from 'react-leaflet';
+import {Map, Marker, Polyline, TileLayer, Popup, LayersControl} from 'react-leaflet';
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
 import CSUGoldMarker from '../../static/images/Markers/CSUGoldMarker.png';
 import CSUGreenMarker from '../../static/images/Markers/CSUGreenMarker.png';
@@ -124,7 +124,20 @@ export default class Atlas extends Component {
             onMoveEnd={this.mapMovement}
             scrollWheelZoom={!this.state.isSearchOpen}
         >
-          <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+          <LayersControl position={"bottomleft"}>
+            <LayersControl.BaseLayer checked name="Satellite">
+              <TileLayer url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer checked name="Topographical">
+              <TileLayer url="https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer checked name="Streets">
+              <TileLayer url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer checked name="Base">
+              <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+            </LayersControl.BaseLayer>
+          </LayersControl>
           {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
           {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, true, "loc1")}
           {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, true, "loc2")}
