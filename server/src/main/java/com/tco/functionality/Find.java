@@ -116,8 +116,13 @@ public class Find {
                 filter += "|" + filterArray[i];
             }
         }
+        if(filter.contains("airport")){
+            filter += "|seaplane_base";
+        }
 
         filter = "(" + filter + ")";
+
+        filter = filter.replaceAll("_", ".");
 
         return filter;
     }
