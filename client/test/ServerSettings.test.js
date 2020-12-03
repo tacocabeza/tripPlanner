@@ -37,7 +37,7 @@ function testRenderInput() {
             processServerConfigSuccess={startProperties.processServerConfigSuccess}
         />);
 
-    expect(settings.find('Input').length).toEqual(2);
+    expect(settings.find('Input').length).toEqual(3);
 }
 
 test('An Input field should be rendered inside the Settings', testRenderInput);
