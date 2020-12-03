@@ -52,8 +52,16 @@ export default class AdvancedSearch extends Component {
           </InputGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={()=>{if(this.state.advancedText !== "") {this.props.submit(); this.setState({advancedText: ""})}}}>Search</Button>
-          <Button onClick={this.props.closeModal}>Close</Button>
+          <Button color="primary" onClick={()=>{
+            if(this.state.advancedText !== "") {
+              this.props.submit();
+              this.setState({advancedText: ""});
+            }
+          }}>Search</Button>
+          <Button onClick={()=>{
+            this.props.closeModal();
+            this.setState({advancedText: ""});
+          }}>Close</Button>
         </ModalFooter>
       </Modal>
     );
