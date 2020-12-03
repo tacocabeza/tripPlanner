@@ -24,7 +24,7 @@ export const fileFormats = [{value: "json", label:"json"},{value: "csv", label:"
 
 export const EARTH_RADIUS_UNITS_DEFAULT = {"miles": 3959};
 export const SEARCH_CLIENT_LIMIT = 100;
-export const PROTOCOL_VERSION = 4;
+export const PROTOCOL_VERSION = 5;
 export const EMPTY_TRIP = {"options": {"title": "", "earthRadius": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const TRIP = {"options": {"title": "", "earthRadius": "", "units": "", "response": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const EMPTY_SEARCH = {"found": 0, "match": "", "places": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
