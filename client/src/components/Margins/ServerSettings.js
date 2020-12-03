@@ -3,7 +3,6 @@ import { Button, Col, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } f
 
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { sendServerRequest, isJsonResponseValid } from "../../utils/restfulAPI";
-import ReactScrollableList from "react-scrollable-list";
 import Select from 'react-select'
 
 import * as configSchema from "../../../schemas/ResponseConfig";
