@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import {Button, Input, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
+import {fileFormats} from "../../utils/constants";
 import {downloadFile} from "../../utils/misc";
+import Select from 'react-select';
+
+
 export default class SaveTrip extends Component {
   constructor(props){
     super(props);
@@ -40,6 +44,15 @@ export default class SaveTrip extends Component {
         <ModalFooter>
           <Button color="primary" disabled={!this.state.saveName} onClick={() => this.save()}>Save</Button>
           <Button onClick={() => this.setState({isPopUp: false})}>Close</Button>
+          <div style={{width: '300px'}}>
+            <Select
+              menuPlacement="auto"
+              menuPosition="fixed"
+              placeholder='Save As'
+              options ={fileFormats}
+            />
+          </div>
+
         </ModalFooter>
       </Modal>
     );
