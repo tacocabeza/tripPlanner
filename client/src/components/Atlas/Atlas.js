@@ -78,6 +78,8 @@ export default class Atlas extends Component {
       justClicked: false,
       tripLineColor: CANYON,
       tripMarkerIcon: AGGIE_MARKER_ICON,
+      tripLineSize: 5,
+      tripMarkerSize: 5,
     };
   }
 
@@ -123,14 +125,21 @@ export default class Atlas extends Component {
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}>Green</IconButton>
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}>Reservoir</IconButton>
         <br/>
+        Marker Size: {this.state.tripMarkerSize}
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: this.state.tripMarkerSize + 1})}>+</IconButton>
+        <IconButton size={"small"} onClick={() => this.state.tripMarkerSize > 0 ?this.setState({tripMarkerSize: this.state.tripMarkerSize - 1}): null}>-</IconButton>
+        <br/>
         Line Color:
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}>Canyon</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}>Alfalfa</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}>Dark Slate</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}>Reservoir</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}>Sunshine</IconButton>
+        <br/>
+        Line Size: {this.state.tripLineSize}
+        <IconButton size={"small"} onClick={() => this.setState({tripLineSize: this.state.tripLineSize + 1})}>+</IconButton>
+        <IconButton size={"small"} onClick={() => this.state.tripLineSize > 0 ? this.setState({tripLineSize: this.state.tripLineSize - 1}): null}>-</IconButton>
       </div>
-
     );
   }
 
@@ -218,11 +227,11 @@ export default class Atlas extends Component {
   renderTripLines() {
     let lines = []
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
-      lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],this.state.tripLineColor,i));
+      lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],this.state.tripLineColor,this.state.tripLineSize,i));
     }
     if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
-      lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],this.state.tripLineColor,lastIndex));
+      lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],this.state.tripLineColor,this.state.tripLineSize,lastIndex));
     }
     if (this.state.showLines) {
       return (<div>{lines}</div>);
@@ -233,13 +242,13 @@ export default class Atlas extends Component {
     if (this.state.distanceLocation2) {
       return (
         <div>
-          {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, CANYON,null)}
+          {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, CANYON, this.state.tripLineSize,null)}
         </div>
       );
     } else if (this.state.distanceLocation1) {
       return (
         <div>
-          {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, CANYON,null)}
+          {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, CANYON, this.state.tripLineSize,null)}
         </div>
       );
     }
@@ -326,7 +335,7 @@ export default class Atlas extends Component {
     }
   }
 
-  getLine(location1, location2, lineColor, key) {
+  getLine(location1, location2, lineColor, lineSize, key) {
     let isDistance = this.state.isDistanceOpen && ((location1 === this.state.distanceLocation2 && location2 === this.state.distanceLocation1) || (location1 === this.state.distanceLocation1 && location2 === this.state.originalMapCenter))
     const initPolyLine = ref => {
       if (ref && isDistance) {
@@ -335,7 +344,7 @@ export default class Atlas extends Component {
     };
     if(location1 && location2) {
       return (
-        <Polyline color={lineColor} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
+        <Polyline color={lineColor} weight={lineSize} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
           {isDistance? this.renderDistance(): null}
         </Polyline>
       );
