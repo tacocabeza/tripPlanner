@@ -3,6 +3,7 @@ import { Button, Col, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } f
 
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import { sendServerRequest, isJsonResponseValid } from "../../utils/restfulAPI";
+import Select from 'react-select'
 
 import * as configSchema from "../../../schemas/ResponseConfig";
 
@@ -15,7 +16,7 @@ export default class ServerSettings extends Component {
             inputText: this.props.serverSettings.serverPort,
             validServer: null,
             config: {}
-        };
+        };;
 
         this.saveInputText = this.state.inputText;
     }
@@ -34,13 +35,33 @@ export default class ServerSettings extends Component {
     }
 
     renderConfig(configSettings) {
+        let filters = this.getFilters();
         return (
           <ModalBody>
               {this.makeConfigBoxes("requestType", configSettings.requestType)}
               {this.makeConfigBoxes("requestVersion", configSettings.requestVersion)}
               {this.makeConfigBoxes("supportedRequests", configSettings.supportedRequests)}
+              {this.renderSelectBoxes("Type", filters.type)}
+              {this.renderSelectBoxes("Where", filters.where)}
+
           </ModalBody>
         );
+    }
+
+    renderSelectBoxes(name, filter){
+
+           return (
+                  <Row className="m-2">
+                    <Col xs={true}>
+                        {name}:
+                    </Col>
+                    <Col xs={true}>
+                        <Select options={filter}/>
+                    </Col>
+                  </Row>
+                );
+
+
     }
 
     makeConfigBoxes(name, information) {
@@ -55,6 +76,20 @@ export default class ServerSettings extends Component {
           </Row>
         );
     }
+
+
+    makeSelectBoxes(name, select) {
+            return (
+              <Row className="m-2">
+                <Col xs={true}>
+                    {name}:
+                </Col>
+                <Col xs={true}>
+                    {select}
+                </Col>
+              </Row>
+            );
+        }
 
     renderSettings(currentServerName) {
         return (
@@ -118,6 +153,39 @@ export default class ServerSettings extends Component {
         return currentServerName;
     }
 
+    getFilters(){
+
+        let where = []
+        let type = []
+
+
+        try{
+
+
+            let narrow = this.props.serverSettings.serverConfig.filters;
+
+            for(var i in narrow.type){
+                type.push({label: narrow.type[i], value: narrow.type[i]});
+            }
+
+
+            for(var i in narrow.where){
+                where.push({label: narrow.where[i], value: narrow.where[i]})
+            }
+
+            console.log(where)
+
+        }catch(error){
+            console.log("waiting...")
+        }
+
+        console.log("where in", where)
+
+        let filters = {type:type, where:where}
+        console.log("filterssssssssss",filters.type)
+        return filters;
+
+    }
     getCurrentServerSettings() {
         let currentConfigSettings = this.props.serverSettings.serverConfig && this.state.validServer === null ?
           {requestType: this.props.serverSettings.serverConfig.requestType,
