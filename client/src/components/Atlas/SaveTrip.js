@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Button, Input, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {fileFormats} from "../../utils/constants";
+import {kmlTemplate} from "../../utils/constants";
 import {downloadFile} from "../../utils/misc";
 import {parse} from "json2csv";
 import Select from 'react-select';
@@ -102,5 +103,42 @@ export default class SaveTrip extends Component {
         let csv = parse(fileContent.places,opts);
         downloadFile(csv, this.state.saveName + extension, 'text/csv');
     }
+
+    else{
+        let kml = this.kml()
+
+        downloadFile(kml, this.state.saveName+extension, 'text/kml')
+    }
+  }
+
+  kml(){
+
+    let fileContent = this.loadPlaces();
+
+    let places = fileContent.places;
+
+    var kml = kmlTemplate;
+
+    console.log("kml",kml);
+
+    let coordinates = "";
+    for(var i in places){
+        console.log(places[i].latitude)
+      var entry = " "+places[i].longitude+","+places[i].latitude+",0 \n"
+
+      coordinates = coordinates.concat(entry)
+    }
+
+    kml = kml.concat("\t\t"+coordinates)
+
+    kml = kml.concat(`    </coordinates>
+                    </LineString>
+                 </Placemark>
+              </Document>
+       </kml>`)
+
+    console.log(kml);
+
+    return kml;
   }
 }
