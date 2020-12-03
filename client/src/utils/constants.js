@@ -30,6 +30,26 @@ export const TRIP = {"options": {"title": "", "earthRadius": "", "units": "", "r
 export const EMPTY_SEARCH = {"found": 0, "match": "", "places": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const EMPTY_NEW_ITEM = { "notes": '', "name": '', "latitude": '', "longitude": ''};
 
+export const kmlTemplate =
+`<?xml version="1.0" encoding="UTF-8"?>
+ <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+   <Document>
+     <name>Single Simple Line</name>
+     <open>1</open>
+     <description>Just a single blue line across Colorado</description>
+     <Style id="CrossStyle">
+       <LineStyle>
+         <color>ffffffb6</color>
+         <width>4</width>
+       </LineStyle>
+     </Style>
+     <Placemark>
+       <name>Cross-corner line</name>
+       <styleUrl>#CrossStyle</styleUrl>
+       <LineString>
+         <coordinates>
+                        `
+
 export const LATITUDE_REGEX = new RegExp("^[-+]?(?:90(?:(?:\\.0+)?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]+)?))$");
 export const LONGITUDE_REGEX = new RegExp("^[-+]?(?:180(?:(?:\\.0+)?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]+)?))$");
 
