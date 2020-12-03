@@ -211,9 +211,7 @@ export default class Trip extends Component {
         <ModalBody>
           <Row>
             <Col xs={8}>
-              <Search createSnackBar={this.props.createSnackBar}
-                      serverSettings={this.state.serverSettings}
-                      onClickListItem={this.addDestination}/>
+              <Search createSnackBar={this.props.createSnackBar} serverSettings={this.state.serverSettings} onClickListItem={this.addDestination} hasAdvanced={false}/>
             </Col>
             <Col xs={4}><Button color="primary" id="mapbtn" onClick={() => this.addFromMap()}>Add From Map</Button></Col>
           </Row>
