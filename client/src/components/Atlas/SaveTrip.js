@@ -3,6 +3,7 @@ import {Button, Input, Modal, ModalBody, ModalHeader, ModalFooter} from "reactst
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {fileFormats} from "../../utils/constants";
 import {downloadFile} from "../../utils/misc";
+import {parse} from "json2csv";
 import Select from 'react-select';
 
 
@@ -90,6 +91,16 @@ export default class SaveTrip extends Component {
   save() {
     let fileContent = this.loadPlaces()
     var extension = '.'+this.state.fileFormat;
-    downloadFile(fileContent, this.state.saveName+extension, 'application/json')
+
+    if(this.state.fileFormat == "json"){
+        downloadFile(JSON.stringify(fileContent), this.state.saveName+extension, 'application/json')
+    }
+
+    else if(this.state.fileFormat == "csv"){
+        const fields = ['name', 'latitude', 'longitude'];
+        const opts = { fields };
+        let csv = parse(fileContent.places,opts);
+        downloadFile(csv, this.state.saveName + extension, 'text/csv');
+    }
   }
 }
