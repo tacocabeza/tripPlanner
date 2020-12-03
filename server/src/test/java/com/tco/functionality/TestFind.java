@@ -142,9 +142,11 @@ public class TestFind {
         Find findNoType1Where = new Find("Heli@#",0,
                 new Narrow(null, new String[] {"California"}));
         ArrayList<Place> places = findNoType1Where.getPlaces();
-        assertEquals(9403, findNoType1Where.getFound());
+        assertEquals(448, findNoType1Where.getFound());
         for(Place p : places){
-            assert
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country));
         }
     }
 
@@ -153,6 +155,16 @@ public class TestFind {
     public void testNoTypeMultipleWhere() {
         Find findNoTypeMultipleWhere = new Find("Heli@#",0,
                 new Narrow(null, new String[] {"California", "Connecticut"}));
+        ArrayList<Place> places = findNoTypeMultipleWhere.getPlaces();
+        assertEquals(544, findNoTypeMultipleWhere.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country) ||
+                    "Connecticut".equals(p.municipality) ||
+                    "Connecticut".equals(p.region) ||
+                    "Connecticut".equals(p.country));
+        }
     }
 
     @Test
@@ -160,6 +172,7 @@ public class TestFind {
     public void testEmptyTypeNoWhere() {
         Find findEmptyTypeNoWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {}, null));
+        assertEquals(9403, findEmptyTypeNoWhere.getFound());
     }
 
     @Test
@@ -167,6 +180,7 @@ public class TestFind {
     public void testEmptyTypeEmptyWhere() {
         Find findEmptyTypeEmptyWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {}, new String[] {}));
+        assertEquals(9403, findEmptyTypeEmptyWhere.getFound());
     }
 
     @Test
@@ -174,6 +188,13 @@ public class TestFind {
     public void testEmptyType1Where() {
         Find findEmptyType1Where = new Find("Heli@#",0,
                 new Narrow(new String[] {}, new String[] {"California"}));
+        ArrayList<Place> places = findEmptyType1Where.getPlaces();
+        assertEquals(448, findEmptyType1Where.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country));
+        }
     }
 
     @Test
@@ -181,6 +202,16 @@ public class TestFind {
     public void testEmptyTypeMultipleWhere() {
         Find findEmptyTypeMultipleWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {}, new String[] {"California", "Connecticut"}));
+        ArrayList<Place> places = findEmptyTypeMultipleWhere.getPlaces();
+        assertEquals(544, findEmptyTypeMultipleWhere.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country) ||
+                    "Connecticut".equals(p.municipality) ||
+                    "Connecticut".equals(p.region) ||
+                    "Connecticut".equals(p.country));
+        }
     }
 
     @Test
@@ -188,6 +219,11 @@ public class TestFind {
     public void test1TypeNoWhere() {
         Find find1TypeNoWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport"}, null));
+        ArrayList<Place> places = find1TypeNoWhere.getPlaces();
+        assertEquals(9257, find1TypeNoWhere.getFound());
+        for(Place p : places){
+            assert("heliport".equals(p.type));
+        }
     }
 
     @Test
@@ -195,6 +231,11 @@ public class TestFind {
     public void test1TypeEmptyWhere() {
         Find find1TypeEmptyWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport"}, new String[] {}));
+        ArrayList<Place> places = find1TypeEmptyWhere.getPlaces();
+        assertEquals(9257, find1TypeEmptyWhere.getFound());
+        for(Place p : places){
+            assert("heliport".equals(p.type));
+        }
     }
 
     @Test
@@ -202,6 +243,14 @@ public class TestFind {
     public void test1Type1Where() {
         Find find1Type1Where = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport"}, new String[] {"California"}));
+        ArrayList<Place> places = find1Type1Where.getPlaces();
+        assertEquals(445, find1Type1Where.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country));
+            assert("heliport".equals(p.type));
+        }
     }
 
     @Test
@@ -209,6 +258,17 @@ public class TestFind {
     public void test1TypeMultipleWhere() {
         Find find1TypeMultipleWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport"}, new String[] {"California", "Connecticut"}));
+        ArrayList<Place> places = find1TypeMultipleWhere.getPlaces();
+        assertEquals(539, find1TypeMultipleWhere.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country) ||
+                    "Connecticut".equals(p.municipality) ||
+                    "Connecticut".equals(p.region) ||
+                    "Connecticut".equals(p.country));
+            assert("heliport".equals(p.type));
+        }
     }
 
     @Test
@@ -216,6 +276,11 @@ public class TestFind {
     public void testMultipleTypeNoWhere() {
         Find findMultipleTypeNoWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport", "closed"}, null));
+        ArrayList<Place> places = findMultipleTypeNoWhere.getPlaces();
+        assertEquals(9379, findMultipleTypeNoWhere.getFound());
+        for(Place p : places){
+            assert("heliport".equals(p.type) || "closed".equals(p.type));
+        }
     }
 
     @Test
@@ -223,6 +288,11 @@ public class TestFind {
     public void testMultipleTypeEmptyWhere() {
         Find findMultipleTypeEmptyWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport", "closed"}, new String[] {}));
+        ArrayList<Place> places = findMultipleTypeEmptyWhere.getPlaces();
+        assertEquals(9379, findMultipleTypeEmptyWhere.getFound());
+        for(Place p : places){
+            assert("heliport".equals(p.type) || "closed".equals(p.type));
+        }
     }
 
     @Test
@@ -230,6 +300,14 @@ public class TestFind {
     public void testMultipleType1Where() {
         Find findMultipleType1Where = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport", "closed"}, new String[] {"California"}));
+        ArrayList<Place> places = findMultipleType1Where.getPlaces();
+        assertEquals(544, findMultipleType1Where.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country));
+            assert("heliport".equals(p.type) || "closed".equals(p.type));
+        }
     }
 
     @Test
@@ -237,6 +315,17 @@ public class TestFind {
     public void testMultipleTypeMultipleWhere() {
         Find findMultipleTypeMultipleWhere = new Find("Heli@#",0,
                 new Narrow(new String[] {"heliport", "closed"}, new String[] {"California", "Connecticut"}));
+        ArrayList<Place> places = findMultipleTypeMultipleWhere.getPlaces();
+        assertEquals(544, findMultipleTypeMultipleWhere.getFound());
+        for(Place p : places){
+            assert("California".equals(p.municipality) ||
+                    "California".equals(p.region) ||
+                    "California".equals(p.country) ||
+                    "Connecticut".equals(p.municipality) ||
+                    "Connecticut".equals(p.region) ||
+                    "Connecticut".equals(p.country));
+            assert("heliport".equals(p.type) || "closed".equals(p.type));
+        }
     }
 
 }
