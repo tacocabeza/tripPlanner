@@ -2,7 +2,6 @@ import {LATITUDE_REGEX, LONGITUDE_REGEX} from "./constants";
 let Coordinates = require('coordinate-parser');
 
 export function downloadFile(fileText, fileName, fileType) {
-  fileText = JSON.stringify(fileText)
   let file = new Blob([fileText], {type: fileType});
   let a = document.createElement('a'),
   url = URL.createObjectURL(file);
