@@ -81,8 +81,6 @@ public class Find {
             typeFilter = createRegexFilter(this.narrow.getType());
             whereFilter = createRegexFilter(this.narrow.getWhere());
         }
-        System.out.println("typeFilter is '" + typeFilter + "'");
-        System.out.println("whereFilter is '" + whereFilter + "'");
 
         String columns = "world.name, latitude, longitude, world.id, altitude, municipality, " +
                 "type, country.name, region.name, world.wikipedia_link, world.home_link";
@@ -100,8 +98,6 @@ public class Find {
 
         String sql = "select " + columns + " from world " + joins +
                 " where " + where + " and " + narrow + " " + order + ";";
-
-        System.out.println(sql);
 
         DBConnection dbc = new DBConnection();
         ResultSet results = dbc.querySQL(sql);

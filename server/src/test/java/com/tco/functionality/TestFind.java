@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static com.tco.requests.RequestFind.MAX_LIMIT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFind {
 
-   /* @Test
+    @Test
     @DisplayName("Test Match, Limit")
     public void testMatchLimit(){
         Find findMatchLimit = new Find("Heli@#",4, null);
@@ -144,9 +145,11 @@ public class TestFind {
         ArrayList<Place> places = findNoType1Where.getPlaces();
         assertEquals(449, findNoType1Where.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
         }
     }
 
@@ -158,12 +161,14 @@ public class TestFind {
         ArrayList<Place> places = findNoTypeMultipleWhere.getPlaces();
         assertEquals(545, findNoTypeMultipleWhere.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country) ||
-                    "Connecticut".equals(p.municipality) ||
-                    "Connecticut".equals(p.region) ||
-                    "Connecticut".equals(p.country));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California") ||
+                                                                              p.municipality.contains("Connecticut");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California") ||
+                                                                  p.region.contains("Connecticut");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California") ||
+                                                                    p.country.contains("Connecticut");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
         }
     }
 
@@ -191,9 +196,11 @@ public class TestFind {
         ArrayList<Place> places = findEmptyType1Where.getPlaces();
         assertEquals(449, findEmptyType1Where.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
         }
     }
 
@@ -205,12 +212,14 @@ public class TestFind {
         ArrayList<Place> places = findEmptyTypeMultipleWhere.getPlaces();
         assertEquals(545, findEmptyTypeMultipleWhere.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country) ||
-                    "Connecticut".equals(p.municipality) ||
-                    "Connecticut".equals(p.region) ||
-                    "Connecticut".equals(p.country));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California") ||
+                    p.municipality.contains("Connecticut");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California") ||
+                    p.region.contains("Connecticut");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California") ||
+                    p.country.contains("Connecticut");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
         }
     }
 
@@ -236,7 +245,7 @@ public class TestFind {
         for(Place p : places){
             assert("heliport".equals(p.type));
         }
-    }*/
+    }
 
     @Test
     @DisplayName("Test 1 Type, 1 Where")
@@ -246,13 +255,16 @@ public class TestFind {
         ArrayList<Place> places = find1Type1Where.getPlaces();
         assertEquals(446, find1Type1Where.getFound());
         for(Place p : places){
-            System.out.println(p.municipality + " " + p.region + " " + p.country);
-            assertTrue(p.municipality.contains("California") ||
-                    p.region.contains("California") ||
-                    p.country.contains("California"));
-            assertTrue("heliport".equals(p.type));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California");
+
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
+            assertTrue(typeContains);
         }
-    }/*
+    }
 
     @Test
     @DisplayName("Test 1 Type, Multiple Where")
@@ -262,13 +274,17 @@ public class TestFind {
         ArrayList<Place> places = find1TypeMultipleWhere.getPlaces();
         assertEquals(540, find1TypeMultipleWhere.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country) ||
-                    "Connecticut".equals(p.municipality) ||
-                    "Connecticut".equals(p.region) ||
-                    "Connecticut".equals(p.country));
-            assert("heliport".equals(p.type));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California") ||
+                    p.municipality.contains("Connecticut");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California") ||
+                    p.region.contains("Connecticut");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California") ||
+                    p.country.contains("Connecticut");
+
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
+            assertTrue(typeContains);
         }
     }
 
@@ -280,7 +296,9 @@ public class TestFind {
         ArrayList<Place> places = findMultipleTypeNoWhere.getPlaces();
         assertEquals(9379, findMultipleTypeNoWhere.getFound());
         for(Place p : places){
-            assert("heliport".equals(p.type) || "closed".equals(p.type));
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport") || p.type.contains("closed");
+
+            assertTrue(typeContains);
         }
     }
 
@@ -292,7 +310,9 @@ public class TestFind {
         ArrayList<Place> places = findMultipleTypeEmptyWhere.getPlaces();
         assertEquals(9379, findMultipleTypeEmptyWhere.getFound());
         for(Place p : places){
-            assert("heliport".equals(p.type) || "closed".equals(p.type));
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport") || p.type.contains("closed");
+
+            assertTrue(typeContains);
         }
     }
 
@@ -304,10 +324,14 @@ public class TestFind {
         ArrayList<Place> places = findMultipleType1Where.getPlaces();
         assertEquals(449, findMultipleType1Where.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country));
-            assert("heliport".equals(p.type) || "closed".equals(p.type));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California");
+
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport") || p.type.contains("closed");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
+            assertTrue(typeContains);
         }
     }
 
@@ -319,14 +343,18 @@ public class TestFind {
         ArrayList<Place> places = findMultipleTypeMultipleWhere.getPlaces();
         assertEquals(545, findMultipleTypeMultipleWhere.getFound());
         for(Place p : places){
-            assert("California".equals(p.municipality) ||
-                    "California".equals(p.region) ||
-                    "California".equals(p.country) ||
-                    "Connecticut".equals(p.municipality) ||
-                    "Connecticut".equals(p.region) ||
-                    "Connecticut".equals(p.country));
-            assert("heliport".equals(p.type) || "closed".equals(p.type));
+            boolean municipalityContains = (p.municipality == null) ? false : p.municipality.contains("California") ||
+                    p.municipality.contains("Connecticut");
+            boolean regionContains = (p.region == null) ? false : p.region.contains("California") ||
+                    p.region.contains("Connecticut");
+            boolean countryContains = (p.country == null) ? false : p.country.contains("California") ||
+                    p.country.contains("Connecticut");
+
+            boolean typeContains =  (p.type == null) ? false : p.type.contains("heliport") || p.type.contains("closed");
+
+            assertTrue(municipalityContains || regionContains || countryContains);
+            assertTrue(typeContains);
         }
-    }*/
+    }
 
 }
