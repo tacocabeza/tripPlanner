@@ -10,12 +10,13 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-|  |  |
+| ah00t13 | 25 min |
 |  |  |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
+| OptimizeTrip.java:32,42 | Need a 0.5 second reduction in these time checks | hi | ah00t13 |  |
+| OptimizeTrip.java:31-41 | Can this be split into its own function? | low | ah00t13 |  |
 |  | | | | |
