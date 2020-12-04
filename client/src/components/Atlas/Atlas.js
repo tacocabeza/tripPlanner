@@ -28,6 +28,10 @@ const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: ico
 const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
 const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
 const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const AGGIE_MARKER_ICON_S = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
+const GOLD_MARKER_ICON_S = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
+const GREEN_MARKER_ICON_S = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20]});
+const RESERVOIR_MARKER_ICON_S = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
@@ -79,7 +83,7 @@ export default class Atlas extends Component {
       tripLineColor: CANYON,
       tripMarkerIcon: AGGIE_MARKER_ICON,
       tripLineSize: 5,
-      tripMarkerSize: 5,
+      tripMarkerSize: 1,
     };
   }
 
@@ -126,8 +130,8 @@ export default class Atlas extends Component {
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}>Reservoir</IconButton>
         <br/>
         Marker Size: {this.state.tripMarkerSize}
-        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: this.state.tripMarkerSize + 1})}>+</IconButton>
-        <IconButton size={"small"} onClick={() => this.state.tripMarkerSize > 0 ?this.setState({tripMarkerSize: this.state.tripMarkerSize - 1}): null}>-</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}>Big</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}>Small</IconButton>
         <br/>
         Line Color:
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}>Canyon</IconButton>
@@ -173,9 +177,9 @@ export default class Atlas extends Component {
               <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
           </LayersControl>
-          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, true, "loc1")}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, true, "loc2")}
+          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, this.state.tripMarkerSize,true, "home")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.tripMarkerSize,true, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.tripMarkerSize,true, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -219,7 +223,7 @@ export default class Atlas extends Component {
   renderTripMarkers() {
     let markers = []
     for(let i = 0; i<this.state.tripLocations.length; i++){
-      markers.push(this.placeMarker(this.state.tripLocations[i], this.state.tripMarkerIcon, this.state.showMarkers, i))
+      markers.push(this.placeMarker(this.state.tripLocations[i], this.state.tripMarkerIcon, this.state.tripMarkerSize, this.state.showMarkers, i))
     }
     return (<div> {markers} </div>);
   }
@@ -266,7 +270,19 @@ export default class Atlas extends Component {
     )
   }
 
-  placeMarker(location, icon, showBoolean = true, key= 0) {
+  placeMarker(location, icon, size, showBoolean = true, key= 0) {
+    let newIcon = icon
+    if(size == 0) {
+      if (icon == AGGIE_MARKER_ICON) {
+        newIcon = AGGIE_MARKER_ICON_S
+      } else if (icon == GREEN_MARKER_ICON) {
+        newIcon = GREEN_MARKER_ICON_S
+      } else if (icon == GOLD_MARKER_ICON) {
+        newIcon = GOLD_MARKER_ICON_S
+      } else {
+        newIcon = RESERVOIR_MARKER_ICON_S
+      }
+    }
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
@@ -277,7 +293,7 @@ export default class Atlas extends Component {
         }
       };
       return (
-        <Marker position={location} icon={icon} key={key} ref={initMarker}>
+        <Marker position={location} icon={newIcon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
