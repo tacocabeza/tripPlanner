@@ -12,6 +12,9 @@ import { LOG } from "../utils/constants";
 import * as configSchema from "../../schemas/ResponseConfig";
 import { getOriginalServerPort, isJsonResponseValid, sendServerRequest } from "../utils/restfulAPI";
 
+const pageTop = React.createRef();
+const pageBottom = React.createRef();
+
 export default class Page extends Component {
 
 	constructor(props) {
@@ -35,6 +38,7 @@ export default class Page extends Component {
 	render() {
 		return (
 			<>
+				<div ref={pageTop}/>
 				<Header toggleAbout={this.toggleAbout}/>
 				{this.renderAbout()}
 				{this.renderAtlas()}
@@ -42,6 +46,7 @@ export default class Page extends Component {
 					serverSettings={this.state.serverSettings}
 					processServerConfigSuccess={this.processServerConfigSuccess}
 				/>
+				<div ref={pageBottom}/>
 			</>
 		);
 	}
@@ -58,7 +63,9 @@ export default class Page extends Component {
 		return (
 			<Collapse isOpen={!this.state.showAbout}>
 				<Atlas createSnackBar={this.props.createSnackBar}
-					   serverSettings={this.state.serverSettings}/>
+					   serverSettings={this.state.serverSettings}
+							 pageTop={pageTop}
+							 pageBottom={pageBottom}/>
 			</Collapse>
 		);
 	}

@@ -4,7 +4,6 @@ import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, M
 import SaveTrip from './SaveTrip.js';
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 
-
 import Search from './Search.js';
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
@@ -14,10 +13,11 @@ import * as tripFile from "../../../schemas/TripFile";
 import {Container, Draggable} from "react-smooth-dnd";
 import Destination from "./Destination";
 import {isValidLatitude, isValidLongitude} from "../../utils/misc";
+import UpArrowCircleIcon from '../../static/images/arrow-circle-up-solid.png'
+import DownArrowCircleIcon from '../../static/images/arrow-circle-down-solid.png'
 
 
-const destinationsEnd = React.createRef();
-const destinationsStart = React.createRef()
+
 
 export default class Trip extends Component {
   constructor(props) {
@@ -58,15 +58,29 @@ export default class Trip extends Component {
           <br/>
           {this.renderBar()}
           <br/>
+          {this.renderToBottom()}
+          <br/>
+          <br/>
           {this.renderDestinations()}
           <br/>
-          <Button color="primary" onClick={() => {destinationsStart.current.scrollIntoView({ behavior: 'smooth' })}}>To Top</Button>
+          {this.renderToTop()}
+          <br/>
         </Col>
         {this.checkMapUpdate()}
         {this.renderDestinationModal()}
         {this.renderLoadModal()}
       </div>
     );
+  }
+
+  renderToBottom() {
+    if(this.state.destinations.length > 0){
+      return(
+        <img className="h-25px to-top-bottom" onClick={() => {
+        this.props.pageBottom.current.scrollIntoView({ behavior: 'smooth' })}}
+      src={DownArrowCircleIcon} alt-text="To Bottom" title="To Bottom"/>
+      );
+    }
   }
 
   renderTotalDistance(){
@@ -84,7 +98,6 @@ export default class Trip extends Component {
   renderBar() {
     return(
       <Row>
-        <div ref={destinationsStart}/>
         <Col xs={12}>
           <Input
             type="text"
@@ -104,7 +117,6 @@ export default class Trip extends Component {
               <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
               <Button color="primary" className="saveLoad" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
               <Button color="primary" className="saveLoad" onClick={() => {this.optimizeTrip()}}>Optimize</Button>
-              <Button color="primary" className="saveLoad" onClick={() => {destinationsEnd.current.scrollIntoView({ behavior: 'smooth' })}}>To Bottom</Button>
             </Col>
             <Col xs={12} sm={6}>
               {this.renderTotalDistance()}
@@ -138,8 +150,17 @@ export default class Trip extends Component {
               );
             })}
           </Container>
-          <div ref={destinationsEnd}></div>
         </div>
+      );
+    }
+  }
+
+  renderToTop() {
+    if(this.state.destinations.length > 0){
+      return (
+        <img className="h-25px to-top-bottom" onClick={() => {
+          this.props.pageTop.current.scrollIntoView({ behavior: 'smooth' })}}
+             src={UpArrowCircleIcon} alt-text="To Top" title="To Top"/>
       );
     }
   }

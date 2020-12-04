@@ -102,7 +102,9 @@ export default class Atlas extends Component {
                       setTripLocations={this.setTripLocations}
                       tripNewLocation={this.state.tripNewLocation}
                       isRoundTrip={this.state.isRoundTrip}
-                      flipRoundTrip={this.flipRoundTrip}/>
+                      flipRoundTrip={this.flipRoundTrip}
+                      pageTop={this.props.pageTop}
+                      pageBottom={this.props.pageBottom}/>
               </TabPane>
               <TabPane tabId="3">
                 {this.renderSelectors()}
