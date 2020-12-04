@@ -11,11 +11,11 @@
 | Name | Preparation Time |
 | ---- | ---- |
 |  |  |
-|  |  |
+| suyashh | 20 |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
+| OptimizeTrip.java:32,42 | Could repeated lines be restructured | low | suyashh |  |
 |  | | | | |
