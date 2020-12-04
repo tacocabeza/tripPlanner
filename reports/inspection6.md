@@ -10,6 +10,7 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
+| suyashh | 20 |
 | pdunton | 25 |
 | jgarc110 |  30 |
 | nd0905 | 30 |
@@ -19,6 +20,8 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
+| OptimizeTrip.java:32,42 | Could repeated lines be restructured | low | suyashh |  |
+|  OptimizeTrip:32&42| Say we were to optimize in less than 1.0 second. >= means that we could already be at a second, thus we take longer than 1.0.| med | jgarc110| |
 | OptimizeTrip.java:12 | Why are we using `HashMap<String, String>`.  Do we want to use `Place`s? | low | pdunton | |
 | OptimizeTrip.java:17 | `begin` should either be put as the first statement in function, or lower down | hi | pdunton | |
 | OptimizeTrip.java:22 | If we change `unvisitedCities` to `visitedCities`, the default is `boolean[false]` and we can remove line 23 | hi | pdunton | |
