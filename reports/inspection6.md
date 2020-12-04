@@ -10,12 +10,13 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
-|  |  |
 | suyashh | 20 |
+|  jgarc110|  30 min|
+|  |  |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
 | OptimizeTrip.java:32,42 | Could repeated lines be restructured | low | suyashh |  |
-|  | | | | |
+|  OptimizeTrip:32&42| Say we were to optimize in less than 1.0 second. >= means that we could already be at a second, thus we take longer than 1.0.| med | jgarc110| |
