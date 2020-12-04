@@ -11,6 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | pdunton | 25 |
+|  jgarc110|  30 |
 |  |  |
 
 ### Problems found
@@ -22,6 +23,7 @@
 | OptimizeTrip.java:22 | If we change `unvisitedCities` to `visitedCities`, the default is `boolean[false]` and we can remove line 23 | hi | pdunton | |
 | OptimizeTrip.java:31 | `unvisited` is unused.  Why not loop with `k`? | hi | pdunton | |
 | OptimizeTrip.java:32,42 | Ending time should be captured in a variable to be readable, save time | med | pdunton | |
+| OptimizeTrip:32,42| Say we were to optimize in less than 1.0 second. >= means that we could already be at a second, thus we take longer than 1.0.| med | jgarc110| |
 | OptimizeTrip.java:42 | Why are we checking time twice? | med | pdunton | |
 | OptimizeTrip.java:75 | Save time by putting `unvistedCities[i]` as first condition | hi | pdunton | |
 | OptimizeTrip.java | Save time by putting `places.size()` in a variable `n`.  Saves function calls. | hi | pdunton | |
