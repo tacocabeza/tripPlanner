@@ -10,18 +10,20 @@
 
 | Name | Preparation Time |
 | ---- | ---- |
+| ah00t13 | 25 |
 | suyashh | 20 |
 | pdunton | 25 |
 | jgarc110 |  30 |
 | nd0905 | 30 |
-|  |  |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
+| OptimizeTrip.java:32,42 | Need a 0.5 second reduction in these time checks | hi | ah00t13 |  |
+| OptimizeTrip.java:31-41 | Can this be split into its own function? | low | ah00t13 |  |
 | OptimizeTrip.java:32,42 | Could repeated lines be restructured | low | suyashh |  |
-|  OptimizeTrip:32&42| Say we were to optimize in less than 1.0 second. >= means that we could already be at a second, thus we take longer than 1.0.| med | jgarc110| |
+| OptimizeTrip:32&42 | Say we were to optimize in less than 1.0 second. >= means that we could already be at a second, thus we take longer than 1.0.| med | jgarc110| |
 | OptimizeTrip.java:12 | Why are we using `HashMap<String, String>`.  Do we want to use `Place`s? | low | pdunton | |
 | OptimizeTrip.java:17 | `begin` should either be put as the first statement in function, or lower down | hi | pdunton | |
 | OptimizeTrip.java:22 | If we change `unvisitedCities` to `visitedCities`, the default is `boolean[false]` and we can remove line 23 | hi | pdunton | |
@@ -35,4 +37,3 @@
 | OptimizeTrip.java | Save time by putting `places.size()` in a variable `n`.  Saves function calls. | hi | pdunton | |
 | OptimizeTrip.java | Why are we using `ArrayList()<>`?  We know the size of our structure.  Can we use arrays, or quicker? | hi | pdunton | |
 | OptimizeTrip.java:all | Many index variables not clear as they are indexes | low | nd0905 | |
-|  | | | | |
