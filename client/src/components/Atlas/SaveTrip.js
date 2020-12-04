@@ -85,7 +85,6 @@ export default class SaveTrip extends Component {
   }
 
   setFileFormat = (selectedOptions) => {
-      console.log(selectedOptions);
       this.setState({fileFormat:selectedOptions.value})
     }
 
@@ -119,11 +118,9 @@ export default class SaveTrip extends Component {
 
     var kml = kmlTemplate;
 
-    console.log("kml",kml);
 
     let coordinates = "";
     for(var i in places){
-        console.log(places[i].latitude)
       var entry = " "+places[i].longitude+","+places[i].latitude+",0 \n"
 
       coordinates = coordinates.concat(entry)
@@ -136,8 +133,6 @@ export default class SaveTrip extends Component {
                  </Placemark>
               </Document>
        </kml>`)
-
-    console.log(kml);
 
     return kml;
   }

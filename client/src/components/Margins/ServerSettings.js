@@ -173,16 +173,13 @@ export default class ServerSettings extends Component {
                 where.push({label: narrow.where[i], value: narrow.where[i]})
             }
 
-            console.log(where)
 
         }catch(error){
-            console.log("waiting...")
+            console.log("")
         }
 
-        console.log("where in", where)
 
         let filters = {type:type, where:where}
-        console.log("filterssssssssss",filters.type)
         return filters;
 
     }
