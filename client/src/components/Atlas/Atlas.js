@@ -28,6 +28,10 @@ const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: ico
 const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
 const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
 const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const AGGIE_MARKER_ICON_S = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
+const GOLD_MARKER_ICON_S = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
+const GREEN_MARKER_ICON_S = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20]});
+const RESERVOIR_MARKER_ICON_S = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_MIN_ZOOM = 1;
@@ -78,6 +82,8 @@ export default class Atlas extends Component {
       justClicked: false,
       tripLineColor: CANYON,
       tripMarkerIcon: AGGIE_MARKER_ICON,
+      tripLineSize: 5,
+      tripMarkerSize: 1,
     };
   }
 
@@ -123,14 +129,21 @@ export default class Atlas extends Component {
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}>Green</IconButton>
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}>Reservoir</IconButton>
         <br/>
+        Marker Size: {this.state.tripMarkerSize}
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}>Big</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}>Small</IconButton>
+        <br/>
         Line Color:
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}>Canyon</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}>Alfalfa</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}>Dark Slate</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}>Reservoir</IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}>Sunshine</IconButton>
+        <br/>
+        Line Size: {this.state.tripLineSize}
+        <IconButton size={"small"} onClick={() => this.setState({tripLineSize: this.state.tripLineSize + 1})}>+</IconButton>
+        <IconButton size={"small"} onClick={() => this.state.tripLineSize > 0 ? this.setState({tripLineSize: this.state.tripLineSize - 1}): null}>-</IconButton>
       </div>
-
     );
   }
 
@@ -164,9 +177,9 @@ export default class Atlas extends Component {
               <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
           </LayersControl>
-          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, true, "home")}
-          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, true, "loc1")}
-          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, true, "loc2")}
+          {this.placeMarker(this.state.originalMapCenter, GREEN_MARKER_ICON, this.state.tripMarkerSize,true, "home")}
+          {this.placeMarker(this.state.distanceLocation1, GOLD_MARKER_ICON, this.state.tripMarkerSize,true, "loc1")}
+          {this.placeMarker(this.state.distanceLocation2, RESERVOIR_MARKER_ICON, this.state.tripMarkerSize,true, "loc2")}
           {this.renderDistanceLine()}
           {this.renderTripLines()}
           {this.renderTripMarkers()}
@@ -210,7 +223,7 @@ export default class Atlas extends Component {
   renderTripMarkers() {
     let markers = []
     for(let i = 0; i<this.state.tripLocations.length; i++){
-      markers.push(this.placeMarker(this.state.tripLocations[i], this.state.tripMarkerIcon, this.state.showMarkers, i))
+      markers.push(this.placeMarker(this.state.tripLocations[i], this.state.tripMarkerIcon, this.state.tripMarkerSize, this.state.showMarkers, i))
     }
     return (<div> {markers} </div>);
   }
@@ -218,11 +231,11 @@ export default class Atlas extends Component {
   renderTripLines() {
     let lines = []
     for(let i= 0; i < this.state.tripLocations.length - 1; i++){
-      lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],this.state.tripLineColor,i));
+      lines.push(this.getLine(this.state.tripLocations[i],this.state.tripLocations[i+1],this.state.tripLineColor,this.state.tripLineSize,i));
     }
     if(this.state.isRoundTrip){
       let lastIndex = this.state.tripLocations.length -1;
-      lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],this.state.tripLineColor,lastIndex));
+      lines.push(this.getLine(this.state.tripLocations[lastIndex],this.state.tripLocations[0],this.state.tripLineColor,this.state.tripLineSize,lastIndex));
     }
     if (this.state.showLines) {
       return (<div>{lines}</div>);
@@ -233,13 +246,13 @@ export default class Atlas extends Component {
     if (this.state.distanceLocation2) {
       return (
         <div>
-          {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, CANYON,null)}
+          {this.getLine(this.state.distanceLocation2, this.state.distanceLocation1, CANYON, this.state.tripLineSize,null)}
         </div>
       );
     } else if (this.state.distanceLocation1) {
       return (
         <div>
-          {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, CANYON,null)}
+          {this.getLine(this.state.distanceLocation1, this.state.originalMapCenter, CANYON, this.state.tripLineSize,null)}
         </div>
       );
     }
@@ -257,7 +270,19 @@ export default class Atlas extends Component {
     )
   }
 
-  placeMarker(location, icon, showBoolean = true, key= 0) {
+  placeMarker(location, icon, size, showBoolean = true, key= 0) {
+    let newIcon = icon
+    if(size == 0) {
+      if (icon == AGGIE_MARKER_ICON) {
+        newIcon = AGGIE_MARKER_ICON_S
+      } else if (icon == GREEN_MARKER_ICON) {
+        newIcon = GREEN_MARKER_ICON_S
+      } else if (icon == GOLD_MARKER_ICON) {
+        newIcon = GOLD_MARKER_ICON_S
+      } else {
+        newIcon = RESERVOIR_MARKER_ICON_S
+      }
+    }
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
       let longitude = location.lng? location.lng: (location[1]? location[1]: 0);
@@ -268,7 +293,7 @@ export default class Atlas extends Component {
         }
       };
       return (
-        <Marker position={location} icon={icon} key={key} ref={initMarker}>
+        <Marker position={location} icon={newIcon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
             {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
             <br/>{this.getMarkerLocationName(location)}<br/>
@@ -326,7 +351,7 @@ export default class Atlas extends Component {
     }
   }
 
-  getLine(location1, location2, lineColor, key) {
+  getLine(location1, location2, lineColor, lineSize, key) {
     let isDistance = this.state.isDistanceOpen && ((location1 === this.state.distanceLocation2 && location2 === this.state.distanceLocation1) || (location1 === this.state.distanceLocation1 && location2 === this.state.originalMapCenter))
     const initPolyLine = ref => {
       if (ref && isDistance) {
@@ -335,7 +360,7 @@ export default class Atlas extends Component {
     };
     if(location1 && location2) {
       return (
-        <Polyline color={lineColor} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
+        <Polyline color={lineColor} weight={lineSize} positions={[location1, location2]} key={key} interactive={false} ref={initPolyLine}>
           {isDistance? this.renderDistance(): null}
         </Polyline>
       );
