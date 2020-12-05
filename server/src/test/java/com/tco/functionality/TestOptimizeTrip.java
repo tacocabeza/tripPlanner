@@ -1,5 +1,4 @@
 package com.tco.functionality;
-import com.tco.functionality.Options;
 import com.tco.misc.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 
@@ -7,13 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 public class TestOptimizeTrip {
 
-    private OptimizeTrip optimizeTrip = new OptimizeTrip();
     private Options options = new Options("trip", "3959.0","10.0", "miles");
     private DistanceCalculator distanceCalculator= new DistanceCalculator();
     @Test
@@ -35,7 +32,9 @@ public class TestOptimizeTrip {
         trip.add(newyork);
         trip.add(denver);
 
-        ArrayList<HashMap<String,String>> places = optimizeTrip.nearestNeighbor(trip, options);
+        OptimizeTrip optimizeTrip = new OptimizeTrip(trip, options);
+
+        ArrayList<HashMap<String,String>> places = optimizeTrip.nearestNeighbor();
 
 
         Long[] unOptimized = new Long[]{1371L, 1628L, 663L};
