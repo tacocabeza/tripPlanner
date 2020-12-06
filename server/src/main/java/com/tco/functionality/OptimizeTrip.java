@@ -29,9 +29,9 @@ public class OptimizeTrip {
 
         for (int startingCity = 0; startingCity < n; startingCity++) {
 
-            boolean[] unvisitedCities = new boolean[n];
-            Arrays.fill(unvisitedCities, true);
-            unvisitedCities[startingCity] = false;
+            boolean[] visitedCities = new boolean[n];
+            visitedCities[startingCity] = true;
+          
             int k = 1;
             int previous = startingCity;
             long tourDistance = 0;
@@ -42,12 +42,12 @@ public class OptimizeTrip {
                 if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
                     break;
                 }
-                int nearest = nearestUnvisted(distanceMatrix[previous], unvisitedCities);
+                int nearest = nearestUnvisited(distanceMatrix[previous], visitedCities);
                 tourDistance += distanceMatrix[previous][nearest];
                 tempTour[k] = nearest;
                 k++;
                 previous = nearest;
-                unvisitedCities[nearest] = false;
+                visitedCities[nearest] = true;
             }
             if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
                 break;
@@ -76,13 +76,13 @@ public class OptimizeTrip {
 
     }
 
-    private int nearestUnvisted(Long[] distance, boolean[] unvistedCities){
+    private int nearestUnvisited(Long[] distance, boolean[] visitedCities){
 
         long best = Long.MAX_VALUE;
         int bestIndex =0;
 
         for(int i=0; i< distance.length; i++){
-            if(distance[i] != 0 && best > distance[i] && unvistedCities[i]){
+            if(!visitedCities[i] && distance[i] != 0 && best > distance[i]){
                 best = distance[i];
                 bestIndex = i;
             }
