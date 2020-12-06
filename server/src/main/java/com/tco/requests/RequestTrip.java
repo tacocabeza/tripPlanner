@@ -25,10 +25,10 @@ public class RequestTrip extends RequestHeader{
     @Override
     public void buildResponse(){
         DistanceCalculator distanceCalculator = new DistanceCalculator();
-        OptimizeTrip optimizeTrip = new OptimizeTrip();
+        OptimizeTrip optimizeTrip = new OptimizeTrip(places, options);
 
         if(options.isOptimized()){
-            places = optimizeTrip.nearestNeighbor(places, options);
+            places = optimizeTrip.nearestNeighbor();
         }
         distances = distanceCalculator.calculateDistances(places, options);
     }

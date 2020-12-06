@@ -8,26 +8,37 @@ import java.util.HashMap;
 
 public class OptimizeTrip {
 
+    private ArrayList<HashMap<String, String>> places;
+    private Options options;
+    private int n;
 
-    public ArrayList<HashMap<String,String>> nearestNeighbor(ArrayList<HashMap<String,String>> places, Options options){
+    public OptimizeTrip(ArrayList<HashMap<String,String>> places, Options options) {
+        this.places = places;
+        this.options = options;
+        this.n = places.size();
+    }
+
+
+    public ArrayList<HashMap<String,String>> nearestNeighbor(){
         // init the data structures we will be using
         Long shortest = Long.MAX_VALUE;
-        int[] solutionTour = new int[places.size()];
-        Long[][] distanceMatrix = buildDistanceMatrix(places, options);
+        int[] solutionTour = new int[n];
+        Long[][] distanceMatrix = buildDistanceMatrix();
         Long begin = System.currentTimeMillis();
         boolean builtTrip = false;
 
-        for (int startingCity = 0; startingCity < places.size(); startingCity++) {
+        for (int startingCity = 0; startingCity < n; startingCity++) {
 
-            boolean[] visitedCities = new boolean[places.size()];
+            boolean[] visitedCities = new boolean[n];
             visitedCities[startingCity] = true;
+          
             int k = 1;
             int previous = startingCity;
             long tourDistance = 0;
-            int[] tempTour = new int[places.size()];
+            int[] tempTour = new int[n];
             tempTour[0] = startingCity;
 
-            for (int unvisited = places.size() - 1; unvisited > 0; unvisited--) {
+            for (int unvisited = n - 1; unvisited > 0; unvisited--) {
                 if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
                     break;
                 }
@@ -48,16 +59,16 @@ public class OptimizeTrip {
             }
         }
         if (builtTrip) {
-            return buildTrip(solutionTour,places);
+            return buildTrip(solutionTour);
         } else {
             return places;
         }
     }
 
-    private ArrayList<HashMap<String,String>> buildTrip(int[] tour, ArrayList<HashMap<String,String>> places){
-        ArrayList<HashMap<String,String>> solution = new ArrayList<>(places.size());
+    private ArrayList<HashMap<String,String>> buildTrip(int[] tour){
+        ArrayList<HashMap<String,String>> solution = new ArrayList<>(n);
 
-        for(int i = 0; i<places.size(); i++){
+        for(int i = 0; i<n; i++){
             solution.add(places.get(tour[i]));
         }
 
@@ -80,15 +91,15 @@ public class OptimizeTrip {
         return bestIndex;
     }
 
-    private Long[][] buildDistanceMatrix(ArrayList<HashMap<String,String>> places, Options options) {
+    private Long[][] buildDistanceMatrix() {
         DistanceCalculator distanceCalculator = new DistanceCalculator();
-        Long[][] matrix = new Long[places.size()][places.size()];
+        Long[][] matrix = new Long[n][n];
 
-        for (int i = 0; i < places.size(); i++) {
+        for (int i = 0; i < n; i++) {
             // A diagonal of 0's -> the distance between A and A is 0.
             matrix[i][i] = 0L;
 
-            for (int j = i + 1; j < places.size(); j++) {
+            for (int j = i + 1; j < n; j++) {
                 matrix[i][j] = distanceCalculator.calculateGreatCircleDistance(places.get(i), places.get(j), Double.parseDouble(options.getEarthRadius()));
                 matrix[j][i] = matrix[i][j];
             }
