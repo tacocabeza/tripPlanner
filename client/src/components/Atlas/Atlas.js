@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse, InputGroup, Input} from 'reactstrap';
 import Control from 'react-leaflet-control';
-import {reverseGeocode} from  '@esri/arcgis-rest-geocoding';
 
 import {Map, Marker, Polyline, TileLayer, Popup, LayersControl} from 'react-leaflet';
 import CSUAggieOrangeMarker from '../../static/images/Markers/CSUAggieOrangeMarker.png';
