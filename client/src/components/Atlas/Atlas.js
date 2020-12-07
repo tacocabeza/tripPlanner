@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse} from 'reactstrap';
+import Cookies from 'js-cookie';
+import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse, InputGroup, Input} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import {Map, Marker, Polyline, TileLayer, Popup, LayersControl} from 'react-leaflet';
@@ -59,6 +60,7 @@ export default class Atlas extends Component {
     this.showAllMarkers = this.showAllMarkers.bind(this);
     this.toggleMarkers = this.toggleMarkers.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
+    this.reverseGeocoder = this.reverseGeocoder.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -84,6 +86,7 @@ export default class Atlas extends Component {
       tripMarkerIcon: AGGIE_MARKER_ICON,
       tripLineSize: 5,
       tripMarkerSize: 1,
+      geocode: ""
     };
   }
 
@@ -114,6 +117,7 @@ export default class Atlas extends Component {
               </TabPane>
               <TabPane tabId="3">
                 {this.renderSelectors()}
+                {this.renderDistanceUnitOptions()}
               </TabPane>
             </TabContent>
           </Col>
@@ -147,6 +151,15 @@ export default class Atlas extends Component {
         <IconButton size={"small"} onClick={() => this.state.tripLineSize > 0 ? this.setState({tripLineSize: this.state.tripLineSize - 1}): null}>-</IconButton>
       </div>
     );
+  }
+
+  renderDistanceUnitOptions() {
+    return (<div>
+      <InputGroup>
+        <Input placeholder={Cookies.get("EarthRadius")} onChange={(e) => {Cookies.set("EarthRadius", e.target.value)}}/>
+        <Input placeholder={Cookies.get("DistanceUnits")} onChange={(e) => {Cookies.set("DistanceUnits", e.target.value)}}/>
+      </InputGroup>
+    </div>);
   }
 
   renderLeafletMap() {
@@ -294,11 +307,16 @@ export default class Atlas extends Component {
           this.setState({justClicked: false})
         }
       };
+
+
+
       return (
         <Marker position={location} icon={newIcon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
-            {parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}
-            <br/>{this.getMarkerLocationName(location)}<br/>
+            <a>{this.getMarkerLocationName(location)}</a>
+
+            <br/>{ parseFloat(latitude).toFixed(2) + "," + parseFloat(longitude).toFixed(2)}<br/>
+
             <IconButton onClick={() => this.prepareNewTripAdd(location,this.getMarkerLocationName(location))} size={'small'}>
               Add to trip
             </IconButton>
@@ -315,6 +333,8 @@ export default class Atlas extends Component {
     } else if (distanceLocation.lng < -180) {
       distanceLocation.lng = distanceLocation.lng + 360
     }
+
+    this.reverseGeocoder(distanceLocation.lat, distanceLocation.lng);
     this.setState({
       distanceLocation2: this.state.distanceLocation1,
       distanceLocation1: distanceLocation,
@@ -385,18 +405,26 @@ export default class Atlas extends Component {
     if(index !== -1) {
       return this.state.tripLocations[index].name;
     }
-    else if(location.lat) {
-      if(this.state.distanceLocation1 && this.state.distanceLocation1.lat === location.lat){
-        return this.state.distanceLocation1.name
-      }
-      else{
-        return this.state.distanceLocation2.name
-      }
+    else if(this.state.geocode != "") {
+        return this.state.geocode
     }
     else {
       return "Home"
     }
   }
+
+  reverseGeocoder(lat,lng){
+   fetch(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=${lng},${lat}`)
+     .then(res => res.json())
+     .then(myJson => {
+       this.setState({geocode:myJson.address.LongLabel})
+     }).catch((error)=>{
+        console.log(error);
+        this.setState({geocode:""})
+        });
+     }
+
+
 
   showAllMarkers(){
     let bound = latLngBounds()

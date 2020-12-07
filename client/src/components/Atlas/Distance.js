@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import * as distanceSchema from "../../../schemas/ResponseDistance";
 import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants";
 import {Popup} from 'react-leaflet';
 import {latLngBounds} from "leaflet";
+import Cookies from "js-cookie";
 
 
 export default class Distance extends Component {
@@ -28,7 +28,7 @@ export default class Distance extends Component {
   render() {
     return (
       <Popup onOpen={this.prepareServerRequest} position={this.getMidPoint()} autopan={false}>
-        Distance: {this.state.distance} Miles<br/>
+        Distance: {this.state.distance} {Cookies.get("DistanceUnits")}<br/>
       </Popup>
     )
   }
@@ -69,7 +69,7 @@ export default class Distance extends Component {
         "latitude": place2.lat.toString(),
         "longitude": place2.lng.toString()
       },
-      "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles
+      "earthRadius": parseInt(Cookies.get("EarthRadius"))
     }, this.props.serverSettings.serverPort)
       .then(dist => {
         if (dist) {

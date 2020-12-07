@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
+import Cookies from "js-cookie";
 
 import TripControls from "./TripControls";
 import {sendServerRequest} from "../../utils/restfulAPI";
@@ -38,7 +37,6 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       oneWayDistance: 0,
       roundTripDistance:0,
-      units: "",
       response: "0.0"
     }
   }
@@ -269,9 +267,9 @@ export default class Trip extends Component {
           "places": this.state.destinations,
           "options": {
             "title": this.state.tripName,
-            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString(),
+            "earthRadius": Cookies.get("EarthRadius"),
             "response": this.state.response,
-            "units": this.state.units
+            "units": Cookies.get("DistanceUnits")
           },
           "requestType": "trip",
           "requestVersion": PROTOCOL_VERSION

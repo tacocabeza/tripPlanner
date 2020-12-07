@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
+import Cookies from "js-cookie";
 
 import SaveTrip from './SaveTrip.js';
 import LoadTrip from "./LoadTrip";
@@ -158,11 +159,11 @@ export default class TripControls extends Component {
   renderTotalDistance(){
     if(this.props.isRoundTrip){
       return(
-        <p className="text-right"> Round Trip Distance: {this.props.roundTripDistance}mi.</p>
+        <p className="text-right"> Round Trip Distance: {this.props.roundTripDistance} {Cookies.get("DistanceUnits")}</p>
       )
     } else {
       return (
-        <p className="text-right">Total Distance: {this.props.oneWayDistance}mi.</p>
+        <p className="text-right">Total Distance: {this.props.oneWayDistance} {Cookies.get("DistanceUnits")}</p>
       )
     }
   }
