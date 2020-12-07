@@ -25,6 +25,7 @@ public class OptimizeTrip {
         int[] solutionTour = new int[n];
         Long[][] distanceMatrix = buildDistanceMatrix();
         Long begin = System.currentTimeMillis();
+        Long end = (long) ((Double.parseDouble(options.getResponse()) * 1000) -  500);
         boolean builtTrip = false;
 
         for (int startingCityIndex = 0; startingCityIndex < n; startingCityIndex++) {
@@ -47,7 +48,7 @@ public class OptimizeTrip {
                 previous = nearest;
                 visitedCities[nearest] = true;
             }
-            if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
+            if(System.currentTimeMillis() - begin > end){
                 break;
             }
             if (tourDistance < shortest) {
