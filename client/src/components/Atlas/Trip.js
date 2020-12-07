@@ -166,13 +166,15 @@ export default class Trip extends Component {
   }
 
   updateDestination(index, property, value) {
-    let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
-    Object.defineProperty(tempArr[index],property,{value: value});
-    this.setState({
-        destinations: tempArr,
-      },
-      this.sendTripRequest,
-    );
+    if (index >= 0 && index < this.state.destinations.length) {
+      let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+      Object.defineProperty(tempArr[index], property, {value: value});
+      this.setState({
+            destinations: tempArr,
+          },
+          this.sendTripRequest,
+      );
+    }
   }
 
   onDrop(dropResult) {
@@ -330,18 +332,20 @@ export default class Trip extends Component {
   }
 
   removeDestination(index) {
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-    tempDestinations.splice(index, 1);
+    if (index >= 0 && index < this.state.destinations.length) {
+      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+      tempDestinations.splice(index, 1);
 
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
-    tempDestinationStates.splice(index, 1);
+      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+      tempDestinationStates.splice(index, 1);
 
-    this.setState({
-        destinations: tempDestinations,
-        destinationStates: tempDestinationStates
-      },
-      this.sendTripRequest,
-    );
+      this.setState({
+            destinations: tempDestinations,
+            destinationStates: tempDestinationStates
+          },
+          this.sendTripRequest,
+      );
+    }
   }
 
   submitDestination() {
@@ -375,19 +379,21 @@ export default class Trip extends Component {
   }
 
   rotateTrip(index) {
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    if (index >= 0 && index < this.state.destinations.length) {
+      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
 
-    for (index; index !== tempDestinations.length; index++) {
-      tempDestinations.unshift(tempDestinations.pop());
-      tempDestinationStates.unshift(tempDestinationStates.pop());
+      for (index; index !== tempDestinations.length; index++) {
+        tempDestinations.unshift(tempDestinations.pop());
+        tempDestinationStates.unshift(tempDestinationStates.pop());
+      }
+      this.setState({
+            destinations: tempDestinations,
+            destinationStates: tempDestinationStates
+          },
+          this.sendTripRequest,
+      );
     }
-    this.setState({
-          destinations: tempDestinations,
-          destinationStates: tempDestinationStates
-        },
-        this.sendTripRequest,
-    );
   }
 
   optimizeTrip() {
