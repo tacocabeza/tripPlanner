@@ -49,9 +49,7 @@ export default class Destination extends Component {
   render() {
     return (
       <div>
-        <Fade in={this.props.index > 0} className="text-right">
-          Leg Distance: {this.props.distance}mi.
-        </Fade>
+        {this.renderFade()}
         <Card className="destination">
           <Row>
             <Col className="text-left">
@@ -68,6 +66,16 @@ export default class Destination extends Component {
         </Card>
       </div>
     );
+  }
+
+  renderFade() {
+    if(this.props.index > 0) {
+      return (
+        <Fade className="text-right">
+          Leg Distance: {this.props.distance}mi.
+        </Fade>
+      );
+    }
   }
 
   renderName() {
