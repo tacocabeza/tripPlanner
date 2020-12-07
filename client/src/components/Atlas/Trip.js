@@ -2,30 +2,27 @@ import React, { Component } from 'react';
 import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
 
 import SaveTrip from './SaveTrip.js';
+import LoadTrip from "./LoadTrip";
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 
 import Search from './Search.js';
-import {isJsonResponseValid, sendServerRequest} from "../../utils/restfulAPI";
+import {sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {EMPTY_TRIP} from "../../utils/constants";
 import {EMPTY_NEW_ITEM} from "../../utils/constants";
-import * as tripFile from "../../../schemas/TripFile";
 import {Container, Draggable} from "react-smooth-dnd";
 import Destination from "./Destination";
 import {isValidLatitude, isValidLongitude} from "../../utils/misc";
 import UpArrowCircleIcon from '../../static/images/arrow-circle-up-solid.png'
 import DownArrowCircleIcon from '../../static/images/arrow-circle-down-solid.png'
 
-
-
-
 export default class Trip extends Component {
   constructor(props) {
     super(props);
 
     this.addDestination = this.addDestination.bind(this);
+    this.loadTripJSON = this.loadTripJSON.bind(this);
     this.onDrop = this.onDrop.bind(this);
-    this.processFile = this.processFile.bind(this);
     this.removeDestination = this.removeDestination.bind(this);
     this.setDestinationIsValidProperty = this.setDestinationIsValidProperty.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
@@ -39,11 +36,9 @@ export default class Trip extends Component {
       destinations: [],
       destinationModal: false,
       destinationStates: [],
-      loadModal: false,
       newItem: EMPTY_NEW_ITEM,
       showNewItem: false,
       serverSettings: this.props.serverSettings,
-      loadedFile: EMPTY_TRIP,
       oneWayDistance: 0,
       roundTripDistance:0,
       units: "",
@@ -68,7 +63,6 @@ export default class Trip extends Component {
         </Col>
         {this.checkMapUpdate()}
         {this.renderDestinationModal()}
-        {this.renderLoadModal()}
       </div>
     );
   }
@@ -109,7 +103,8 @@ export default class Trip extends Component {
           />
           <Row className="w-40">
             <SaveTrip places={this.state.destinations} tripData={this.state.loadedTrip}/>
-            <Button color="primary" id="loadbtn" className="saveLoad" onClick={() => {this.setState({loadModal: true})}}>Load</Button>
+            <LoadTrip createSnackBar={this.props.createSnackBar}
+                      loadTripJSON={this.loadTripJSON} id="loadtrip"/>
           </Row>
           <br/>
           <Row>
@@ -125,6 +120,19 @@ export default class Trip extends Component {
           </Row>
         </Col>
       </Row>
+    );
+  }
+
+  loadTripJSON(loadedFile) {
+    this.props.setTripLocations(loadedFile.places)
+    this.setState({
+        destinations: loadedFile.places,
+        destinationStates: this.getInitDestinationStateArray(loadedFile.places),
+        tripName: loadedFile.options.title,
+        response: loadedFile.options.response,
+        units: loadedFile.options.units
+      },
+      this.sendTripRequest,
     );
   }
 
@@ -251,21 +259,6 @@ export default class Trip extends Component {
         </ModalFooter>
       </Modal>
     );
-  }
-
-  renderLoadModal() {
-    return (
-      <Modal isOpen={this.state.loadModal}>
-        <ModalHeader>Load Trip</ModalHeader>
-        <ModalBody>
-          <Input type='file' onChange={(event) => {this.processFile(event.target.files)}} />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={() => this.loadFile()}>Load</Button>
-          <Button onClick={() => {this.setState({loadModal: false})}}>Close</Button>
-        </ModalFooter>
-      </Modal>
-    )
   }
 
   renderRoundTripSwitch() {
@@ -458,39 +451,6 @@ export default class Trip extends Component {
 
   setLocations() {
     this.props.setTripLocations(this.state.destinations);
-  }
-
-  processFile(files) {
-    let self = this;
-    let fr = new FileReader();
-    fr.readAsText(files[0]);
-    fr.onload = function(event) {
-      let parsedFile
-      try {
-        parsedFile = JSON.parse(fr.result)
-      } catch (e) {
-        self.props.createSnackBar("This file is not valid (cannot be parsed as a JSON)")
-      }
-      self.setState({loadedFile: parsedFile});
-    };
-  }
-
-  loadFile() {
-    if(!isJsonResponseValid(this.state.loadedFile, tripFile)) {
-      this.props.createSnackBar("This file is not valid");
-    } else {
-      this.props.setTripLocations(this.state.loadedFile.places)
-      this.setState({
-          loadModal: false,
-          destinations: this.state.loadedFile.places,
-          destinationStates: this.getInitDestinationStateArray(this.state.loadedFile.places),
-          tripName: this.state.loadedFile.options.title,
-          response: this.state.loadedFile.options.response,
-          units: this.state.loadedFile.options.units
-        },
-        this.sendTripRequest,
-      );
-    }
   }
 
   getInitDestinationStateArray(placesArr) {

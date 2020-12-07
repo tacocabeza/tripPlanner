@@ -87,15 +87,6 @@ function testDestinationModal() {
 
 test("Destination modal opened by Add Trip button", testDestinationModal);
 
-function testLoadModal() {
-  const trip = shallow(<Trip/>);
-  trip.find('#loadbtn').at(0).simulate('click');
-  let actualState = trip.state().loadModal;
-  expect(actualState).toEqual(true);
-}
-
-test("Load modal opened by Load button", testLoadModal);
-
 function testGoToMap() {
   const atlas = mount(<Atlas createSnackBar={START_PROPERTIES.createSnackBar}/>);
   let expectedTab = '1';
