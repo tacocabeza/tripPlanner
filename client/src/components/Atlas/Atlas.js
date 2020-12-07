@@ -130,21 +130,21 @@ export default class Atlas extends Component {
     return (
       <div>
         Marker Color:
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: AGGIE_MARKER_ICON})}>Aggie</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GOLD_MARKER_ICON})}>Gold</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}>Green</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}>Reservoir</IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: AGGIE_MARKER_ICON})}><img className="lgIcon" src={CSUAggieOrangeMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GOLD_MARKER_ICON})}><img className="lgIcon" src={CSUGoldMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}><img className="lgIcon" src={CSUGreenMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}><img className="lgIcon" src={CSUReservoirMarker}/></IconButton>
         <br/>
         Marker Size: {this.state.tripMarkerSize}
-        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}>Big</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}>Small</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}><img className="lgIcon" src={CSUAggieOrangeMarker}/></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}><img className="smIcon" src={CSUAggieOrangeMarker}/></IconButton>
         <br/>
         Line Color:
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}>Canyon</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}>Alfalfa</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}>Dark Slate</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}>Reservoir</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}>Sunshine</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}><p className="canyon">Canyon</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}><p className="alfalfa">Alfalfa</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}><p className="darkslate">Dark Slate</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}><p className="reservoir">Reservoir</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}><p className="sunshine">Sunshine</p></IconButton>
         <br/>
         Line Size: {this.state.tripLineSize}
         <IconButton size={"small"} onClick={() => this.setState({tripLineSize: this.state.tripLineSize + 1})}>+</IconButton>
