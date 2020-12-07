@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
 
-import SaveTrip from './SaveTrip.js';
-import LoadTrip from "./LoadTrip";
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
 
-import Search from './Search.js';
+import TripControls from "./TripControls";
 import {sendServerRequest} from "../../utils/restfulAPI";
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {EMPTY_TRIP} from "../../utils/constants";
 import {EMPTY_NEW_ITEM} from "../../utils/constants";
-import {Container, Draggable} from "react-smooth-dnd";
-import Destination from "./Destination";
 import {isValidLatitude, isValidLongitude} from "../../utils/misc";
-import UpArrowCircleIcon from '../../static/images/arrow-circle-up-solid.png'
-import DownArrowCircleIcon from '../../static/images/arrow-circle-down-solid.png'
 
 export default class Trip extends Component {
   constructor(props) {
@@ -29,6 +22,10 @@ export default class Trip extends Component {
     this.toggleDestinationCollapse = this.toggleDestinationCollapse.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
     this.rotateTrip = this.rotateTrip.bind(this);
+    this.setName = this.setName.bind(this);
+    this.toggleDestinationModal = this.toggleDestinationModal.bind(this);
+    this.reverseTrip = this.reverseTrip.bind(this);
+    this.optimizeTrip = this.optimizeTrip.bind(this);
 
     this.state = {
       loadedTrip: EMPTY_TRIP,
@@ -49,77 +46,22 @@ export default class Trip extends Component {
   render() {
     return(
       <div className="text-center">
-        <Col>
-          <br/>
-          {this.renderBar()}
-          <br/>
-          {this.renderToBottom()}
-          <br/>
-          <br/>
-          {this.renderDestinations()}
-          <br/>
-          {this.renderToTop()}
-          <br/>
-        </Col>
+        <TripControls tripName={this.state.tripName} setName={this.setName}
+                      destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
+                      loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
+                      optimizeTrip={this.optimizeTrip} onDrop={this.onDrop}
+                      removeDestination={this.removeDestination} addDestination={this.addDestination}
+                      updateDestination={this.updateDestination} destinationStates={this.state.destinationStates}
+                      toggleDestinationCollapse={this.toggleDestinationCollapse} setDestinationIsValidProperty={this.setDestinationIsValidProperty}
+                      rotateTrip={this.rotateTrip} serverSettings={this.state.serverSettings}
+                      showNewItem={this.state.showNewItem} newItem={this.state.newItem}
+                      flipRoundTrip={this.props.flipRoundTrip} isRoundTrip={this.props.isRoundTrip}
+                      roundTripDistance={this.state.roundTripDistance} oneWayDistance={this.state.oneWayDistance}
+                      submitDestination={this.submitDestination} toggle={this.props.toggle}
+                      pageTop={this.props.pageTop} pageBottom={this.props.pageBottom}
+                      destinationModal={this.state.destinationModal} toggleDestinationModal={this.toggleDestinationModal}/>
         {this.checkMapUpdate()}
-        {this.renderDestinationModal()}
       </div>
-    );
-  }
-
-  renderToBottom() {
-    if(this.state.destinations.length > 0){
-      return(
-        <img className="h-25px to-top-bottom" onClick={() => {
-        this.props.pageBottom.current.scrollIntoView({ behavior: 'smooth' })}}
-      src={DownArrowCircleIcon} alt-text="To Bottom" title="To Bottom"/>
-      );
-    }
-  }
-
-  renderTotalDistance(){
-    if(this.props.isRoundTrip){
-      return(
-        <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance}mi.</p>
-      )
-    } else {
-      return (
-        <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
-      )
-    }
-  }
-
-  renderBar() {
-    return(
-      <Row>
-        <Col xs={12}>
-          <Input
-            type="text"
-            className="float-left w-60"
-            name="tripname"
-            placeholder="Trip Name"
-            value={this.state.tripName}
-            onChange={e => this.setState({tripName: e.target.value})}
-          />
-          <Row className="w-40">
-            <SaveTrip places={this.state.destinations} tripData={this.state.loadedTrip}/>
-            <LoadTrip createSnackBar={this.props.createSnackBar}
-                      loadTripJSON={this.loadTripJSON} id="loadtrip"/>
-          </Row>
-          <br/>
-          <Row>
-            <Col xs={12} sm={6}>
-              <Button color="primary" id="addbtn" className="saveLoad" onClick={() => {this.setState({destinationModal: true})}}>Add Stop</Button>
-              <Button color="primary" className="saveLoad" onClick={() => {this.reverseTrip()}}>Reverse Trip</Button>
-              <Button color="primary" className="saveLoad" onClick={() => {this.optimizeTrip()}}>Optimize</Button>
-            </Col>
-            <Col xs={12} sm={6}>
-              {this.renderTotalDistance()}
-              {this.renderRoundTripSwitch()}
-            </Col>
-          </Row>
-        </Col>
-      </Row>
     );
   }
 
@@ -134,43 +76,6 @@ export default class Trip extends Component {
       },
       this.sendTripRequest,
     );
-  }
-
-  renderDestinations() {
-    if(this.state.destinations.length > 0) {
-      return (
-        <div>
-          <Container lockAxis="y" dragHandleSelector=".drag-handle"
-                     onDrop={this.onDrop} behaviour="contain">
-            {this.state.destinations.map((item, index) => {
-              return (
-                <Draggable key={index}>
-                  <Destination index={index} removeDestination={this.removeDestination}
-                               distance={this.state.loadedTrip.distances[index - 1]}
-                               destination={item} updateDestination={this.updateDestination}
-                               destinationState={this.state.destinationStates[index]}
-                               toggleCollapse={() => this.toggleDestinationCollapse(index)}
-                                 setIsValidProperty = {(property, value, isValid) =>
-                                 this.setDestinationIsValidProperty(index, property, value, isValid)}
-                               rotateTrip={this.rotateTrip}
-                  />
-                </Draggable>
-              );
-            })}
-          </Container>
-        </div>
-      );
-    }
-  }
-
-  renderToTop() {
-    if(this.state.destinations.length > 0){
-      return (
-        <img className="h-25px to-top-bottom" onClick={() => {
-          this.props.pageTop.current.scrollIntoView({ behavior: 'smooth' })}}
-             src={UpArrowCircleIcon} alt-text="To Top" title="To Top"/>
-      );
-    }
   }
 
   updateDestination(index, property, value) {
@@ -233,45 +138,6 @@ export default class Trip extends Component {
     Object.defineProperties(changedDestination, stateObj);
 
     this.setState({destinationStates: tempDestinationStates});
-  }
-
-  renderDestinationModal() {
-    return (
-      <Modal isOpen={this.state.destinationModal}>
-        <ModalHeader>Add Destination</ModalHeader>
-        <ModalBody>
-          <Row>
-            <Col xs={8}>
-              <Search createSnackBar={this.props.createSnackBar} serverSettings={this.state.serverSettings} onClickListItem={this.addDestination} hasAdvanced={false}/>
-            </Col>
-            <Col xs={4}><Button color="primary" id="mapbtn" onClick={() => this.addFromMap()}>Add From Map</Button></Col>
-          </Row>
-          <Fade in={this.state.showNewItem}>
-            <ListGroupItem>
-              <Col>{this.state.newItem.name}</Col>
-              <Col>{this.state.newItem.latitude}, {this.state.newItem.longitude}</Col>
-            </ListGroupItem>
-          </Fade>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" id="confirmbtn" onClick={this.submitDestination}>Confirm</Button>
-          <Button onClick={() => {this.setState({destinationModal: false})}}>Close</Button>
-        </ModalFooter>
-      </Modal>
-    );
-  }
-
-  renderRoundTripSwitch() {
-    return(
-      <FormGroup className="text-right">
-        <CustomInput className="text-right" type="switch" id="toggleRoundTrip"  label="Round Trip" onClick={() => this.props.flipRoundTrip()}/>
-      </FormGroup>
-    )
-  }
-
-  addFromMap() {
-    this.props.toggle('1');
-    this.setState({destinationModal: false});
   }
 
   checkMapUpdate() {
@@ -449,10 +315,6 @@ export default class Trip extends Component {
     }
   }
 
-  setLocations() {
-    this.props.setTripLocations(this.state.destinations);
-  }
-
   getInitDestinationStateArray(placesArr) {
     let initDestinationStates = [];
     for(let i = 0; i < placesArr.length; i++){
@@ -477,5 +339,13 @@ export default class Trip extends Component {
         notes: (destination.notes) ? destination.notes : ""
       }
     };
+  }
+
+  setName(name) {
+    this.setState({tripName: name});
+  }
+
+  toggleDestinationModal() {
+    this.setState({destinationModal: !this.state.destinationModal});
   }
 }

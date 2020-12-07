@@ -79,7 +79,7 @@ function simulateEnterName(reactWrapper) {
 test("Trip Name field sets trip name", testTripName);
 
 function testDestinationModal() {
-  const trip = shallow(<Trip/>);
+  const trip = mount(<Trip/>);
   trip.find('#addbtn').at(0).simulate('click');
   let actualState = trip.state().destinationModal;
   expect(actualState).toEqual(true);
