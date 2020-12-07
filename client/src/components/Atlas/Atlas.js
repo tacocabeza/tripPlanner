@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse} from 'reactstrap';
+import Cookies from 'js-cookie';
+import {Button, Col, Container, Row, TabContent, TabPane, Fade, Collapse, InputGroup, Input} from 'reactstrap';
 import Control from 'react-leaflet-control';
 
 import {Map, Marker, Polyline, TileLayer, Popup, LayersControl} from 'react-leaflet';
@@ -114,6 +115,7 @@ export default class Atlas extends Component {
               </TabPane>
               <TabPane tabId="3">
                 {this.renderSelectors()}
+                {this.renderDistanceUnitOptions()}
               </TabPane>
             </TabContent>
           </Col>
@@ -147,6 +149,15 @@ export default class Atlas extends Component {
         <IconButton size={"small"} onClick={() => this.state.tripLineSize > 0 ? this.setState({tripLineSize: this.state.tripLineSize - 1}): null}>-</IconButton>
       </div>
     );
+  }
+
+  renderDistanceUnitOptions() {
+    return (<div>
+      <InputGroup>
+        <Input placeholder={Cookies.get("EarthRadius")} onChange={(e) => {Cookies.set("EarthRadius", e.target.value)}}/>
+        <Input placeholder={Cookies.get("DistanceUnits")} onChange={(e) => {Cookies.set("DistanceUnits", e.target.value)}}/>
+      </InputGroup>
+    </div>);
   }
 
   renderLeafletMap() {

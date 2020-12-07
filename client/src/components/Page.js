@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Cookies from "js-cookie";
 
 import { Collapse } from "reactstrap";
 
@@ -27,7 +28,8 @@ export default class Page extends Component {
 
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.processServerConfigSuccess = this.processServerConfigSuccess.bind(this);
-
+		Cookies.set('DistanceUnits', 'miles');
+		Cookies.set('EarthRadius', '3959');
 		sendServerRequest({requestType: "config", requestVersion: PROTOCOL_VERSION}, this.state.serverSettings.serverPort)
 			.then(config => {
 				if (config) { this.processConfigResponse(config.data); }

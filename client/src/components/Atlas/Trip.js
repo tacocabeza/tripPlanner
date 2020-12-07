@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Row, Col, Button, Input, ListGroupItem, Modal, ModalBody, ModalHeader, ModalFooter, Fade, FormGroup, CustomInput} from "reactstrap";
+import Cookies from "js-cookie";
 
 import SaveTrip from './SaveTrip.js';
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../../utils/constants"
@@ -46,7 +47,6 @@ export default class Trip extends Component {
       loadedFile: EMPTY_TRIP,
       oneWayDistance: 0,
       roundTripDistance:0,
-      units: "",
       response: "0.0"
     }
   }
@@ -86,11 +86,11 @@ export default class Trip extends Component {
   renderTotalDistance(){
     if(this.props.isRoundTrip){
       return(
-        <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance}mi.</p>
+        <p className="text-right"> Round Trip Distance: {this.state.roundTripDistance} {Cookies.get("DistanceUnits")}</p>
       )
     } else {
       return (
-        <p className="text-right">Total Distance: {this.state.oneWayDistance}mi.</p>
+        <p className="text-right">Total Distance: {this.state.oneWayDistance} {Cookies.get("DistanceUnits")}</p>
       )
     }
   }
@@ -139,6 +139,7 @@ export default class Trip extends Component {
                 <Draggable key={index}>
                   <Destination index={index} removeDestination={this.removeDestination}
                                distance={this.state.loadedTrip.distances[index - 1]}
+                               distanceUnits={this.state.loadedTrip.units}
                                destination={item} updateDestination={this.updateDestination}
                                destinationState={this.state.destinationStates[index]}
                                toggleCollapse={() => this.toggleDestinationCollapse(index)}
@@ -410,9 +411,9 @@ export default class Trip extends Component {
           "places": this.state.destinations,
           "options": {
             "title": this.state.tripName,
-            "earthRadius": EARTH_RADIUS_UNITS_DEFAULT.miles.toString(),
+            "earthRadius": Cookies.get("EarthRadius"),
             "response": this.state.response,
-            "units": this.state.units
+            "units": Cookies.get("DistanceUnits")
           },
           "requestType": "trip",
           "requestVersion": PROTOCOL_VERSION

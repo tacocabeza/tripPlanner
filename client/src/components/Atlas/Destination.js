@@ -72,7 +72,7 @@ export default class Destination extends Component {
     if(this.props.index > 0) {
       return (
         <Fade className="text-right">
-          Leg Distance: {this.props.distance}mi.
+          Leg Distance: {this.props.distance}{this.props.distanceUnits}
         </Fade>
       );
     }
