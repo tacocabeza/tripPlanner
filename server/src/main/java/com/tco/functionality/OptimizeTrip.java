@@ -39,7 +39,7 @@ public class OptimizeTrip {
             tempTour[0] = startingCityIndex;
 
             for (int k = 1; k < n; k++) {
-                if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
+                if(System.currentTimeMillis() - begin > end){
                     break;
                 }
                 int nearest = nearestUnvisited(distanceMatrix[previous], visitedCities);
