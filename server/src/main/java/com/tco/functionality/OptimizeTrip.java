@@ -32,21 +32,19 @@ public class OptimizeTrip {
 
             boolean[] visitedCities = new boolean[n];
             visitedCities[startingCityIndex] = true;
-          
-            int k = 1;
+
             int previous = startingCityIndex;
             long tourDistance = 0;
             int[] tempTour = new int[n];
             tempTour[0] = startingCityIndex;
 
-            for (int unvisitedIndex = n - 1; unvisitedIndex > 0; unvisitedIndex--) {
-                if(System.currentTimeMillis() - begin > end ){
+            for (int k = 1; k < n; k++) {
+                if(System.currentTimeMillis() - begin > end){
                     break;
                 }
                 int nearest = nearestUnvisited(distanceMatrix[previous], visitedCities);
                 tourDistance += distanceMatrix[previous][nearest];
                 tempTour[k] = nearest;
-                k++;
                 previous = nearest;
                 visitedCities[nearest] = true;
             }
