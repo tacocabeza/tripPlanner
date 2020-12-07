@@ -28,8 +28,10 @@ export default class Page extends Component {
 
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.processServerConfigSuccess = this.processServerConfigSuccess.bind(this);
-		Cookies.set('DistanceUnits', 'miles');
-		Cookies.set('EarthRadius', '3959');
+		if(!Cookies.get("DistanceUnits") || !Cookies.get("EarthRadius")) {
+			Cookies.set('DistanceUnits', 'miles');
+			Cookies.set('EarthRadius', '3959');
+		}
 		sendServerRequest({requestType: "config", requestVersion: PROTOCOL_VERSION}, this.state.serverSettings.serverPort)
 			.then(config => {
 				if (config) { this.processConfigResponse(config.data); }
