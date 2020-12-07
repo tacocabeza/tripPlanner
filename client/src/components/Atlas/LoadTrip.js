@@ -17,11 +17,11 @@ export default class LoadTrip extends Component {
 
   render() {
     return (
-      <div>
         <Button color="primary" id="loadbtn" className="saveLoad"
-                onClick={() => {this.setState({loadModal: true});}}>Load</Button>
-        {this.renderLoadModal()}
-      </div>
+                onClick={() => {this.setState({loadModal: true});}}>
+          Load
+          {this.renderLoadModal()}
+        </Button>
     );
   }
 
