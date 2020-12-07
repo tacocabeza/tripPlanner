@@ -30,11 +30,11 @@ public class TestRequestDistance {
     }
 
     @Test
-    @DisplayName("Version Number is equal to 5")
+    @DisplayName("Version Number is equal to 4")
     public void testVersion()
     {
         Integer version = distanceRequest.getRequestVersion();
-        assertEquals(5, version);
+        assertEquals(4, version);
     }
 
     @Test

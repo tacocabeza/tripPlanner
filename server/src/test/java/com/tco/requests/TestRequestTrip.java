@@ -32,7 +32,7 @@ public class TestRequestTrip {
     @DisplayName("Version number is equal to 5")
     public void testVersion() {
         int version = requestTrip.getRequestVersion();
-        assertEquals(5, version);
+        assertEquals(4, version);
     }
 
     @Test
