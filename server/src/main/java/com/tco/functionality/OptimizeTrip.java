@@ -27,18 +27,18 @@ public class OptimizeTrip {
         Long begin = System.currentTimeMillis();
         boolean builtTrip = false;
 
-        for (int startingCity = 0; startingCity < n; startingCity++) {
+        for (int startingCityIndex = 0; startingCityIndex < n; startingCityIndex++) {
 
             boolean[] visitedCities = new boolean[n];
-            visitedCities[startingCity] = true;
+            visitedCities[startingCityIndex] = true;
           
             int k = 1;
-            int previous = startingCity;
+            int previous = startingCityIndex;
             long tourDistance = 0;
             int[] tempTour = new int[n];
-            tempTour[0] = startingCity;
+            tempTour[0] = startingCityIndex;
 
-            for (int unvisited = n - 1; unvisited > 0; unvisited--) {
+            for (int unvisitedIndex = n - 1; unvisitedIndex > 0; unvisitedIndex--) {
                 if(System.currentTimeMillis() - begin >= (long) (Double.parseDouble(options.getResponse()) * 1000)){
                     break;
                 }
