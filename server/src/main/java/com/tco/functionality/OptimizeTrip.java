@@ -21,10 +21,10 @@ public class OptimizeTrip {
 
     public ArrayList<HashMap<String,String>> nearestNeighbor(){
         // init the data structures we will be using
+        Long begin = System.currentTimeMillis();
         Long shortest = Long.MAX_VALUE;
         int[] solutionTour = new int[n];
         Long[][] distanceMatrix = buildDistanceMatrix();
-        Long begin = System.currentTimeMillis();
         Long end = (long) ((Double.parseDouble(options.getResponse()) * 1000) -  500);
         boolean builtTrip = false;
 
