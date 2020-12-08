@@ -25,10 +25,10 @@ import {IconButton} from "@material-ui/core";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
-const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
 const AGGIE_MARKER_ICON_S = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const GOLD_MARKER_ICON_S = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const GREEN_MARKER_ICON_S = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20]});
@@ -135,7 +135,7 @@ export default class Atlas extends Component {
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}><img className="lgIcon" src={CSUGreenMarker}/></IconButton>
         <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}><img className="lgIcon" src={CSUReservoirMarker}/></IconButton>
         <br/>
-        Marker Size: {this.state.tripMarkerSize}
+        Marker Size:
         <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}><img className="lgIcon" src={CSUAggieOrangeMarker}/></IconButton>
         <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}><img className="smIcon" src={CSUAggieOrangeMarker}/></IconButton>
         <br/>
@@ -287,16 +287,14 @@ export default class Atlas extends Component {
 
   placeMarker(location, icon, size, showBoolean = true, key= 0) {
     let newIcon = icon
-    if(size == 0) {
-      if (icon == AGGIE_MARKER_ICON) {
-        newIcon = AGGIE_MARKER_ICON_S
-      } else if (icon == GREEN_MARKER_ICON) {
-        newIcon = GREEN_MARKER_ICON_S
-      } else if (icon == GOLD_MARKER_ICON) {
-        newIcon = GOLD_MARKER_ICON_S
-      } else {
-        newIcon = RESERVOIR_MARKER_ICON_S
-      }
+    if (icon == AGGIE_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? AGGIE_MARKER_ICON_S : AGGIE_MARKER_ICON
+    } else if (icon == GREEN_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? GREEN_MARKER_ICON_S : GREEN_MARKER_ICON
+    } else if (icon == GOLD_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? GOLD_MARKER_ICON_S : GOLD_MARKER_ICON
+    } else {
+      newIcon = this.state.tripMarkerSize==0? RESERVOIR_MARKER_ICON_S : RESERVOIR_MARKER_ICON
     }
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
@@ -307,9 +305,6 @@ export default class Atlas extends Component {
           this.setState({justClicked: false})
         }
       };
-
-
-
       return (
         <Marker position={location} icon={newIcon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
