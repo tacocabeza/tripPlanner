@@ -139,7 +139,7 @@ export default class Search extends Component {
       let coords = new Coordinates(this.state.inputText);
       let response = { "requestVersion": PROTOCOL_VERSION, "requestType": "find", "found": 1,
         "places": [{
-          "name": coords.getLatitude() + ', ' + coords.getLongitude(),
+          "name": coords.getLatitude().toFixed(2) + ', ' + coords.getLongitude().toFixed(2),
           "latitude": String(coords.getLatitude()),
           "longitude": String(coords.getLongitude()),
         }]
