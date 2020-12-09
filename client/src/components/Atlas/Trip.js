@@ -3,10 +3,12 @@ import Cookies from "js-cookie";
 
 import TripControls from "./TripControls";
 import {sendServerRequest} from "../../utils/restfulAPI";
-import {PROTOCOL_VERSION} from "../../utils/constants";
+import {PROTOCOL_VERSION, REMOVE_BUTTON_CLICK_BUFFER_MS} from "../../utils/constants";
 import {EMPTY_TRIP} from "../../utils/constants";
 import {EMPTY_NEW_ITEM} from "../../utils/constants";
 import {isValidLatitude, isValidLongitude} from "../../utils/misc";
+
+let allowRemoveButtonClick = true;
 
 export default class Trip extends Component {
   constructor(props) {
@@ -19,13 +21,15 @@ export default class Trip extends Component {
     this.optimizeTrip = this.optimizeTrip.bind(this);
     this.removeDestination = this.removeDestination.bind(this);
     this.reverseTrip = this.reverseTrip.bind(this);
+    this.rotateTrip = this.rotateTrip.bind(this);
     this.setDestinationIsValidProperty = this.setDestinationIsValidProperty.bind(this);
     this.setName = this.setName.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
     this.toggleDestinationCollapse = this.toggleDestinationCollapse.bind(this);
     this.toggleDestinationModal = this.toggleDestinationModal.bind(this);
+    this.unlockRemoveButton = this.unlockRemoveButton.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
-    this.rotateTrip = this.rotateTrip.bind(this);
+
 
     this.state = {
       destinations: [],
@@ -205,20 +209,28 @@ export default class Trip extends Component {
   }
 
   removeDestination(index) {
-    if (index >= 0 && index < this.state.destinations.length) {
-      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-      tempDestinations.splice(index, 1);
+    if(allowRemoveButtonClick){
+      allowRemoveButtonClick = false;
+      setTimeout(this.unlockRemoveButton, REMOVE_BUTTON_CLICK_BUFFER_MS);
+      if (index >= 0 && index < this.state.destinations.length) {
+        let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+        tempDestinations.splice(index, 1);
 
-      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
-      tempDestinationStates.splice(index, 1);
+        let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+        tempDestinationStates.splice(index, 1);
 
-      this.setState({
+        this.setState({
             destinations: tempDestinations,
             destinationStates: tempDestinationStates
           },
           this.sendTripRequest,
-      );
+        );
+      }
     }
+  }
+
+  unlockRemoveButton(){
+    allowRemoveButtonClick = true;
   }
 
   submitDestination() {
