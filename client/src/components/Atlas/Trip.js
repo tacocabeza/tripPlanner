@@ -32,10 +32,11 @@ export default class Trip extends Component {
 
 
     this.state = {
-      destinations: [],
-      destinationModal: false,
-      destinationStates: [],
       loadedTrip: EMPTY_TRIP,
+      tripName: '',
+      destinations: Cookies.getJSON("Destinations") !== undefined ? Cookies.getJSON("Destinations") : [],
+      destinationModal: false,
+      destinationStates: Cookies.getJSON("DestinationStates") !== undefined ? Cookies.getJSON("DestinationStates") : [],
       newItem: EMPTY_NEW_ITEM,
       oneWayDistance: 0,
       response: "0.0",
@@ -325,6 +326,10 @@ export default class Trip extends Component {
       } else {
         newDestinationStates = this.getInitDestinationStateArray(response.places);
       }
+      Cookies.set("Destinations", response.places);
+      Cookies.set("DestinationStates", newDestinationStates);
+      console.log(response.places);
+      console.log(Cookies.getJSON("Destinations"));
       this.setState({
           loadedTrip: response,
           tripName: response.options.title,

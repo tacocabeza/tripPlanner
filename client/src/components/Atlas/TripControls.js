@@ -79,7 +79,7 @@ export default class TripControls extends Component {
   }
 
   renderDestinations() {
-    if(this.props.destinations.length > 0) {
+    if(this.props.destinations.length > 0 && this.props.destinationStates.length === this.props.destinations.length) {
       return (
         <div>
           <Container lockAxis="y" dragHandleSelector=".drag-handle"
