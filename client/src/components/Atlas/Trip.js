@@ -43,7 +43,15 @@ export default class Trip extends Component {
       roundTripDistance:0,
       serverSettings: this.props.serverSettings,
       showNewItem: false,
-      tripName: ''
+      tripName: '',
+      response: "0.0",
+      hasLoaded: false
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.serverSettings && !this.state.hasLoaded) {
+      this.setState({hasLoaded: true}, this.sendTripRequest);
     }
   }
 
