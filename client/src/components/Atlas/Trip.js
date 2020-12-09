@@ -37,14 +37,13 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       oneWayDistance: 0,
       roundTripDistance:0,
-      totalDistance: 0,
       response: "0.0"
     }
   }
 
   render() {
     return(
-      <div className="text-center">
+      <div className="text-center">e
         <TripControls tripName={this.state.tripName} setName={this.setName}
                       destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
                       loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
@@ -309,7 +308,7 @@ export default class Trip extends Component {
           destinationStates: newDestinationStates
         },
         ()=>{this.props.setTripLocations(this.state.destinations)
-        this.props.parentCallback(this.state.oneWayDistance)},
+        this.props.parentCallback(this.state.oneWayDistance, this.state.roundTripDistance)},
       );
     }
   }
