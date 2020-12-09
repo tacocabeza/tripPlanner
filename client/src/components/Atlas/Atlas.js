@@ -61,6 +61,7 @@ export default class Atlas extends Component {
     this.toggleMarkers = this.toggleMarkers.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
     this.reverseGeocoder = this.reverseGeocoder.bind(this);
+    this.callbackFunction = this.callbackFunction.bind(this);
 
     this.state = {
       currentMapBounds: null,
@@ -91,7 +92,7 @@ export default class Atlas extends Component {
     };
   }
 
-  callbackFunction = (childData) => {
+  callbackFunction (childData)  {
     this.setState({totalDistance: childData})
   }
 
@@ -174,7 +175,7 @@ export default class Atlas extends Component {
   renderTotalDistance(){
       return(
           <div>
-            parentCallback={this.callbackFunction}
+            parentCallback={this.state.totalDistance}
             <p className="text-left"> Round Trip Distance: {this.state.totalDistance} {Cookies.get("DistanceUnits")}</p>
           </div>
       )

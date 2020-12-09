@@ -60,7 +60,6 @@ export default class Trip extends Component {
                       pageTop={this.props.pageTop} pageBottom={this.props.pageBottom}
                       destinationModal={this.state.destinationModal} toggleDestinationModal={this.toggleDestinationModal}/>
         {this.checkMapUpdate()}
-        {this.sendData()}
       </div>
     );
   }
@@ -309,7 +308,8 @@ export default class Trip extends Component {
           destinations: response.places,
           destinationStates: newDestinationStates
         },
-        this.props.setTripLocations(this.state.destinations),
+        ()=>{this.props.setTripLocations(this.state.destinations)
+        this.props.parentCallback(this.state.oneWayDistance)},
       );
     }
   }
@@ -347,10 +347,5 @@ export default class Trip extends Component {
   toggleDestinationModal() {
     this.setState({destinationModal: !this.state.destinationModal});
   }
-
-  sendData = () => {
-    this.props.parentCallback(this.state.roundTripDistance);
-  }
-
 
 }
