@@ -29,6 +29,7 @@ export const EMPTY_TRIP = {"options": {"title": "", "earthRadius": "", "units": 
 export const TRIP = {"options": {"title": "", "earthRadius": "", "units": "", "response": ""}, "places": [], "distances": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const EMPTY_SEARCH = {"found": 0, "match": "", "places": [], "requestType": "find", "requestVersion": {PROTOCOL_VERSION}};
 export const EMPTY_NEW_ITEM = { "notes": '', "name": '', "latitude": '', "longitude": ''};
+export const REMOVE_BUTTON_CLICK_BUFFER_MS = 100;
 
 export const kmlTemplate =
 `<?xml version="1.0" encoding="UTF-8"?>

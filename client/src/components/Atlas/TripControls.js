@@ -59,6 +59,9 @@ export default class TripControls extends Component {
                 this.props.toggleDestinationModal()
               }}>Add Stop</Button>
               <Button color="primary" className="saveLoad" onClick={() => {
+                this.props.clearTrip()
+              }}>Clear Trip</Button>
+              <Button color="primary" className="saveLoad" onClick={() => {
                 this.props.reverseTrip()
               }}>Reverse Trip</Button>
               <Button color="primary" className="saveLoad" onClick={() => {
