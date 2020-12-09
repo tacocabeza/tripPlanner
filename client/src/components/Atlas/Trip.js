@@ -43,7 +43,6 @@ export default class Trip extends Component {
       roundTripDistance:0,
       serverSettings: this.props.serverSettings,
       showNewItem: false,
-      tripName: ''
     }
   }
 
@@ -99,7 +98,7 @@ export default class Trip extends Component {
 
   updateDestination(index, property, value) {
     if (index >= 0 && index < this.state.destinations.length) {
-      let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+      let tempArr = this.stringifyAndParseJSON(this.state.destinations);
       Object.defineProperty(tempArr[index], property, {value: value});
       this.setState({
             destinations: tempArr,
@@ -112,11 +111,11 @@ export default class Trip extends Component {
   onDrop(dropResult) {
     const { removedIndex, addedIndex} = dropResult;
 
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
     let movedDestination = tempDestinations.splice(removedIndex, 1)[0];
     tempDestinations.splice(addedIndex, 0, movedDestination);
 
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     let movedDestinationState = tempDestinationStates.splice(removedIndex, 1)[0];
     tempDestinationStates.splice(addedIndex, 0, movedDestinationState);
 
@@ -133,10 +132,10 @@ export default class Trip extends Component {
   }
 
   setDestinationIsValidProperty(index, property, value, isValid) {
-    let newIsValidProperty = JSON.parse(JSON.stringify(this.state.destinationStates[index].isValidProperty));
+    let newIsValidProperty = this.stringifyAndParseJSON(this.state.destinationStates[index].isValidProperty);
     Object.defineProperty(newIsValidProperty,property,{value: isValid});
 
-    let newInputTexts = JSON.parse(JSON.stringify(this.state.destinationStates[index].inputTexts));
+    let newInputTexts = this.stringifyAndParseJSON(this.state.destinationStates[index].inputTexts);
     Object.defineProperty(newInputTexts,property,{value: value});
 
     this.setDestinationState(index,
@@ -144,7 +143,7 @@ export default class Trip extends Component {
   }
 
   setDestinationState(index, stateObj) {
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     let changedDestination = tempDestinationStates[index];
 
     // format stateObj so that it can be taken by Object.defineProperties
@@ -214,10 +213,10 @@ export default class Trip extends Component {
       allowRemoveButtonClick = false;
       setTimeout(this.unlockRemoveButton, REMOVE_BUTTON_CLICK_BUFFER_MS);
       if (index >= 0 && index < this.state.destinations.length) {
-        let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+        let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
         tempDestinations.splice(index, 1);
 
-        let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+        let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
         tempDestinationStates.splice(index, 1);
 
         this.setState({
@@ -250,10 +249,10 @@ export default class Trip extends Component {
   }
 
   reverseTrip() {
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
     tempDestinations = tempDestinations.reverse();
 
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     tempDestinationStates = tempDestinationStates.reverse();
 
     this.setState({
@@ -266,8 +265,8 @@ export default class Trip extends Component {
 
   rotateTrip(index) {
     if (index >= 0 && index < this.state.destinations.length) {
-      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+      let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
+      let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
 
       for (index; index !== tempDestinations.length; index++) {
         tempDestinations.unshift(tempDestinations.pop());
@@ -374,5 +373,15 @@ export default class Trip extends Component {
 
   toggleDestinationModal() {
     this.setState({destinationModal: !this.state.destinationModal});
+  }
+
+  stringifyAndParseJSON(json) {
+    let str = JSON.stringify(json);
+    try {
+      return JSON.parse(str)
+    } catch (e) {
+      this.props.createSnackBar("Invalid JSON String Encountered");
+      return [];
+    }
   }
 }
