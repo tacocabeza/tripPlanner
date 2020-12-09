@@ -86,8 +86,13 @@ export default class Atlas extends Component {
       tripMarkerIcon: AGGIE_MARKER_ICON,
       tripLineSize: 5,
       tripMarkerSize: 1,
+      totalDistance: 0,
       geocode: ""
     };
+  }
+
+  callbackFunction = (childData) => {
+    this.setState({totalDistance: childData})
   }
 
   componentDidMount() {
@@ -103,6 +108,7 @@ export default class Atlas extends Component {
             <TabContent activeTab={this.state.currentTab}>
               <TabPane tabId="1">
                 {this.renderLeafletMap()}
+                {this.renderTotalDistance()}
               </TabPane>
               <TabPane tabId="2">
                 <Trip toggle={this.toggleTab}
@@ -113,7 +119,10 @@ export default class Atlas extends Component {
                       isRoundTrip={this.state.isRoundTrip}
                       flipRoundTrip={this.flipRoundTrip}
                       pageTop={this.props.pageTop}
-                      pageBottom={this.props.pageBottom}/>
+                      pageBottom={this.props.pageBottom}
+                      totalDistance={this.state.totalDistance}
+                      updateDist={this.updateDist}
+                      parentCallback={this.callbackFunction}/>
               </TabPane>
               <TabPane tabId="3">
                 {this.renderSelectors()}
@@ -160,6 +169,16 @@ export default class Atlas extends Component {
         <Input placeholder={Cookies.get("DistanceUnits")} onChange={(e) => {Cookies.set("DistanceUnits", e.target.value)}}/>
       </InputGroup>
     </div>);
+  }
+
+  renderTotalDistance(){
+      return(
+          <p className="text-left"> Round Trip Distance: {this.state.totalDistance} {Cookies.get("DistanceUnits")}</p>
+      )
+  }
+
+  updateDist(totalDist) {
+    this.setState({totalDistance: totalDist});
   }
 
   renderLeafletMap() {

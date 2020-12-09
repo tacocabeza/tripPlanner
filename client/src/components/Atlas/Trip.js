@@ -37,6 +37,7 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       oneWayDistance: 0,
       roundTripDistance:0,
+      totalDistance: 0,
       response: "0.0"
     }
   }
@@ -59,6 +60,7 @@ export default class Trip extends Component {
                       pageTop={this.props.pageTop} pageBottom={this.props.pageBottom}
                       destinationModal={this.state.destinationModal} toggleDestinationModal={this.toggleDestinationModal}/>
         {this.checkMapUpdate()}
+        {this.sendData()}
       </div>
     );
   }
@@ -141,7 +143,6 @@ export default class Trip extends Component {
   checkMapUpdate() {
     let newPlaceLocation = this.props.tripNewLocation?.location;
     let newPlaceLocationName = this.props.tripNewLocation?.locationName;
-
     if (newPlaceLocation) {
       if (!newPlaceLocationName || newPlaceLocationName === '') {
         newPlaceLocationName = newPlaceLocation[0].toFixed(2) + ', ' +
@@ -346,4 +347,10 @@ export default class Trip extends Component {
   toggleDestinationModal() {
     this.setState({destinationModal: !this.state.destinationModal});
   }
+
+  sendData = () => {
+    this.props.parentCallback(this.state.roundTripDistance);
+  }
+
+
 }
