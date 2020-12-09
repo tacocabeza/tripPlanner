@@ -328,8 +328,6 @@ export default class Trip extends Component {
       }
       Cookies.set("Destinations", response.places);
       Cookies.set("DestinationStates", newDestinationStates);
-      console.log(response.places);
-      console.log(Cookies.getJSON("Destinations"));
       this.setState({
           loadedTrip: response,
           tripName: response.options.title,
@@ -339,7 +337,7 @@ export default class Trip extends Component {
           destinations: response.places,
           destinationStates: newDestinationStates
         },
-        this.props.setTripLocations(this.state.destinations),
+        this.props.setTripLocations(response.places),
       );
     }
   }
