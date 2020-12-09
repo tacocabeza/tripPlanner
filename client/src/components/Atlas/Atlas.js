@@ -418,7 +418,7 @@ export default class Atlas extends Component {
   }
 
   reverseGeocoder(lat,lng){
-    if(this.state.distanceLocation1Name === "" || this.state.distanceLocation1Name.test(COORD_REGEX)) {
+    if(this.state.distanceLocation1Name === "" || this.state.distanceLocation1Name.match(COORD_REGEX)) {
       fetch(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=${lng},${lat}`)
         .then(res => res.json())
         .then(myJson => {
