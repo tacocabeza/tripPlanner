@@ -2,6 +2,7 @@ import './jestConfig/enzyme.config.js';
 
 import React from 'react';
 import {shallow, mount} from 'enzyme';
+import Cookies from "js-cookie";
 
 import Trip from '../src/components/Atlas/Trip';
 import Atlas from '../src/components/Atlas/Atlas';
@@ -180,6 +181,8 @@ function testRemoveLocation() {
 test("test remove location", testRemoveLocation)
 
 function testSubmitDestination() {
+  Cookies.remove("Destinations");
+  Cookies.remove("DestinationStates");
   const trip = shallow(<Trip/>);
   trip.instance().sendTripRequest = jest.fn();
 

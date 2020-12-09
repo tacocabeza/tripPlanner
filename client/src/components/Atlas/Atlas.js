@@ -207,13 +207,13 @@ export default class Atlas extends Component {
         >
           <LayersControl position={"bottomleft"}>
             <LayersControl.BaseLayer checked name="Satellite">
-              <TileLayer url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Topographical">
-              <TileLayer url="https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Streets">
-              <TileLayer url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Base">
               <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
