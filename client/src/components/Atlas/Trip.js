@@ -37,7 +37,14 @@ export default class Trip extends Component {
       serverSettings: this.props.serverSettings,
       oneWayDistance: 0,
       roundTripDistance:0,
-      response: "0.0"
+      response: "0.0",
+      hasLoaded: false
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.serverSettings && !this.state.hasLoaded) {
+      this.setState({hasLoaded: true}, this.sendTripRequest);
     }
   }
 
@@ -301,8 +308,6 @@ export default class Trip extends Component {
       }
       Cookies.set("Destinations", response.places);
       Cookies.set("DestinationStates", newDestinationStates);
-      console.log(response.places);
-      console.log(Cookies.getJSON("Destinations"));
       this.setState({
           loadedTrip: response,
           tripName: response.options.title,
