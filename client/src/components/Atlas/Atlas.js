@@ -173,7 +173,10 @@ export default class Atlas extends Component {
 
   renderTotalDistance(){
       return(
-          <p className="text-left"> Round Trip Distance: {this.state.totalDistance} {Cookies.get("DistanceUnits")}</p>
+          <div>
+            parentCallback={this.callbackFunction}
+            <p className="text-left"> Round Trip Distance: {this.state.totalDistance} {Cookies.get("DistanceUnits")}</p>
+          </div>
       )
   }
 
