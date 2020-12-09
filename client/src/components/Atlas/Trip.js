@@ -29,9 +29,9 @@ export default class Trip extends Component {
     this.state = {
       loadedTrip: EMPTY_TRIP,
       tripName: '',
-      destinations: [],
+      destinations: Cookies.getJSON("Destinations") !== undefined ? Cookies.getJSON("Destinations") : [],
       destinationModal: false,
-      destinationStates: [],
+      destinationStates: Cookies.getJSON("DestinationStates") !== undefined ? Cookies.getJSON("DestinationStates") : [],
       newItem: EMPTY_NEW_ITEM,
       showNewItem: false,
       serverSettings: this.props.serverSettings,
@@ -299,6 +299,10 @@ export default class Trip extends Component {
       } else {
         newDestinationStates = this.getInitDestinationStateArray(response.places);
       }
+      Cookies.set("Destinations", response.places);
+      Cookies.set("DestinationStates", newDestinationStates);
+      console.log(response.places);
+      console.log(Cookies.getJSON("Destinations"));
       this.setState({
           loadedTrip: response,
           tripName: response.options.title,
