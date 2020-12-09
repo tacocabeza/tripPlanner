@@ -25,10 +25,10 @@ import {IconButton} from "@material-ui/core";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
-const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
-const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, iconAnchor: [12, 40] });
+const AGGIE_MARKER_ICON = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const GOLD_MARKER_ICON = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const GREEN_MARKER_ICON = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
+const RESERVOIR_MARKER_ICON = L.icon({ iconUrl: CSUReservoirMarker, shadowUrl: iconShadow, shadowSize: [25,40], iconAnchor: [12, 40], iconSize: [25,40] });
 const AGGIE_MARKER_ICON_S = L.icon({ iconUrl: CSUAggieOrangeMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const GOLD_MARKER_ICON_S = L.icon({ iconUrl: CSUGoldMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20] });
 const GREEN_MARKER_ICON_S = L.icon({ iconUrl: CSUGreenMarker, shadowUrl: iconShadow, shadowSize: [12,20], iconAnchor: [6, 20], iconSize: [12,20]});
@@ -130,21 +130,21 @@ export default class Atlas extends Component {
     return (
       <div>
         Marker Color:
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: AGGIE_MARKER_ICON})}>Aggie</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GOLD_MARKER_ICON})}>Gold</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}>Green</IconButton>
-        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}>Reservoir</IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: AGGIE_MARKER_ICON})}><img className="lgIcon" src={CSUAggieOrangeMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GOLD_MARKER_ICON})}><img className="lgIcon" src={CSUGoldMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: GREEN_MARKER_ICON})}><img className="lgIcon" src={CSUGreenMarker}/></IconButton>
+        <IconButton size={"small"}onClick={() => this.setState({tripMarkerIcon: RESERVOIR_MARKER_ICON})}><img className="lgIcon" src={CSUReservoirMarker}/></IconButton>
         <br/>
-        Marker Size: {this.state.tripMarkerSize}
-        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}>Big</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}>Small</IconButton>
+        Marker Size:
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize:  1})}><img className="lgIcon" src={CSUAggieOrangeMarker}/></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripMarkerSize: 0})}><img className="smIcon" src={CSUAggieOrangeMarker}/></IconButton>
         <br/>
         Line Color:
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}>Canyon</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}>Alfalfa</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}>Dark Slate</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}>Reservoir</IconButton>
-        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}>Sunshine</IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: CANYON})}><p className="canyon">Canyon</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: ALFALFA})}><p className="alfalfa">Alfalfa</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: DARK_SLATE})}><p className="darkslate">Dark Slate</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: RESERVOIR})}><p className="reservoir">Reservoir</p></IconButton>
+        <IconButton size={"small"} onClick={() => this.setState({tripLineColor: SUNSHINE})}><p className="sunshine">Sunshine</p></IconButton>
         <br/>
         Line Size: {this.state.tripLineSize}
         <IconButton size={"small"} onClick={() => this.setState({tripLineSize: this.state.tripLineSize + 1})}>+</IconButton>
@@ -180,13 +180,13 @@ export default class Atlas extends Component {
         >
           <LayersControl position={"bottomleft"}>
             <LayersControl.BaseLayer checked name="Satellite">
-              <TileLayer url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Topographical">
-              <TileLayer url="https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Streets">
-              <TileLayer url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=yscl6YbzzR4qnvBp5rwW" attribution={MAP_LAYER_ATTRIBUTION}/>
+              <TileLayer url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Djm8X0WumfbK2gnbZWB1" attribution={MAP_LAYER_ATTRIBUTION}/>
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer checked name="Base">
               <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
@@ -287,16 +287,14 @@ export default class Atlas extends Component {
 
   placeMarker(location, icon, size, showBoolean = true, key= 0) {
     let newIcon = icon
-    if(size == 0) {
-      if (icon == AGGIE_MARKER_ICON) {
-        newIcon = AGGIE_MARKER_ICON_S
-      } else if (icon == GREEN_MARKER_ICON) {
-        newIcon = GREEN_MARKER_ICON_S
-      } else if (icon == GOLD_MARKER_ICON) {
-        newIcon = GOLD_MARKER_ICON_S
-      } else {
-        newIcon = RESERVOIR_MARKER_ICON_S
-      }
+    if (icon == AGGIE_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? AGGIE_MARKER_ICON_S : AGGIE_MARKER_ICON
+    } else if (icon == GREEN_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? GREEN_MARKER_ICON_S : GREEN_MARKER_ICON
+    } else if (icon == GOLD_MARKER_ICON) {
+      newIcon = this.state.tripMarkerSize==0? GOLD_MARKER_ICON_S : GOLD_MARKER_ICON
+    } else {
+      newIcon = this.state.tripMarkerSize==0? RESERVOIR_MARKER_ICON_S : RESERVOIR_MARKER_ICON
     }
     if (location && showBoolean) {
       let latitude = location.lat? location.lat: (location[0]? location[0]: 0);
@@ -307,9 +305,6 @@ export default class Atlas extends Component {
           this.setState({justClicked: false})
         }
       };
-
-
-
       return (
         <Marker position={location} icon={newIcon} key={key} ref={initMarker}>
           <Popup offset={[1, -18]} autoPan={false}>
