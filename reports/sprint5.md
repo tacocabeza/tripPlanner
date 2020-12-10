@@ -93,26 +93,63 @@ cookie.
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *11/18/2020* | *2* | *2* | none |
+| *11/20/2020* | *0* | *2* | none | 
+| *11/30/2020* | *4* | *12* | none | 
+| *12/2/2020* | *7* | *11* | none | 
+| *12/4/2020* | *3* | *7* | none |
+| *12/7/2020* | *16* | *4* | none | 
+| *12/9/2020* | *13* | *5* | none | 
 
 
 ## Review
 
-### Epics done  
+### Epics done
+- User Experience
+- Filter Search
+- File Formats
+- Distance Units
+- Place Details
+- Maps
+- Markers 
 
-### Epics not done 
+### Epics not done
+All epics that were planned were finished
 
 ### What went well
+We did a good job of keeping on top of the defects we found in each of our inspections. The team worked
+well together with less of a need to ping teammates in Slack in order to get pull requests merged in a timely
+manner. We made good use of our time and didn't have a big time crunch at the end of the sprint. The majority
+of the work was finished with plenty of time prior to the deadline. We didn't have too many roadblocks in our
+implementation of the epics, and even had time to add a couple features of our own to enhance quality of life
+such as cookies for trips that keep the most recent trip the user was working on even if they reload the page.
 
 ### Problems encountered and resolutions
-
+We put a lot on our plate from the beginning of this sprint with the expectation that some work might get done
+during fall break. This ended up not being the case, leaving us with a lot more work to do after the break,
+but we pulled together and worked hard to get everything we planned done in time. It did take a good amount of
+time and effort, but in the end it proved not to hinder our ability to complete the project as intended.
 
 ## Retrospective
 
 ### What we changed this sprint
+This sprint we put a big focus on working together without the need for as much communication. We got more
+work done than in previous sprints and often did it with far fewer slack messages. Team members generally
+needed less help from each other in order to complete their tasks. We were all more productive together.
 
 ### What went well
+We got a large volume of work done in not a whole lot of time. We worked efficiently together and came out
+with a very nice UI that we all felt proud of. We also made sure not to leave any loose ends in the project
+that could cause problems in the demo by thoroughly testing the application ourselves and trying to find
+bugs.
 
 ### Potential improvements
+We could have done our work in a more linear fashion. We often worked in bursts on the days that we had
+scrum meetings rather than working a smaller amount every day. We also could have kept on top of
+ballooning file sizes a bit more, as some of our files became very long by the end of the sprint.
 
 ### What we will change next time
+There won't really be a next time, but I think I can speak for all of us when I say that this course has
+greatly helped me to be a better teammate and taught me a lot about Agile and Scrum. With the strategies
+learned in this course I hope to be a more productive employee in my future endeavors. Thank you so much
+for everything you taught us this semester.
