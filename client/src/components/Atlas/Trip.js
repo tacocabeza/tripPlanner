@@ -43,7 +43,6 @@ export default class Trip extends Component {
       roundTripDistance:0,
       serverSettings: this.props.serverSettings,
       showNewItem: false,
-      response: "0.0",
       hasLoaded: false
     }
   }
@@ -56,7 +55,7 @@ export default class Trip extends Component {
 
   render() {
     return(
-      <div className="text-center">e
+      <div className="text-center">
         <TripControls tripName={this.state.tripName} setName={this.setName}
                       destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
                       loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
