@@ -43,7 +43,6 @@ export default class Trip extends Component {
       roundTripDistance:0,
       serverSettings: this.props.serverSettings,
       showNewItem: false,
-      response: "0.0",
       hasLoaded: false
     }
   }
