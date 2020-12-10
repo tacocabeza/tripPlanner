@@ -174,7 +174,7 @@ export default class ServerSettings extends Component {
             }
 
 
-        }catch(error){
+        } catch(error){
             console.log("")
         }
 

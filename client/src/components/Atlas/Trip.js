@@ -3,47 +3,60 @@ import Cookies from "js-cookie";
 
 import TripControls from "./TripControls";
 import {sendServerRequest} from "../../utils/restfulAPI";
-import {PROTOCOL_VERSION} from "../../utils/constants";
+import {PROTOCOL_VERSION, REMOVE_BUTTON_CLICK_BUFFER_MS} from "../../utils/constants";
 import {EMPTY_TRIP} from "../../utils/constants";
 import {EMPTY_NEW_ITEM} from "../../utils/constants";
 import {isValidLatitude, isValidLongitude} from "../../utils/misc";
+
+let allowRemoveButtonClick = true;
 
 export default class Trip extends Component {
   constructor(props) {
     super(props);
 
     this.addDestination = this.addDestination.bind(this);
+    this.clearTrip = this.clearTrip.bind(this);
     this.loadTripJSON = this.loadTripJSON.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.optimizeTrip = this.optimizeTrip.bind(this);
     this.removeDestination = this.removeDestination.bind(this);
+    this.reverseTrip = this.reverseTrip.bind(this);
+    this.rotateTrip = this.rotateTrip.bind(this);
     this.setDestinationIsValidProperty = this.setDestinationIsValidProperty.bind(this);
+    this.setName = this.setName.bind(this);
     this.submitDestination = this.submitDestination.bind(this);
     this.toggleDestinationCollapse = this.toggleDestinationCollapse.bind(this);
-    this.updateDestination = this.updateDestination.bind(this);
-    this.rotateTrip = this.rotateTrip.bind(this);
-    this.setName = this.setName.bind(this);
     this.toggleDestinationModal = this.toggleDestinationModal.bind(this);
-    this.reverseTrip = this.reverseTrip.bind(this);
-    this.optimizeTrip = this.optimizeTrip.bind(this);
+    this.unlockRemoveButton = this.unlockRemoveButton.bind(this);
+    this.updateDestination = this.updateDestination.bind(this);
+
 
     this.state = {
       loadedTrip: EMPTY_TRIP,
       tripName: '',
-      destinations: [],
+      destinations: Cookies.getJSON("Destinations") !== undefined ? Cookies.getJSON("Destinations") : [],
       destinationModal: false,
-      destinationStates: [],
+      destinationStates: Cookies.getJSON("DestinationStates") !== undefined ? Cookies.getJSON("DestinationStates") : [],
       newItem: EMPTY_NEW_ITEM,
-      showNewItem: false,
-      serverSettings: this.props.serverSettings,
       oneWayDistance: 0,
+      response: "0.0",
       roundTripDistance:0,
-      response: "0.0"
+      serverSettings: this.props.serverSettings,
+      showNewItem: false,
+      response: "0.0",
+      hasLoaded: false
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.serverSettings && !this.state.hasLoaded) {
+      this.setState({hasLoaded: true}, this.sendTripRequest);
     }
   }
 
   render() {
     return(
-      <div className="text-center">
+      <div className="text-center">e
         <TripControls tripName={this.state.tripName} setName={this.setName}
                       destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
                       loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
@@ -57,9 +70,24 @@ export default class Trip extends Component {
                       roundTripDistance={this.state.roundTripDistance} oneWayDistance={this.state.oneWayDistance}
                       submitDestination={this.submitDestination} toggle={this.props.toggle}
                       pageTop={this.props.pageTop} pageBottom={this.props.pageBottom}
-                      destinationModal={this.state.destinationModal} toggleDestinationModal={this.toggleDestinationModal}/>
+                      destinationModal={this.state.destinationModal} toggleDestinationModal={this.toggleDestinationModal}
+                      clearTrip={this.clearTrip}/>
         {this.checkMapUpdate()}
       </div>
+    );
+  }
+
+  clearTrip(){
+    this.setState({
+        destinations: [],
+        destinationStates: [],
+        loadedTrip: EMPTY_TRIP,
+        oneWayDistance: 0,
+        response: "0.0",
+        roundTripDistance:0,
+        tripName: ''
+    },
+      this.sendTripRequest,
     );
   }
 
@@ -78,7 +106,7 @@ export default class Trip extends Component {
 
   updateDestination(index, property, value) {
     if (index >= 0 && index < this.state.destinations.length) {
-      let tempArr = JSON.parse(JSON.stringify(this.state.destinations));
+      let tempArr = this.stringifyAndParseJSON(this.state.destinations);
       Object.defineProperty(tempArr[index], property, {value: value});
       this.setState({
             destinations: tempArr,
@@ -91,11 +119,11 @@ export default class Trip extends Component {
   onDrop(dropResult) {
     const { removedIndex, addedIndex} = dropResult;
 
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
     let movedDestination = tempDestinations.splice(removedIndex, 1)[0];
     tempDestinations.splice(addedIndex, 0, movedDestination);
 
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     let movedDestinationState = tempDestinationStates.splice(removedIndex, 1)[0];
     tempDestinationStates.splice(addedIndex, 0, movedDestinationState);
 
@@ -112,10 +140,10 @@ export default class Trip extends Component {
   }
 
   setDestinationIsValidProperty(index, property, value, isValid) {
-    let newIsValidProperty = JSON.parse(JSON.stringify(this.state.destinationStates[index].isValidProperty));
+    let newIsValidProperty = this.stringifyAndParseJSON(this.state.destinationStates[index].isValidProperty);
     Object.defineProperty(newIsValidProperty,property,{value: isValid});
 
-    let newInputTexts = JSON.parse(JSON.stringify(this.state.destinationStates[index].inputTexts));
+    let newInputTexts = this.stringifyAndParseJSON(this.state.destinationStates[index].inputTexts);
     Object.defineProperty(newInputTexts,property,{value: value});
 
     this.setDestinationState(index,
@@ -123,7 +151,7 @@ export default class Trip extends Component {
   }
 
   setDestinationState(index, stateObj) {
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     let changedDestination = tempDestinationStates[index];
 
     // format stateObj so that it can be taken by Object.defineProperties
@@ -141,7 +169,6 @@ export default class Trip extends Component {
   checkMapUpdate() {
     let newPlaceLocation = this.props.tripNewLocation?.location;
     let newPlaceLocationName = this.props.tripNewLocation?.locationName;
-
     if (newPlaceLocation) {
       if (!newPlaceLocationName || newPlaceLocationName === '') {
         newPlaceLocationName = newPlaceLocation[0].toFixed(2) + ', ' +
@@ -189,20 +216,28 @@ export default class Trip extends Component {
   }
 
   removeDestination(index) {
-    if (index >= 0 && index < this.state.destinations.length) {
-      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-      tempDestinations.splice(index, 1);
+    if(allowRemoveButtonClick){
+      allowRemoveButtonClick = false;
+      setTimeout(this.unlockRemoveButton, REMOVE_BUTTON_CLICK_BUFFER_MS);
+      if (index >= 0 && index < this.state.destinations.length) {
+        let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
+        tempDestinations.splice(index, 1);
 
-      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
-      tempDestinationStates.splice(index, 1);
+        let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
+        tempDestinationStates.splice(index, 1);
 
-      this.setState({
+        this.setState({
             destinations: tempDestinations,
             destinationStates: tempDestinationStates
           },
           this.sendTripRequest,
-      );
+        );
+      }
     }
+  }
+
+  unlockRemoveButton(){
+    allowRemoveButtonClick = true;
   }
 
   submitDestination() {
@@ -221,10 +256,10 @@ export default class Trip extends Component {
   }
 
   reverseTrip() {
-    let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
+    let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
     tempDestinations = tempDestinations.reverse();
 
-    let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+    let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
     tempDestinationStates = tempDestinationStates.reverse();
 
     this.setState({
@@ -237,8 +272,8 @@ export default class Trip extends Component {
 
   rotateTrip(index) {
     if (index >= 0 && index < this.state.destinations.length) {
-      let tempDestinations = JSON.parse(JSON.stringify(this.state.destinations));
-      let tempDestinationStates = JSON.parse(JSON.stringify(this.state.destinationStates));
+      let tempDestinations = this.stringifyAndParseJSON(this.state.destinations);
+      let tempDestinationStates = this.stringifyAndParseJSON(this.state.destinationStates);
 
       for (index; index !== tempDestinations.length; index++) {
         tempDestinations.unshift(tempDestinations.pop());
@@ -262,28 +297,26 @@ export default class Trip extends Component {
   }
 
   sendTripRequest() {
-    if(this.state.destinations.length > 0) {
-      sendServerRequest({
-          "places": this.state.destinations,
-          "options": {
-            "title": this.state.tripName,
-            "earthRadius": Cookies.get("EarthRadius"),
-            "response": this.state.response,
-            "units": Cookies.get("DistanceUnits")
-          },
-          "requestType": "trip",
-          "requestVersion": PROTOCOL_VERSION
+    sendServerRequest({
+        "places": this.state.destinations,
+        "options": {
+          "title": this.state.tripName,
+          "earthRadius": Cookies.get("EarthRadius"),
+          "response": this.state.response,
+          "units": Cookies.get("DistanceUnits")
         },
-        this.state.serverSettings.serverPort)
-      .then(trip => {
-        if (trip) {
-          this.processTripResponse(trip.data);
-        } else {
-          this.setState({response: "0.0"});
-          this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
-        }
-      });
-    }
+        "requestType": "trip",
+        "requestVersion": PROTOCOL_VERSION
+      },
+      this.state.serverSettings.serverPort)
+    .then(trip => {
+      if (trip) {
+        this.processTripResponse(trip.data);
+      } else {
+        this.setState({response: "0.0"});
+        this.props.createSnackBar("The Request To The Server Failed. Please Try Again Later.");
+      }
+    });
   }
 
   processTripResponse(response) {
@@ -299,6 +332,8 @@ export default class Trip extends Component {
       } else {
         newDestinationStates = this.getInitDestinationStateArray(response.places);
       }
+      Cookies.set("Destinations", response.places);
+      Cookies.set("DestinationStates", newDestinationStates);
       this.setState({
           loadedTrip: response,
           tripName: response.options.title,
@@ -308,7 +343,8 @@ export default class Trip extends Component {
           destinations: response.places,
           destinationStates: newDestinationStates
         },
-        this.props.setTripLocations(this.state.destinations),
+        ()=>{this.props.parentCallback(this.state.oneWayDistance, this.state.roundTripDistance)},
+        this.props.setTripLocations(response.places),
       );
     }
   }
@@ -345,5 +381,15 @@ export default class Trip extends Component {
 
   toggleDestinationModal() {
     this.setState({destinationModal: !this.state.destinationModal});
+  }
+
+  stringifyAndParseJSON(json) {
+    let str = JSON.stringify(json);
+    try {
+      return JSON.parse(str)
+    } catch (e) {
+      this.props.createSnackBar("Invalid JSON String Encountered");
+      return [];
+    }
   }
 }
