@@ -53,6 +53,7 @@ export const kmlTemplate =
 
 export const LATITUDE_REGEX = new RegExp("^[-+]?(?:90(?:(?:\\.0+)?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]+)?))$");
 export const LONGITUDE_REGEX = new RegExp("^[-+]?(?:180(?:(?:\\.0+)?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]+)?))$");
+export const COORD_REGEX = new RegExp("[-+]?(?:90(?:(?:\.0+)?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]+)?)), [-+]?(?:180(?:(?:\\.0+)?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]+)?))")
 
 export const HTTP_OK = 200;
 export const HTTP_BAD_REQUEST = 400;

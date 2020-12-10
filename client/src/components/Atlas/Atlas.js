@@ -22,6 +22,7 @@ import Distance from './Distance.js';
 import Trip from './Trip.js';
 import {latLngBounds} from "leaflet";
 import {IconButton} from "@material-ui/core";
+import {COORD_REGEX} from "../../utils/constants";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [40.5734, -105.0865];
@@ -356,14 +357,16 @@ export default class Atlas extends Component {
       distanceLocation.lng = distanceLocation.lng + 360
     }
 
-    this.reverseGeocoder(distanceLocation.lat, distanceLocation.lng);
+
     this.setState({
       distanceLocation2: this.state.distanceLocation1,
       distanceLocation1: distanceLocation,
       distanceLocation2Name: this.state.distanceLocation1Name,
       distanceLocation1Name: '',
       justClicked: true
-    });
+    },
+      () => {this.reverseGeocoder(distanceLocation.lat, distanceLocation.lng)}
+    );
   }
 
   setTripLocations(destinations) {
@@ -415,11 +418,12 @@ export default class Atlas extends Component {
     this.setState({
       isSearchOpen: false,
       distanceLocation2: this.state.distanceLocation1,
-      distanceLocation1: {"lat":lat, "lng":lng ,"name":name},
+      distanceLocation1: {"lat":lat, "lng":lng, "name": name},
       currentMapCenter: [lat, lng],
       distanceLocation2Name: this.state.distanceLocation1Name,
-      distanceLocation1Name: ''
-    });
+      distanceLocation1Name: name
+    },
+      ()=>{this.reverseGeocoder(lat,lng)});
   }
 
   getMarkerLocationName(location) {
@@ -427,8 +431,13 @@ export default class Atlas extends Component {
     if(index !== -1) {
       return this.state.tripLocations[index].name;
     }
-    else if(this.state.geocode != "") {
-        return this.state.geocode
+    else if(location.lat) {
+      if(this.state.distanceLocation1 && this.state.distanceLocation1.lat === location.lat){
+        return this.state.distanceLocation1Name
+      }
+      else{
+        return this.state.distanceLocation2Name
+      }
     }
     else {
       return "Home"
@@ -436,15 +445,18 @@ export default class Atlas extends Component {
   }
 
   reverseGeocoder(lat,lng){
-   fetch(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=${lng},${lat}`)
-     .then(res => res.json())
-     .then(myJson => {
-       this.setState({geocode:myJson.address.LongLabel})
-     }).catch((error)=>{
+    if(this.state.distanceLocation1Name === "" || this.state.distanceLocation1Name.match(COORD_REGEX)) {
+      fetch(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=${lng},${lat}`)
+        .then(res => res.json())
+        .then(myJson => {
+          console.log("found")
+          this.setState({distanceLocation1Name: myJson.address.LongLabel})
+        }).catch((error) => {
         console.log(error);
-        this.setState({geocode:""})
-        });
-     }
+        this.setState({distanceLocation1Name: ""})
+      });
+    }
+  }
 
 
 
