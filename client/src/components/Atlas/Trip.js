@@ -57,7 +57,7 @@ export default class Trip extends Component {
 
   render() {
     return(
-      <div className="text-center">
+      <div className="text-center">e
         <TripControls tripName={this.state.tripName} setName={this.setName}
                       destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
                       loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
@@ -170,7 +170,6 @@ export default class Trip extends Component {
   checkMapUpdate() {
     let newPlaceLocation = this.props.tripNewLocation?.location;
     let newPlaceLocationName = this.props.tripNewLocation?.locationName;
-
     if (newPlaceLocation) {
       if (!newPlaceLocationName || newPlaceLocationName === '') {
         newPlaceLocationName = newPlaceLocation[0].toFixed(2) + ', ' +
@@ -345,6 +344,7 @@ export default class Trip extends Component {
           destinations: response.places,
           destinationStates: newDestinationStates
         },
+        ()=>{this.props.parentCallback(this.state.oneWayDistance, this.state.roundTripDistance)},
         this.props.setTripLocations(response.places),
       );
     }
@@ -383,4 +383,5 @@ export default class Trip extends Component {
   toggleDestinationModal() {
     this.setState({destinationModal: !this.state.destinationModal});
   }
+
 }
