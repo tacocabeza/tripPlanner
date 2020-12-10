@@ -3,6 +3,7 @@ import {Button, Input, Modal, ModalBody, ModalHeader, ModalFooter} from "reactst
 import {PROTOCOL_VERSION} from "../../utils/constants";
 import {fileFormats} from "../../utils/constants";
 import {kmlTemplate} from "../../utils/constants";
+import {svgTemplate} from "../../utils/constants";
 import {downloadFile} from "../../utils/misc";
 import {parse} from "json2csv";
 import Select from 'react-select';
@@ -101,6 +102,33 @@ export default class SaveTrip extends Component {
         const opts = { fields };
         let csv = parse(fileContent.places,opts);
         downloadFile(csv, this.state.saveName + extension, 'text/csv');
+    }
+
+    else if(this.state.fileFormat == "svg"){
+        var svg = svgTemplate;
+        let line = ""
+
+        let places = fileContent.places
+        for(var i in places){
+            var entry = places[i].longitude+","+fileContent.places[i].latitude+" "
+
+            line = line.concat(entry);
+        }
+
+        line = line.concat(`" style="fill:none;stroke:red;stroke-width:0.5"/>`)
+
+        svg = svg.concat("\t\t"+line);
+
+        for(var i in fileContent.places){
+            let circle = `<circle cx="${fileContent.places[i].longitude}" cy="${fileContent.places[i].latitude}" r="0.75" stroke="black" stroke-width="0.25" fill="black" />`
+
+            svg = svg.concat(circle);
+        }
+
+        svg = svg.concat("</g>\n</svg>")
+
+        downloadFile(svg, this.state.saveName+extension, 'image/svg+xml;charset=utf-8');
+
     }
 
     else{
