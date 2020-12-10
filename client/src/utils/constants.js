@@ -50,6 +50,11 @@ export const kmlTemplate =
        <LineString>
          <coordinates>
                         `
+export const svgTemplate =
+`<?xml version="1.0" encoding="UTF-8"?>
+ <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="720" viewBox="-180 -90 360 180">
+  <image href="https://instructor-uploaded-content.s3.amazonaws.com/MAP.svg-6983777" x="-180" y="-90" height="180" width="360"/> <g transform="matrix(1,0,0,-1,0,0)">
+    <polyline points="`
 
 export const LATITUDE_REGEX = new RegExp("^[-+]?(?:90(?:(?:\\.0+)?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]+)?))$");
 export const LONGITUDE_REGEX = new RegExp("^[-+]?(?:180(?:(?:\\.0+)?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]+)?))$");
