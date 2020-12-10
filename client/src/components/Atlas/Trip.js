@@ -43,12 +43,20 @@ export default class Trip extends Component {
       roundTripDistance:0,
       serverSettings: this.props.serverSettings,
       showNewItem: false,
+      response: "0.0",
+      hasLoaded: false
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.serverSettings && !this.state.hasLoaded) {
+      this.setState({hasLoaded: true}, this.sendTripRequest);
     }
   }
 
   render() {
     return(
-      <div className="text-center">
+      <div className="text-center">e
         <TripControls tripName={this.state.tripName} setName={this.setName}
                       destinations={this.state.destinations} loadedTrip={this.state.loadedTrip}
                       loadTripJSON={this.loadTripJSON} reverseTrip={this.reverseTrip}
@@ -161,7 +169,6 @@ export default class Trip extends Component {
   checkMapUpdate() {
     let newPlaceLocation = this.props.tripNewLocation?.location;
     let newPlaceLocationName = this.props.tripNewLocation?.locationName;
-
     if (newPlaceLocation) {
       if (!newPlaceLocationName || newPlaceLocationName === '') {
         newPlaceLocationName = newPlaceLocation[0].toFixed(2) + ', ' +
@@ -336,6 +343,7 @@ export default class Trip extends Component {
           destinations: response.places,
           destinationStates: newDestinationStates
         },
+        ()=>{this.props.parentCallback(this.state.oneWayDistance, this.state.roundTripDistance)},
         this.props.setTripLocations(response.places),
       );
     }
